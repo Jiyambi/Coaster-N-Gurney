@@ -12,19 +12,22 @@ function Level() {
     // ********************************************************************
 
     // Background Colors
-    bg_red = 150;
-    bg_green = 150;
-    bg_blue = 150;
-    bg_alpha = 255;
+    this.bg_red = 150;
+    this.bg_green = 150;
+    this.bg_blue = 150;
+    this.bg_alpha = 255;
     
     // Score
     // TODO: Move to player
-    score = 0;
+    this.score = 0;
     
     // Controls
     this.key_up = false;
     this.key_left = false;
     this.key_right = false;
+    
+    // TODO: Unit testing
+    
     
     // TODO: Example only, to remove
     // Pollen
@@ -48,12 +51,12 @@ function Level() {
     // Function:    clear()
     // Purpose:     Sets up the canvas for each frame. 
     // ********************************************************************
-    function clear() {
+    this.clear = function() {
         ctx.fillStyle = 'rgba('         // Sets active color
-            + bg_red + ', ' 
-            + bg_green + ', ' 
-            + bg_blue + ', ' 
-            + bg_alpha + ')';
+            + this.bg_red + ', ' 
+            + this.bg_green + ', ' 
+            + this.bg_blue + ', ' 
+            + this.bg_alpha + ')';
         ctx.beginPath();                // Start drawing
         ctx.rect(0,0,                   // Draws rectangle
             CANVAS_WIDTH,
@@ -67,6 +70,7 @@ function Level() {
     // Purpose:     Updates positions, checks for collisions
     // ********************************************************************
     this.logic = function() {
+        
     }  
     
     // ********************************************************************
@@ -75,6 +79,6 @@ function Level() {
     // ********************************************************************
     this.draw = function() {
         // Clear the canvas to the level's bg color
-        clear();
+        this.clear();
     }
 }

@@ -34,9 +34,9 @@ function Game() {
     current_time = 0;
     
     // Levels
-    this.levels = [];
-    this.levels.push(new Level());
-    this.current_level = this.levels[0];
+    levels = [];
+    levels.push(new Level());
+    current_level = levels[0];
     
     // ********************************************************************
     // Function:    onkeydown()
@@ -45,13 +45,13 @@ function Game() {
     // ********************************************************************
     document.onkeydown = function(e) {
         if (e.keyCode == UP) {
-            this.current_level.key_up = true;
+            current_level.key_up = true;
         }
         if (e.keyCode == LEFT) {
-            this.current_level.key_left = true;
+            current_level.key_left = true;
         }
         if (e.keyCode == RIGHT) {
-            this.current_level.key_right = true;
+            current_level.key_right = true;
         }
     }
 
@@ -62,13 +62,13 @@ function Game() {
     // ********************************************************************
     document.onkeyup = function(e) {
         if (e.keyCode == UP) {
-            this.current_level.key_up = false;
+            current_level.key_up = false;
         }
         if (e.keyCode == LEFT) {
-            this.current_level.key_left = false;
+            current_level.key_left = false;
         }
         if (e.keyCode == RIGHT) {
-            this.current_level.key_right = false;
+            current_level.key_right = false;
         }
     }
 
@@ -77,8 +77,8 @@ function Game() {
     // Purpose:     Continuous loop runs while the game is loaded. 
     // ********************************************************************
     this.gameLoop = function() {  
-        this.current_level.logic();     // Run all logic functions
-        this.current_level.draw();      // Draw all objects and text
+        current_level.logic();     // Run all logic functions
+        current_level.draw();      // Draw all objects and text
     }  
 }
 

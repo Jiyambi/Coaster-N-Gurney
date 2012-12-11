@@ -5,23 +5,25 @@
 //              circle object. 
 // ************************************************************************ 
 
+Circle.prototype = new Object();
+Circle.prototype.constructor = Circle;
+
 // Circle class
 function Circle() {
 
     // ********************************************************************
+    // Inheritance 
+    // ********************************************************************
+    this.inheritFrom = Object;
+    this.inheritFrom();
+
+    // ********************************************************************
     // Data Members 
     // ********************************************************************
-    this.x;
-    this.y;
+    this.collision_type = "circle";
+    
+    // Radius of the circle (centered on x and y)
     this.radius;
-    this.green;
-    this.red;
-    this.blue;
-    this.alpha;
-    this.xvel;
-    this.yvel;
-    this.newx = function () {return this.x};
-    this.newy = function () {return this.y};
     
     // ********************************************************************
     // Function:    draw()
@@ -41,17 +43,6 @@ function Circle() {
     }
     
     // ********************************************************************
-    // Function:    updatePosition()
-    // Purpose:     Updates the position of the circle based on it's 
-    //              velocity.
-    // ********************************************************************
-    this.updatePosition = function() {
-        // Move the circle based on it's velocity
-        this.x += this.xvel;
-        this.y += this.yvel;
-    }
-    
-    // ********************************************************************
     // Function:    checkCollision()
     // Purpose:     Checks if this object is colliding with the supplied 
     //              object
@@ -59,17 +50,42 @@ function Circle() {
     // Output:      true if there is a collision, false if not
     // ********************************************************************
     this.checkCollision = function(check) {
-        // goal radius
-        collision_distance = check.radius + this.radius; 
-        // actual distance between objects
-        actual_distance = Math.sqrt(
-            Math.pow(check.x-this.x,2) + Math.pow(check.y-this.y,2) 
-        ); 
+        
+        // If colliding with another circle...
+        if (check.collision_type == "circle")
+        {
+            // goal radius
+            collision_distance = check.radius + this.radius; 
+            // actual distance between objects
+            actual_distance = Math.sqrt(
+                Math.pow(check.x-this.x,2) + Math.pow(check.y-this.y,2) 
+            ); 
 
-        if (actual_distance <= collision_distance)
-            return true;
-        else 
-            return false;
+            return actual_distance <= collision_distance;
+        }
+        
+        // If colliding with a rectangle...
+        if (check.collision_type == "rectangle")
+        {
+            // clamp(value, min, max) - limits value to the range min..max
+            clamp = function(value, min, max) {
+                if (value < min) value = min;
+                if (value > max) value = max;
+                return value;
+            }
+
+            // Find the closest point to the circle within the rectangle
+            closestX = clamp(this.x, check.x, check.x+check.w);
+            closestY = clamp(this.y, check.y, check.y+check.h);
+
+            // Calculate the distance between the circle's center and this closest point
+            distanceX = this.x - closestX;
+            distanceY = this.y - closestY;
+
+            // If the distance is less than the circle's radius, an intersection occurs
+            distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+            return distanceSquared < (this.radius * this.radius);
+        }
     }
 
 }
