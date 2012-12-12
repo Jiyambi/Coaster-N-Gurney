@@ -5,17 +5,12 @@
 //              Rectangle object. 
 // ************************************************************************ 
 
+// Inheritance
 Rectangle.prototype = new Object();
 Rectangle.prototype.constructor = Rectangle;
 
 // Rectangle class
 function Rectangle() {
-
-    // ********************************************************************
-    // Inheritance 
-    // ********************************************************************
-    this.inheritFrom = Object;
-    this.inheritFrom();
 
     // ********************************************************************
     // Data Members 

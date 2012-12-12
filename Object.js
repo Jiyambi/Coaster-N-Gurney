@@ -27,10 +27,10 @@ function Object() {
     this.yvel;
     
     // Color of the object (used for primitives and collision outlines)
-    this.green;
-    this.red;
-    this.blue;
-    this.alpha;
+    this.green = 0;
+    this.red = 255;
+    this.blue = 0;
+    this.alpha = 100;
     
     // ********************************************************************
     // Function:    draw()

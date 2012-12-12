@@ -27,7 +27,19 @@ function Level() {
     this.key_right = false;
     
     // TODO: Unit testing
-    
+    this.rect = new Rectangle();
+    this.rect.x = -50;
+    this.rect.y = 10;
+    this.rect.w = 10;
+    this.rect.h = 10;
+    this.rect.xvel = 1;
+    this.rect.yvel = 0;
+    this.circ = new Circle();
+    this.circ.x = 50;
+    this.circ.y = 15;
+    this.circ.xvel = 0;
+    this.circ.yvel = 0;
+    this.circ.r = 5;
     
     // TODO: Example only, to remove
     // Pollen
@@ -71,6 +83,10 @@ function Level() {
     // ********************************************************************
     this.logic = function() {
         
+        // TODO: Remove (unit testing)
+        this.rect.updatePosition();
+        this.circ.updatePosition();
+        if(this.rect.checkCollision(this.circ)) this.rect.x=-50;
     }  
     
     // ********************************************************************
@@ -78,7 +94,12 @@ function Level() {
     // Purpose:     Draws all objects to the screen
     // ********************************************************************
     this.draw = function() {
+    
         // Clear the canvas to the level's bg color
         this.clear();
+        
+        // TODO: Remove (unit testing)
+        this.rect.draw();
+        this.circ.draw();
     }
 }

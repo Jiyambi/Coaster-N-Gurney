@@ -5,6 +5,8 @@
 //              circle object. 
 // ************************************************************************ 
 
+
+// Inheritance
 Circle.prototype = new Object();
 Circle.prototype.constructor = Circle;
 
@@ -12,18 +14,12 @@ Circle.prototype.constructor = Circle;
 function Circle() {
 
     // ********************************************************************
-    // Inheritance 
-    // ********************************************************************
-    this.inheritFrom = Object;
-    this.inheritFrom();
-
-    // ********************************************************************
     // Data Members 
     // ********************************************************************
     this.collision_type = "circle";
     
     // Radius of the circle (centered on x and y)
-    this.radius;
+    this.r;
     
     // ********************************************************************
     // Function:    draw()
@@ -37,7 +33,7 @@ function Circle() {
             + this.alpha + ')';
         ctx.beginPath();
         ctx.arc(this.x, this.y, 
-            this.radius, 0, Math.PI * 2, true);
+            this.r, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
     }
@@ -55,7 +51,7 @@ function Circle() {
         if (check.collision_type == "circle")
         {
             // goal radius
-            collision_distance = check.radius + this.radius; 
+            collision_distance = check.r + this.r; 
             // actual distance between objects
             actual_distance = Math.sqrt(
                 Math.pow(check.x-this.x,2) + Math.pow(check.y-this.y,2) 
@@ -84,7 +80,7 @@ function Circle() {
 
             // If the distance is less than the circle's radius, an intersection occurs
             distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
-            return distanceSquared < (this.radius * this.radius);
+            return distanceSquared < (this.r * this.r);
         }
     }
 
