@@ -40,6 +40,7 @@ function Level() {
     this.circ.xvel = 0;
     this.circ.yvel = 0;
     this.circ.r = 5;
+    this.player = new Player();
     
     // TODO: Example only, to remove
     // Pollen
@@ -86,6 +87,7 @@ function Level() {
         // TODO: Remove (unit testing)
         this.rect.updatePosition();
         this.circ.updatePosition();
+        this.player.updatePosition();
         if(this.rect.checkCollision(this.circ)) this.rect.x=-50;
     }  
     
@@ -101,5 +103,6 @@ function Level() {
         // TODO: Remove (unit testing)
         this.rect.draw();
         this.circ.draw();
+        this.player.draw();
     }
 }

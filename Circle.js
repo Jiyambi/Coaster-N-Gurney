@@ -7,7 +7,7 @@
 
 
 // Inheritance
-Circle.prototype = new Object();
+Circle.prototype = new Collision();
 Circle.prototype.constructor = Circle;
 
 // Circle class

@@ -6,7 +6,7 @@
 // ************************************************************************ 
 
 // Inheritance
-Rectangle.prototype = new Object();
+Rectangle.prototype = new Collision();
 Rectangle.prototype.constructor = Rectangle;
 
 // Rectangle class

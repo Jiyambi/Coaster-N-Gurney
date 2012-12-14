@@ -10,7 +10,8 @@ var CANVAS_WIDTH = 500,                 // width of the canvas
     gLoop,                              // Game loop timer
     c = document.getElementById('c'),   // The canvas itself
     ctx = c.getContext('2d'),           // 2d graphics context
-    FPS = 50;                           // Frames per second
+    FPS = 50,                           // Frames per second
+    DEBUGMODE = true;                   // Debug mode
     
 // Set canvas size    
 c.width = CANVAS_WIDTH;
