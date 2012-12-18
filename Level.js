@@ -30,15 +30,23 @@ function Level() {
     this.rect = new Rectangle();
     this.rect.x = -50;
     this.rect.y = 10;
-    this.rect.w = 10;
+    this.rect.w = 30;
     this.rect.h = 10;
     this.rect.xvel = 1;
-    this.rect.yvel = 0;
+    this.rect.angle =  Math.PI *7 / 4;
+	this.rect.green = 255;
+	this.rect.red = 0;
+    this.rect2 = new Rectangle();
+    this.rect2.x = -50;
+    this.rect2.y = 10;
+    this.rect2.w = 30;
+    this.rect2.h = 10;
+    this.rect2.xvel = 1;
+	this.rect2.blue = 255;
+	this.rect2.red = 0;
     this.circ = new Circle();
     this.circ.x = 50;
     this.circ.y = 15;
-    this.circ.xvel = 0;
-    this.circ.yvel = 0;
     this.circ.r = 5;
     this.player = new Player();
     
@@ -86,9 +94,11 @@ function Level() {
         
         // TODO: Remove (unit testing)
         this.rect.updatePosition();
+        this.rect2.updatePosition();
         this.circ.updatePosition();
         this.player.updatePosition();
         if(this.rect.checkCollision(this.circ)) this.rect.x=-50;
+        if(this.rect2.checkCollision(this.circ)) this.rect2.x=-50;
     }  
     
     // ********************************************************************
@@ -102,6 +112,7 @@ function Level() {
         
         // TODO: Remove (unit testing)
         this.rect.draw();
+        this.rect2.draw();
         this.circ.draw();
         this.player.draw();
     }

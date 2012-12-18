@@ -19,6 +19,7 @@ function Player() {
     this.hitbox.h = 10;
     this.hitbox.xvel = 0;
     this.hitbox.yvel = 0;
+	this.hitbox.angle = Math.PI / 4;
     
     // ********************************************************************
     // Function:    draw()

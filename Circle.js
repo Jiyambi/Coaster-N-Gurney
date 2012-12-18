@@ -19,7 +19,7 @@ function Circle() {
     this.collision_type = "circle";
     
     // Radius of the circle (centered on x and y)
-    this.r;
+    this.r=0;
     
     // ********************************************************************
     // Function:    draw()
@@ -53,16 +53,41 @@ function Circle() {
             // goal radius
             collision_distance = check.r + this.r; 
             // actual distance between objects
-            actual_distance = Math.sqrt(
-                Math.pow(check.x-this.x,2) + Math.pow(check.y-this.y,2) 
-            ); 
+            actual_distance_sqr = Math.pow(check.x-this.x,2) 
+									+ Math.pow(check.y-this.y,2);
 
-            return actual_distance <= collision_distance;
+            return actual_distance_sqr <= collision_distance * collision_distance;
         }
         
         // If colliding with a rectangle...
         if (check.collision_type == "rectangle")
         {
+			// Determine circle position from rectangle frame of reference
+			//		with regards to angle
+			var rel_circle_x, rel_circle_y;
+			if (check.angle == 0)
+			{
+				rel_circle_x = this.x;
+				rel_circle_y = this.y;
+			}
+			else
+			{
+				// Translate so rectangle coord = origin
+				rel_circle_x = this.x - check.x;
+				rel_circle_y = this.y - check.y;
+				
+				// Rotate about new origin (rect coord)
+				// TODO: Change cos and sin calcs to rectangle object, set when angle is changed
+				cos_theta = Math.cos(-check.angle);
+				sin_theta = Math.sin(-check.angle);
+				rel_circle_x = rel_circle_x*cos_theta - rel_circle_y*sin_theta;
+				rel_circle_y = rel_circle_x*sin_theta + rel_circle_y*cos_theta;
+				
+				// Translate back to rectangle coord
+				rel_circle_x = rel_circle_x + check.x;
+				rel_circle_y = rel_circle_y + check.y;
+			}
+		
             // clamp(value, min, max) - limits value to the range min..max
             clamp = function(value, min, max) {
                 if (value < min) value = min;
@@ -71,16 +96,16 @@ function Circle() {
             }
 
             // Find the closest point to the circle within the rectangle
-            closestX = clamp(this.x, check.x, check.x+check.w);
-            closestY = clamp(this.y, check.y, check.y+check.h);
+            closestX = clamp(rel_circle_x, check.x, check.x+check.w);
+            closestY = clamp(rel_circle_y, check.y, check.y+check.h);
 
             // Calculate the distance between the circle's center and this closest point
-            distanceX = this.x - closestX;
-            distanceY = this.y - closestY;
+            distanceX = rel_circle_x - closestX;
+            distanceY = rel_circle_y - closestY;
 
             // If the distance is less than the circle's radius, an intersection occurs
-            distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
-            return distanceSquared < (this.r * this.r);
+            distance_sqr = (distanceX * distanceX) + (distanceY * distanceY);
+            return distance_sqr < (this.r * this.r);
         }
     }
 

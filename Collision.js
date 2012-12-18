@@ -15,16 +15,16 @@ function Collision() {
     this.collision_type = "none";
     
     // Coordinates in the game world
-    this.x;
-    this.y;
+    this.x=0;
+    this.y=0;
     
     // TODO: What are these? may not need em
     //this.newx = function () {return this.x};
     //this.newy = function () {return this.y};
     
     // Velocity in the game world
-    this.xvel;
-    this.yvel;
+    this.xvel=0;
+    this.yvel=0;
     
     // Color of the object (used for collision outlines)
     this.green = 0;
