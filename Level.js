@@ -33,7 +33,7 @@ function Level() {
     this.rect.w = 30;
     this.rect.h = 10;
     this.rect.xvel = 1;
-    this.rect.angle =  Math.PI *7 / 4;
+    this.rect.angle =  Math.PI / 2;
 	this.rect.green = 255;
 	this.rect.red = 0;
     this.rect2 = new Rectangle();

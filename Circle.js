@@ -73,15 +73,15 @@ function Circle() {
 			else
 			{
 				// Translate so rectangle coord = origin
-				rel_circle_x = this.x - check.x;
-				rel_circle_y = this.y - check.y;
+				temp_x = this.x - check.x;
+				temp_y = this.y - check.y;
 				
 				// Rotate about new origin (rect coord)
 				// TODO: Change cos and sin calcs to rectangle object, set when angle is changed
 				cos_theta = Math.cos(-check.angle);
 				sin_theta = Math.sin(-check.angle);
-				rel_circle_x = rel_circle_x*cos_theta - rel_circle_y*sin_theta;
-				rel_circle_y = rel_circle_x*sin_theta + rel_circle_y*cos_theta;
+				rel_circle_x = temp_x*cos_theta - temp_y*sin_theta;
+				rel_circle_y = temp_x*sin_theta + temp_y*cos_theta;
 				
 				// Translate back to rectangle coord
 				rel_circle_x = rel_circle_x + check.x;
