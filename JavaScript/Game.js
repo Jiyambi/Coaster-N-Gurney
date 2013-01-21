@@ -5,8 +5,8 @@
 // ************************************************************************ 
 
 // Global Variables
-var CANVAS_WIDTH = 500,                 // width of the canvas
-    CANVAS_HEIGHT = 320,                // height of the canvas
+var CANVAS_WIDTH = 550,                 // width of the canvas
+    CANVAS_HEIGHT = 400,                // height of the canvas
     gLoop,                              // Game loop timer
     c = document.getElementById('c'),   // The canvas itself
     ctx = c.getContext('2d'),           // 2d graphics context
@@ -30,29 +30,29 @@ function Game() {
     // ********************************************************************
     
     // Timers
-    now = new Date();
-    start_time = now.getTime();
-    current_time = 0;
+    this.now = new Date();
+    this.start_time = this.now.getTime();
+    this.current_time = 0;
     
     // Levels
-    levels = [];
-    levels.push(new Level());
-    current_level = levels[0];
+    this.levels = [];
+    this.levels.push(new Level());
+    this.current_level = this.levels[0];
     
     // ********************************************************************
     // Function:    onkeydown()
     // Purpose:     Listens for key presses and passes them to the level 
     //              object. 
     // ********************************************************************
-    document.onkeydown = function(e) {
+    this.onkeydown = function(e) {
         if (e.keyCode == UP) {
-            current_level.key_up = true;
+            this.current_level.key_up = true;
         }
         if (e.keyCode == LEFT) {
-            current_level.key_left = true;
+            this.current_level.key_left = true;
         }
         if (e.keyCode == RIGHT) {
-            current_level.key_right = true;
+            this.current_level.key_right = true;
         }
     }
 
@@ -61,15 +61,15 @@ function Game() {
     // Purpose:     Listens for key presses and passes them to the level 
     //              object. 
     // ********************************************************************
-    document.onkeyup = function(e) {
+    this.onkeyup = function(e) {
         if (e.keyCode == UP) {
-            current_level.key_up = false;
+            this.current_level.key_up = false;
         }
         if (e.keyCode == LEFT) {
-            current_level.key_left = false;
+            this.current_level.key_left = false;
         }
         if (e.keyCode == RIGHT) {
-            current_level.key_right = false;
+            this.current_level.key_right = false;
         }
     }
 
@@ -78,11 +78,29 @@ function Game() {
     // Purpose:     Continuous loop runs while the game is loaded. 
     // ********************************************************************
     this.gameLoop = function() {  
-        current_level.logic();     // Run all logic functions
-        current_level.draw();      // Draw all objects and text
+        this.current_level.logic();     // Run all logic functions
+        this.current_level.draw();      // Draw all objects and text
     }  
 }
 
-var this_game = new Game();     // Create instance of the game
-this_game.gameLoop();           // Run Game Loop
-setInterval(this_game.gameLoop, 1000 / FPS);
+// ********************************************************************
+// Function:    initializeCanvas()
+// Purpose:     Sets up the supplied canvas for the game 
+// ********************************************************************
+this.gameLoop = function() {  
+	this.current_level.logic();     // Run all logic functions
+	this.current_level.draw();      // Draw all objects and text
+}  
+
+// ********************************************************************
+// Function:    startGame()
+// Purpose:     Sets up game and starts loop. 
+// ********************************************************************
+// Create instance of the game
+var this_game = new Game();     
+function gameLoop() { this_game.gameLoop(); }
+function gameOnkeydown(e) { this_game.onkeydown(e); }
+function gameOnkeyup(e) { this_game.onkeyup(e); }
+setInterval(gameLoop, 1000 / FPS);
+document.onkeydown = gameOnkeydown;
+document.onkeyup = gameOnkeyup;
