@@ -25,8 +25,7 @@ package Patterns
             //If we can't create an instance, throw an error so no instance is created
             if(!isOkayToCreate) throw new Error(this + " is a Singleton. Access using getInstance()");
         }
- 
-        //With this method we will create and access the instance of the method
+
 		// ****************************************************************
 		// Function: 	getInstance()
 		// Purpose:     Create and access an instance of the Singleton.
