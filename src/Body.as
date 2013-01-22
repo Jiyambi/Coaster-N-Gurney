@@ -14,6 +14,8 @@ package
     import flash.display.BitmapData;
     import flash.display.Sprite;
     import flash.geom.Point;
+	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 	
     // ********************************************************************
     // Class:	Body 
@@ -24,11 +26,21 @@ package
 		// ****************************************************************
 		// Public Data Members 
 		// ****************************************************************
-		public var x:Number;
-		public var y:Number;
-		public var width:int;
-		public var height:int;
-		public var angle:Number;
+		
+		// Dimmensions
+		// TODO: Game unit dimmensions?
+		public var width:int;			// pixels
+		public var height:int;			// pixels
+		
+		// Game world position and orientation
+		public var position_x:Number;	// game units		
+		public var position_y:Number;	// game units
+		public var angle:Number;		// radians, clockwise, 0 = right
+		
+		// Game world velocities
+		public var velocity_x:Number;		// game units / second
+		public var velocity_y:Number;		// game units / second
+		public var velocity_angle:Number;	// radians / second, clockwise
 
 		// ****************************************************************
 		// Protected Data Members 
@@ -47,11 +59,17 @@ package
 		// ****************************************************************
 		public function Body(x:int, y:int, width:int, height:int, angle:int=0)
 		{
-			this.x = x;
-			this.y = y;
+			// Copy in supplied values
 			this.width = width;
 			this.height = height;
+			this.position_x = x;
+			this.position_y = y;
 			this.angle = angle;
+			
+			// Velocities set to 0 at start
+			velocity_x = 0;
+			velocity_y = 0;
+			velocity_angle = 0;
 		}
 		
 		// ****************************************************************
@@ -60,14 +78,38 @@ package
 		// ****************************************************************
 		public function Render():void
 		{
+			if (image_sprite)
+			{
+				// Crete a matrix and move it to the body's location
+				var matrix:Matrix = new Matrix();
+				matrix.translate(-1*width/2, -1*height/2);
+				matrix.rotate(angle);
+				matrix.translate(position_x+width/2, position_y+height/2);
+	 
+				// Render the image to this matrix
+				Game.renderer.draw(image_sprite, matrix);
+			}
 		}
 		
 		// ****************************************************************
 		// Function: 	Update()
 		// Purpose:     Updates logic
+		// Input:		frameTime:Number - Ammount of time that passed
+		//					between the last frame and this one, in
+		//					seconds
 		// ****************************************************************
-		public function Update():void
+		public function Update(frameTime:Number):void
 		{
+			// Update position and orientation based on velocities
+			position_x += velocity_x * frameTime;
+			position_y += velocity_y * frameTime;
+			angle += velocity_angle * frameTime;
+			
+			// Bounds check orientation
+			if (angle > 2 * Math.PI)
+				angle -= 2 * Math.PI;
+			if (angle < 0)
+				angle += 2 * Math.PI;
 		}
 		
 	}

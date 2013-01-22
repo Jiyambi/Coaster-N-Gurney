@@ -10,58 +10,119 @@ package Entities
     // ********************************************************************
     // Imports 
     // ********************************************************************
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
     // ********************************************************************
     // Class:	Body 
     // ********************************************************************
 	public class Player extends Body
 	{
+		// ****************************************************************
+		// Private Data Members 
+		// ****************************************************************
+		[Embed(source = '../../resources/images/player.png')]
+		private var tex_player:Class;
 		
 		// ****************************************************************
 		// Function: 	Player()
 		// Purpose:     Constructor.
 		// Input:		x:int - x coordinate for object
 		//				y:int - y coordinate for object
-		//				width:int - width of object
-		//				height:int - height of object
 		//				angle:int - rotation of object
 		// ****************************************************************
-		public function Player(x:int, y:int, width:int, height:int, angle:int=0)
+		public function Player(x:int, y:int, angle:int=0)
 		{
 			// Set up Player as a Body
-			super(x, y, width, height);
+			super(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
 			
-			// TODO: Replace with image from file
 			// Create image to hold sprite
 			image_sprite = new Sprite();
-			image_sprite.graphics.lineStyle(.1, 0xFFFFFF);
- 
-			//create the ship drawing
-			image_sprite.graphics.moveTo(0, height);
-			image_sprite.graphics.lineTo(width / 2, 0);
-			image_sprite.graphics.lineTo(width, height);
- 
-			//draw the line across
-			image_sprite.graphics.moveTo((7*height/8 -height)/(-height/(width/2)), 7*height/8 );
-			image_sprite.graphics.lineTo((7*height/8 -height)/(height/(width/2))+width, 7*height/8);
+			var temp_bitmap:DisplayObject = new tex_player();
+			temp_bitmap.width = Constants.PLAYER_WIDTH;
+			temp_bitmap.height = Constants.PLAYER_HEIGHT;
+			image_sprite.addChild(temp_bitmap);
 		}
 		
 		// ****************************************************************
-		// Function: 	Render()
-		// Purpose:     Draws to the stage
+		// Function: 	StrafeLeft()
+		// Purpose:     Sets velocity based on status
+		// Input:		status:Boolean - Whether the player is strafng
 		// ****************************************************************
-		override public function Render():void
+		public function StrafeLeft(status:Boolean):void
 		{
-			// Crete a matrix and move it to the body's location
-			var matrix:Matrix = new Matrix();
-			matrix.translate(x, y);
- 
-			// Render the image to this matrix
-			Game.renderer.draw(image_sprite, matrix);
+			// If the player is holding down the strafe key
+			// AND the vehicle is not yet at the top move speed
+			if (status && velocity_y > -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+				// Accelerate by top move speed
+				velocity_y -= Constants.PLAYER_TOP_MOVE_SPEED;
+			
+			// If the player is NOT holding down the strafe key
+			// AND the vehicle is at the top move speed
+			if (!status && velocity_y == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+				// Decelerate by top move speed
+				velocity_y += Constants.PLAYER_TOP_MOVE_SPEED;
+		}
+		
+		// ****************************************************************
+		// Function: 	StrafeRight()
+		// Purpose:     Sets velocity based on status
+		// Input:		status:Boolean - Whether the player is strafng
+		// ****************************************************************
+		public function StrafeRight(status:Boolean):void
+		{
+			// If the player is holding down the strafe key
+			// AND the vehicle is not yet at the top move speed
+			if (status && velocity_y < Constants.PLAYER_TOP_MOVE_SPEED) 
+				// Accelerate by top move speed
+				velocity_y += Constants.PLAYER_TOP_MOVE_SPEED;
+			
+			// If the player is NOT holding down the strafe key
+			// AND the vehicle is at the top move speed
+			if (!status && velocity_y == Constants.PLAYER_TOP_MOVE_SPEED) 
+				// Decelerate by top move speed
+				velocity_y -= Constants.PLAYER_TOP_MOVE_SPEED;
+		}
+		
+		// ****************************************************************
+		// Function: 	Accelerate()
+		// Purpose:     Sets velocity based on status
+		// Input:		status:Boolean - Whether the player is accelerating
+		// ****************************************************************
+		public function Accelerate(status:Boolean):void
+		{
+			// If the player is holding down the accelerate key
+			// AND the vehicle is not yet at the top move speed
+			if (status && velocity_x < Constants.PLAYER_TOP_MOVE_SPEED) 
+				// Accelerate by top move speed
+				velocity_x += Constants.PLAYER_TOP_MOVE_SPEED;
+			
+			// If the player is NOT holding down the accelerate key
+			// AND the vehicle is at the top move speed
+			if (!status && velocity_x == Constants.PLAYER_TOP_MOVE_SPEED) 
+				// Decelerate by top move speed
+				velocity_x -= Constants.PLAYER_TOP_MOVE_SPEED;
+		}
+		
+		// ****************************************************************
+		// Function: 	Decelerate()
+		// Purpose:     Sets velocity based on status
+		// Input:		status:Boolean - Whether the player is decelerating
+		// ****************************************************************
+		public function Decelerate(status:Boolean):void
+		{
+			// If the player is holding down the decelerate key
+			// AND the vehicle is not yet at the top move speed
+			if (status && velocity_x > -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+				// Accelerate by top move speed
+				velocity_x -= Constants.PLAYER_TOP_MOVE_SPEED;
+			
+			// If the player is NOT holding down the decelerate key
+			// AND the vehicle is at the top move speed
+			if (!status && velocity_x == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+				// Decelerate by top move speed
+				velocity_x += Constants.PLAYER_TOP_MOVE_SPEED;
 		}
 		
 	}

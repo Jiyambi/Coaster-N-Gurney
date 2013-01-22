@@ -51,7 +51,7 @@ package
 			bitmap = new Bitmap(renderer);
 			
 			// Create a player at center of screen
-			player = new Player(renderer.width/2-5, renderer.height/2-10, 10, 20);
+			player = new Player(renderer.width/2-Constants.PLAYER_WIDTH/2, renderer.height/2-Constants.PLAYER_HEIGHT/2);
 			
 			trace("Game() returned.");
 		}
@@ -75,10 +75,18 @@ package
 		
 		// ****************************************************************
 		// Function: 	Update()
-		// Purpose:     Updates logic
+		// Purpose:     Interpret player input, update game objects
 		// ****************************************************************
 		public function Update():void
 		{
+			// Interpret player input
+			player.Decelerate(Input.CheckKeyDown(Constants.CONTROL_DECELERATE));
+			player.Accelerate(Input.CheckKeyDown(Constants.CONTROL_ACCELERATE));	
+			player.StrafeLeft(Input.CheckKeyDown(Constants.CONTROL_STRAFE_LEFT));		
+			player.StrafeRight(Input.CheckKeyDown(Constants.CONTROL_STRAFE_RIGHT));
+				
+			// Update game objects
+			player.Update(0.02);
 		}
 	}
 

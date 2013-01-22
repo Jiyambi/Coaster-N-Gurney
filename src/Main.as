@@ -12,6 +12,7 @@ package
     // ********************************************************************
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	
     // ********************************************************************
     // Class:	Main
@@ -51,6 +52,10 @@ package
 
 			// Create the main game loop
 			addEventListener(Event.ENTER_FRAME, Run);
+			
+			// Add keylisteners
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, Input.KeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, Input.KeyUp);
 		}
 		
 		// ****************************************************************
