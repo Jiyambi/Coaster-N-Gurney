@@ -4,7 +4,6 @@
 // Author:      Sarah Herzog 
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
-// TODO: Scaling
 
 package Entities 
 {
@@ -47,7 +46,7 @@ package Entities
 			Util.Debug("Camera::GetWidth() returned, result = "+width, 3);
 			Util.ChangeDebugLevel( -1);
 			
-			return position_x;
+			return width;
 		}
 		
 		// ****************************************************************
@@ -62,7 +61,7 @@ package Entities
 			Util.Debug("Camera::GetHeight() returned, result = "+height, 3);
 			Util.ChangeDebugLevel( -1);
 			
-			return position_y;
+			return height;
 		}
 		
 		// ****************************************************************

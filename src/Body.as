@@ -38,7 +38,7 @@ package
 		// Game world velocities
 		protected var velocity_x:Number;		// game units / second
 		protected var velocity_y:Number;		// game units / second
-		protected var velocity_angle:Number;	// radians / second, clockwise
+		public var velocity_angle:Number;	// radians / second, clockwise
 		
 		// Display
 		protected var visible:Boolean = true;

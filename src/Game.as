@@ -51,6 +51,7 @@ package
 			
 			// Send camera to renderer
 			camera = new Camera(0, 0, stage_width, stage_height, 0);
+			//camera.velocity_angle = 0.5;
 			Renderer.SetCamera(camera);
 			
 			Util.Debug("Game::Game() returned", 1);

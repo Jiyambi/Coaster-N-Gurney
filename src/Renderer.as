@@ -146,8 +146,11 @@ package
 				
 			// Transform image based on camera
 			matrix.translate(-renderer.width/2, -renderer.height/2);	// translate so center of scene is in upper left (0,0)
-			matrix.rotate( -camera.GetAngle());								// rotate about 0,0
-			matrix.translate(renderer.width/2, renderer.height/2); 		// translate so center of scene is in upper left (0,0)
+			matrix.translate(-camera.GetX(), -camera.GetY()); 			// translate to correct point in scene
+			matrix.rotate( -camera.GetAngle());							// rotate about 0,0
+			matrix.translate(renderer.width/2, renderer.height/2); 		// undo original translate
+			matrix.scale(renderer.width / camera.GetWidth(), 			// scale based on camera view
+				renderer.height / camera.GetHeight());
 			
 			// Draw the image to renderer
 			renderer.draw(image_sprite, matrix);
