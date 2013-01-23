@@ -47,8 +47,8 @@ package
 			Util.Debug("ENTRY POINT", 1);
 
 			// Create the game object, passing in the swf width and height
-			game = new Game(stage.stageWidth, stage.stageHeight);
 			renderer = new Renderer(stage.stageWidth, stage.stageHeight);
+			game = new Game();
 
 			// Add the game bitmap to the Main.as Sprite to make it visible
 			addChild(renderer.bitmap);

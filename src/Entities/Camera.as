@@ -19,16 +19,14 @@ package Entities
 		// Purpose:     Constructor.
 		// Input:		x:Number - x coordinate for object
 		//				y:Number - y coordinate for object
-		//				width:Number - width of camera view
-		//				height:Number - height of camera view
 		//				angle:Number - rotation of object
 		// ****************************************************************
-		public function Camera(x:Number, y:Number, width:Number, height:Number, angle:Number=0) 
+		public function Camera(x:Number, y:Number, angle:Number=0) 
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Camera::Camera() called: x = " + x + ", y = " + y + ", width = " + width + ", height = " + height + ", angle = " + angle, 1);
+			Util.Debug("Camera::Camera() called: x = " + x + ", y = " + y + ", angle = " + angle, 1);
 			
-			super(x, y, width, height, angle);
+			super(x, y, 900, 600, angle);
 			
 			Util.Debug("Camera::Camera() returned", 1);
 			Util.ChangeDebugLevel(-1);

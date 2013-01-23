@@ -35,15 +35,15 @@ package
 		private static var camera:Camera;	// Camera as located in the 
 											// game world
 		
-		// Stage size
-		private var stage_width:int;		// pixels
-		private var stage_height:int;		// pixels
-		
 		// Render queue
 		private static var queue:Array = new Array();
 		
 		// Buffers
 		private static var renderer:BitmapData;
+		
+		// Stage size
+		private var stage_width:int;		// pixels
+		private var stage_height:int;		// pixels
 		
 		// ****************************************************************
 		// Function: 	Renderer()
@@ -59,6 +59,10 @@ package
 			// Set up main bitmap (renderer) to be drawn to
 			renderer = new BitmapData(stage_width, stage_height, false, 0x000000);
 			bitmap = new Bitmap(renderer);
+			
+			// Record stage width and height
+			this.stage_width = stage_width;
+			this.stage_height = stage_height;
 			
 			Util.Debug("Renderer::Renderer() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -145,10 +149,10 @@ package
 			Util.Debug("Renderer::DrawToBackBuffer() called, image_sprite = " +image_sprite+ ", matrix = "+matrix, 3);
 				
 			// Transform image based on camera
-			matrix.translate(-renderer.width/2, -renderer.height/2);	// translate so center of scene is in upper left (0,0)
+			// we start with the world origin in the upper left
 			matrix.translate(-camera.GetX(), -camera.GetY()); 			// translate to correct point in scene
 			matrix.rotate( -camera.GetAngle());							// rotate about 0,0
-			matrix.translate(renderer.width/2, renderer.height/2); 		// undo original translate
+			matrix.translate(renderer.width/2, renderer.height/2); 		// translate so world origin would be in center
 			matrix.scale(renderer.width / camera.GetWidth(), 			// scale based on camera view
 				renderer.height / camera.GetHeight());
 			

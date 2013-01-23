@@ -37,21 +37,18 @@ package
 		// Function: 	Game()
 		// Purpose:     Constructor for a game object. Initializes the 
 		//				game.
-		// Input:		stage_width:int - width of the stage
-		//				stage_height:int - height of the stage
 		// ****************************************************************
-		public function Game(stage_width:int, stage_height:int)
+		public function Game()
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Game::Game() called: stage_width = " + stage_width + ", stage_height = " + stage_height, 1);
+			Util.Debug("Game::Game() called", 1);
 			
 			// Create a player at center of screen
-			player = new Player(stage_width / 2 - Constants.PLAYER_WIDTH / 2, stage_height / 2 - Constants.PLAYER_HEIGHT / 2, 0);
-			player.SetDimmensions(Constants.PLAYER_WIDTH * 2, Constants.PLAYER_HEIGHT * 2);
-			box = new Box(stage_width/2-200, stage_height/2-50,0);
+			player = new Player(0, 0, 0);
+			box = new Box(200, 0, 0);
 			
 			// Send camera to renderer
-			camera = new Camera(0, 0, stage_width, stage_height, 0);
+			camera = new Camera(0, 0, 0);
 			Renderer.SetCamera(camera);
 			
 			Util.Debug("Game::Game() returned", 1);

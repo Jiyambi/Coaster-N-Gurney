@@ -42,8 +42,7 @@ package
 		
 		// Display
 		protected var visible:Boolean = true;
-		protected var image:Image;
-		// TODO: Change to array of images, for complex models. Most only use one.
+		protected var image:Image; // TODO: Change to array of images, for complex models. Most only use one.
 		protected var layer:int;
 	 
 		// ****************************************************************
@@ -115,7 +114,7 @@ package
 			// Image setup
 			if (image)
 			{
-				image.SetPosition(position_x, position_y, angle);
+				image.SetPosition(position_x-width/2, position_y-height/2, angle);
 				Renderer.AddToRenderQueue(image, layer);
 			}
 			
@@ -142,7 +141,7 @@ package
 			// Image setup
 			if (image)
 			{
-				image.SetPosition(position_x, position_y, angle);
+				image.SetPosition(position_x-width/2, position_y-height/2, angle);
 			}
 			
 			Util.Debug("Body::SetPosition() returned", 1);
