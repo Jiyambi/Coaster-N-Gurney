@@ -80,28 +80,23 @@ package
 		// ****************************************************************
 		// Function: 	Render()
 		// Purpose:     Draws to the stage
-		// Inputs:		camera:Camera - the camera which decides where this
-		//					image will be rendered
 		// ****************************************************************
-		public function Render(camera:Camera):void
+		public function Render():void
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Image::Render() called", 3);
 			
-			if (image_sprite && camera)
+			if (image_sprite)
 			{
 				// Create a matrix and move it to the body's location
 				var matrix:Matrix = new Matrix();
-				matrix.translate(-1*width/2, -1*height/2);
-				matrix.rotate(angle);
-				matrix.translate(position_x + width / 2, position_y + height / 2);
-				
-				// Transform matrix based on camera details
-				matrix.rotate(-1*camera.GetAngle());
-				matrix.translate(-1*camera.GetX(), -1*camera.GetY());
+				matrix.translate(-1*width/2, -1*height/2);	// center on origin
+				matrix.rotate(angle);						// rotate about origin
+				matrix.translate(width/2, height/2);		// translate back to corner on origin
+				matrix.translate(position_x, position_y);	// translate to correct location in scene
 	 
 				// Render the image to this matrix
-				Renderer.renderer.draw(image_sprite, matrix);
+				Renderer.DrawToBackBuffer(image_sprite, matrix);
 			}
 			
 			Util.Debug("Image::Render() returned", 3);

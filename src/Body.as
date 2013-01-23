@@ -49,13 +49,13 @@ package
 		// ****************************************************************
 		// Function: 	Body()
 		// Purpose:     Constructor.
-		// Input:		x:int - x coordinate for object
-		//				y:int - y coordinate for object
-		//				width:int - width of object
-		//				height:int - height of object
-		//				angle:int - rotation of object
+		// Input:		x:Number - x coordinate for object
+		//				y:Number - y coordinate for object
+		//				width:Number - width of object
+		//				height:Number - height of object
+		//				angle:Number - rotation of object
 		// ****************************************************************
-		public function Body(x:int, y:int, width:int, height:int, angle:int=0)
+		public function Body(x:Number, y:Number, width:Number, height:Number, angle:Number=0)
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Body::Body() called: x = " + x + ", y = " + y + ", width = " + width + ", height = " + height + ", angle = " + angle, 1);

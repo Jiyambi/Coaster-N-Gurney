@@ -33,12 +33,13 @@ package
 		public static const LAYER_GROUND:int = 0;
 		public static const LAYER_BACKGROUND:int = 1;
 		public static const LAYER_PLAYER:int = 2;
-		public static const LAYER_BOSSEENEMY:int = 3;
-		public static const LAYER_ENEMIES:int = 4;
-		public static const LAYER_POWERUPS:int = 5;
-		public static const LAYER_FOREGROUND:int = 6;
-		public static const LAYER_INTERFACE:int = 7;
-		public static const LAYER_MENU:int = 8;
+		public static const LAYER_OBSTACLES:int = 3;
+		public static const LAYER_BOSSEENEMY:int = 4;
+		public static const LAYER_ENEMIES:int = 5;
+		public static const LAYER_POWERUPS:int = 6;
+		public static const LAYER_FOREGROUND:int = 7;
+		public static const LAYER_INTERFACE:int = 8;
+		public static const LAYER_MENU:int = 9;
 		
 		// ****************************************************************
 		// Player Constants 

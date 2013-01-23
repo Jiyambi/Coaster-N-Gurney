@@ -25,11 +25,11 @@ package Entities
 		// ****************************************************************
 		// Function: 	Player()
 		// Purpose:     Constructor.
-		// Input:		x:int - x coordinate for object
-		//				y:int - y coordinate for object
-		//				angle:int - rotation of object
+		// Input:		x:Number - x coordinate for object
+		//				y:Number - y coordinate for object
+		//				angle:Number - rotation of object
 		// ****************************************************************
-		public function Player(x:int, y:int, angle:int=0)
+		public function Player(x:Number, y:Number, angle:Number=0)
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Player::Player() called: x = " + x + ", y = " + y + ", angle = " + angle, 1);

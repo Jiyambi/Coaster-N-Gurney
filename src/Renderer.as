@@ -15,6 +15,8 @@ package
     import flash.display.BitmapData;
     import flash.display.Sprite;
     import flash.geom.Rectangle;
+    import flash.geom.Point;
+	import flash.geom.Matrix;
 	
     // ********************************************************************
     // Class:	Renderer
@@ -26,7 +28,6 @@ package
 		// ****************************************************************
 		// Renderer
 		public var bitmap:Bitmap;
-		public static var renderer:BitmapData
 		
 		// ****************************************************************
 		// Private Data Members 
@@ -40,6 +41,9 @@ package
 		
 		// Render queue
 		private static var queue:Array = new Array();
+		
+		// Buffers
+		private static var renderer:BitmapData;
 		
 		// ****************************************************************
 		// Function: 	Renderer()
@@ -80,12 +84,11 @@ package
 				// Render the images on this layer, in FIFO order
 				for each (var image:Image in layer)
 				{
-					image.Render(camera);
-					layer.splice(0, 1);
+					image.Render();
 				}
 				
 				// Remove the images from the queue
-				layer = null;
+				layer.splice(0);
 			}
 			
 			renderer.unlock();
@@ -127,6 +130,29 @@ package
 			queue[layer].push(image);
 			
 			Util.Debug("Renderer::AddToRenderQueue() returned", 3);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	DrawToBackBuffer()
+		// Purpose:     Draws the supplied sprite at the supplied matrix
+		// Inputs:		image_sprite:Sprite - the image to be drawn
+		//				matrix:Matrix - The matrix transform for the image
+		// ****************************************************************
+		public static function DrawToBackBuffer(image_sprite:Sprite, matrix:Matrix):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Renderer::DrawToBackBuffer() called, image_sprite = " +image_sprite+ ", matrix = "+matrix, 3);
+				
+			// Transform image based on camera
+			matrix.translate(-renderer.width/2, -renderer.height/2);	// translate so center of scene is in upper left (0,0)
+			matrix.rotate( -camera.GetAngle());								// rotate about 0,0
+			matrix.translate(renderer.width/2, renderer.height/2); 		// translate so center of scene is in upper left (0,0)
+			
+			// Draw the image to renderer
+			renderer.draw(image_sprite, matrix);
+			
+			Util.Debug("Renderer::DrawToBackBuffer() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
 	}

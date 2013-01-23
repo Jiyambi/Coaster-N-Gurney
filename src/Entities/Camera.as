@@ -5,7 +5,6 @@
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
 // TODO: Scaling
-// TODO: Fix angle
 
 package Entities 
 {
@@ -19,11 +18,13 @@ package Entities
 		// ****************************************************************
 		// Function: 	Camera()
 		// Purpose:     Constructor.
-		// Input:		x:int - x coordinate for object
-		//				y:int - y coordinate for object
-		//				angle:int - rotation of object
+		// Input:		x:Number - x coordinate for object
+		//				y:Number - y coordinate for object
+		//				width:Number - width of camera view
+		//				height:Number - height of camera view
+		//				angle:Number - rotation of object
 		// ****************************************************************
-		public function Camera(x:int, y:int, width:int, height:int, angle:int=0) 
+		public function Camera(x:Number, y:Number, width:Number, height:Number, angle:Number=0) 
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Camera::Camera() called: x = " + x + ", y = " + y + ", width = " + width + ", height = " + height + ", angle = " + angle, 1);
@@ -35,6 +36,36 @@ package Entities
 		}
 		
 		// ****************************************************************
+		// Function: 	GetWidth()
+		// Purpose:     Returns width.
+		// Output:		return:int - width.
+		// ****************************************************************
+		public function GetWidth():int
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Camera::GetWidth() called", 3);
+			Util.Debug("Camera::GetWidth() returned, result = "+width, 3);
+			Util.ChangeDebugLevel( -1);
+			
+			return position_x;
+		}
+		
+		// ****************************************************************
+		// Function: 	GetHeight()
+		// Purpose:     Returns height.
+		// Output:		return:int - height.
+		// ****************************************************************
+		public function GetHeight():int
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Camera::GetHeight() called", 3);
+			Util.Debug("Camera::GetHeight() returned, result = "+height, 3);
+			Util.ChangeDebugLevel( -1);
+			
+			return position_y;
+		}
+		
+		// ****************************************************************
 		// Function: 	GetX()
 		// Purpose:     Returns position_x.
 		// Output:		return:int - position_x.
@@ -43,7 +74,7 @@ package Entities
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Camera::GetX() called", 3);
-			Util.Debug("Camera::Camera() returned, result = "+position_x, 3);
+			Util.Debug("Camera::GetX() returned, result = "+position_x, 3);
 			Util.ChangeDebugLevel( -1);
 			
 			return position_x;
@@ -58,7 +89,7 @@ package Entities
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Camera::GetY() called", 3);
-			Util.Debug("Camera::Camera() returned, result = "+position_y, 3);
+			Util.Debug("Camera::GetY() returned, result = "+position_y, 3);
 			Util.ChangeDebugLevel( -1);
 			
 			return position_y;
@@ -67,13 +98,13 @@ package Entities
 		// ****************************************************************
 		// Function: 	GetAngle()
 		// Purpose:     Returns angle.
-		// Output:		return:int - angle.
+		// Output:		return:Number - angle.
 		// ****************************************************************
-		public function GetAngle():int
+		public function GetAngle():Number
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Camera::Returns() called", 3);
-			Util.Debug("Camera::Camera() returned, result = "+angle, 3);
+			Util.Debug("Camera::GetAngle() called", 3);
+			Util.Debug("Camera::GetAngle() returned, result = "+angle, 3);
 			Util.ChangeDebugLevel( -1);
 			
 			return angle;
