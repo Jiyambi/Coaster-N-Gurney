@@ -10,6 +10,11 @@ package
 	public class Constants 
 	{
 		// ****************************************************************
+		// Debugging
+		// ****************************************************************
+		public static const DEBUG_MODE:int = 1;
+		
+		// ****************************************************************
 		// Keycodes (Don't Touch)
 		// ****************************************************************
 		private static const KEYCODE_LEFT:int = 37;
@@ -21,6 +26,19 @@ package
 		private static const KEYCODE_A:int = 65;
 		private static const KEYCODE_S:int = 83;
 		private static const KEYCODE_D:int = 68;
+		
+		// ****************************************************************
+		// Graphics Layers 
+		// ****************************************************************
+		public static const LAYER_GROUND:int = 0;
+		public static const LAYER_BACKGROUND:int = 1;
+		public static const LAYER_PLAYER:int = 2;
+		public static const LAYER_BOSSEENEMY:int = 3;
+		public static const LAYER_ENEMIES:int = 4;
+		public static const LAYER_POWERUPS:int = 5;
+		public static const LAYER_FOREGROUND:int = 6;
+		public static const LAYER_INTERFACE:int = 7;
+		public static const LAYER_MENU:int = 8;
 		
 		// ****************************************************************
 		// Player Constants 

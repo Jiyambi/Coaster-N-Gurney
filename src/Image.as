@@ -1,64 +1,63 @@
 // ************************************************************************ 
-// File Name:   Body.as 
-// Purpose:     Base game object class. Includes physics, collision, and
-//				drawing for basic game object.
+// File Name:   Image.as 
+// Purpose:     Contains image bitmap and renders it to screen
 // Author:      Sarah Herzog 
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
+// TODO: Extend to Animation
 
 package  
 {
     // ********************************************************************
     // Imports 
     // ********************************************************************
+	import Entities.Camera;
     import flash.display.BitmapData;
     import flash.display.Sprite;
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
     import flash.geom.Point;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	
+	
     // ********************************************************************
-    // Class:	Body 
+    // Class:	Image 
     // ********************************************************************
-	public class Body 
+	public class Image 
 	{
+		
 		// ****************************************************************
 		// Protected Data Members 
 		// ****************************************************************
 		
-		// Game unit dimmensions
+		// Dimmensions
 		protected var width:int;				// game units
 		protected var height:int;				// game units
 		
-		// Game world position and orientation
+		// Position and orientation
 		protected var position_x:Number;		// game units		
 		protected var position_y:Number;		// game units
 		protected var angle:Number;				// radians, clockwise, 0 = right
 		
-		// Game world velocities
-		protected var velocity_x:Number;		// game units / second
-		protected var velocity_y:Number;		// game units / second
-		protected var velocity_angle:Number;	// radians / second, clockwise
-		
 		// Display
-		protected var visible:Boolean = true;
-		protected var image:Image;
-		// TODO: Change to array of images, for complex models. Most only use one.
-		protected var layer:int;
-	 
+		protected var image:BitmapData;
+		protected var image_sprite:Sprite;
+		
 		// ****************************************************************
-		// Function: 	Body()
+		// Function: 	Image()
 		// Purpose:     Constructor.
 		// Input:		x:int - x coordinate for object
 		//				y:int - y coordinate for object
 		//				width:int - width of object
 		//				height:int - height of object
 		//				angle:int - rotation of object
+		//				texture:Class - texture loaded from file
 		// ****************************************************************
-		public function Body(x:int, y:int, width:int, height:int, angle:int=0)
+		public function Image(x:int, y:int, width:int, height:int, angle:int, texture:Class) 
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Body::Body() called: x = " + x + ", y = " + y + ", width = " + width + ", height = " + height + ", angle = " + angle, 1);
+			Util.Debug("Image::Image() called: x = " + x + ", y = " + y + ", width = " + width + ", height = " + height + ", angle = " + angle, 1);
 			
 			// Copy in supplied values
 			this.width = width;
@@ -67,59 +66,62 @@ package
 			this.position_y = y;
 			this.angle = angle;
 			
-			// Velocities set to 0 at start
-			velocity_x = 0;
-			velocity_y = 0;
-			velocity_angle = 0;
+			// Create image to hold sprite
+			image_sprite = new Sprite();
+			var temp_bitmap:DisplayObject = new texture();
+			temp_bitmap.width = width;
+			temp_bitmap.height = height;
+			image_sprite.addChild(temp_bitmap);
 			
-			Util.Debug("Body::Body() returned", 1);
+			Util.Debug("Image::Image() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
 		
 		// ****************************************************************
 		// Function: 	Render()
 		// Purpose:     Draws to the stage
+		// Inputs:		camera:Camera - the camera which decides where this
+		//					image will be rendered
 		// ****************************************************************
-		public function Render():void
+		public function Render(camera:Camera):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Body::Render() called", 3);
+			Util.Debug("Image::Render() called", 3);
 			
-			Util.Debug("Body::Render() returned", 3);
+			if (image_sprite && camera)
+			{
+				// Create a matrix and move it to the body's location
+				var matrix:Matrix = new Matrix();
+				matrix.translate(-1*width/2, -1*height/2);
+				matrix.rotate(angle);
+				matrix.translate(position_x + width / 2, position_y + height / 2);
+				
+				// Transform matrix based on camera details
+				matrix.rotate(-1*camera.GetAngle());
+				matrix.translate(-1*camera.GetX(), -1*camera.GetY());
+	 
+				// Render the image to this matrix
+				Renderer.renderer.draw(image_sprite, matrix);
+			}
+			
+			Util.Debug("Image::Render() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
 		
 		// ****************************************************************
-		// Function: 	Update()
-		// Purpose:     Updates logic
-		// Input:		frameTime:Number - Ammount of time that passed
-		//					between the last frame and this one, in
-		//					seconds
+		// Function: 	SetPosition()
+		// Purpose:     Sets x, y position and angle for image
 		// ****************************************************************
-		public function Update(frameTime:Number):void
+		public function SetPosition(x:Number, y:Number, angle:Number):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Body::Update() called", 3);
+			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + angle, 3);
 			
-			// Update position and orientation based on velocities
-			position_x += velocity_x * frameTime;
-			position_y += velocity_y * frameTime;
-			angle += velocity_angle * frameTime;
+			position_x = x;
+			position_y = y;
+			this.angle = angle;
 			
-			// Bounds check orientation
-			if (angle > 2 * Math.PI)
-				angle -= 2 * Math.PI;
-			if (angle < 0)
-				angle += 2 * Math.PI;
-			
-			// Image setup
-			if (image)
-			{
-				image.SetPosition(position_x, position_y, angle);
-				Renderer.AddToRenderQueue(image, layer);
-			}
-			
-			Util.Debug("Body::Update() returned", 3);
+			Util.Debug("Image::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
 		

@@ -27,12 +27,12 @@ package Patterns
         }
 
 		// ****************************************************************
-		// Function: 	getInstance()
+		// Function: 	GetInstance()
 		// Purpose:     Create and access an instance of the Singleton.
 		// Output:		Singleton - a pointer to the instance of the 
 		//					Singleton
 		// ****************************************************************
-        public static function getInstance():Singleton
+        public static function GetInstance():Singleton
         {
             //If there's no instance, create it
             if (!instance)

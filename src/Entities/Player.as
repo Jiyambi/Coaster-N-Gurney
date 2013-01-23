@@ -1,6 +1,6 @@
 // ************************************************************************ 
 // File Name:   Player.as 
-// Purpose:     Player class, 
+// Purpose:     Interprets input to player actions
 // Author:      Sarah Herzog 
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
@@ -10,12 +10,9 @@ package Entities
     // ********************************************************************
     // Imports 
     // ********************************************************************
-	import flash.display.Bitmap;
-	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	
     // ********************************************************************
-    // Class:	Body 
+    // Class:	Player 
     // ********************************************************************
 	public class Player extends Body
 	{
@@ -34,15 +31,18 @@ package Entities
 		// ****************************************************************
 		public function Player(x:int, y:int, angle:int=0)
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Player::Player() called: x = " + x + ", y = " + y + ", angle = " + angle, 1);
+			
 			// Set up Player as a Body
-			super(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
+			super(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle);
 			
 			// Create image to hold sprite
-			image_sprite = new Sprite();
-			var temp_bitmap:DisplayObject = new tex_player();
-			temp_bitmap.width = Constants.PLAYER_WIDTH;
-			temp_bitmap.height = Constants.PLAYER_HEIGHT;
-			image_sprite.addChild(temp_bitmap);
+			image = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, tex_player);
+			layer = Constants.LAYER_PLAYER;
+			
+			Util.Debug("Player::Player() returned", 1);
+			Util.ChangeDebugLevel(-1);
 		}
 		
 		// ****************************************************************
@@ -52,6 +52,9 @@ package Entities
 		// ****************************************************************
 		public function StrafeLeft(status:Boolean):void
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Player::StrafeLeft() called: status = " + status, 3);
+			
 			// If the player is holding down the strafe key
 			// AND the vehicle is not yet at the top move speed
 			if (status && velocity_y > -1*Constants.PLAYER_TOP_MOVE_SPEED) 
@@ -63,6 +66,9 @@ package Entities
 			if (!status && velocity_y == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
 				velocity_y += Constants.PLAYER_TOP_MOVE_SPEED;
+				
+			Util.Debug("Player::StrafeLeft() returned", 3);
+			Util.ChangeDebugLevel(-1);
 		}
 		
 		// ****************************************************************
@@ -72,6 +78,9 @@ package Entities
 		// ****************************************************************
 		public function StrafeRight(status:Boolean):void
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Player::StrafeRight() called: status = " + status, 3);
+			
 			// If the player is holding down the strafe key
 			// AND the vehicle is not yet at the top move speed
 			if (status && velocity_y < Constants.PLAYER_TOP_MOVE_SPEED) 
@@ -83,6 +92,9 @@ package Entities
 			if (!status && velocity_y == Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
 				velocity_y -= Constants.PLAYER_TOP_MOVE_SPEED;
+				
+			Util.Debug("Player::StrafeRight() returned", 3);
+			Util.ChangeDebugLevel(-1);
 		}
 		
 		// ****************************************************************
@@ -92,6 +104,9 @@ package Entities
 		// ****************************************************************
 		public function Accelerate(status:Boolean):void
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Player::Accelerate() called: status = " + status, 3);
+			
 			// If the player is holding down the accelerate key
 			// AND the vehicle is not yet at the top move speed
 			if (status && velocity_x < Constants.PLAYER_TOP_MOVE_SPEED) 
@@ -103,6 +118,9 @@ package Entities
 			if (!status && velocity_x == Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
 				velocity_x -= Constants.PLAYER_TOP_MOVE_SPEED;
+				
+			Util.Debug("Player::Accelerate() returned", 3);
+			Util.ChangeDebugLevel(-1);
 		}
 		
 		// ****************************************************************
@@ -112,6 +130,9 @@ package Entities
 		// ****************************************************************
 		public function Decelerate(status:Boolean):void
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Player::Decelerate() called: status = " + status, 3);
+			
 			// If the player is holding down the decelerate key
 			// AND the vehicle is not yet at the top move speed
 			if (status && velocity_x > -1*Constants.PLAYER_TOP_MOVE_SPEED) 
@@ -123,6 +144,9 @@ package Entities
 			if (!status && velocity_x == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
 				velocity_x += Constants.PLAYER_TOP_MOVE_SPEED;
+				
+			Util.Debug("Player::Decelerate() returned", 3);
+			Util.ChangeDebugLevel(-1);
 		}
 		
 	}

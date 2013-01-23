@@ -24,6 +24,7 @@ package
 		// Private Data Members 
 		// ****************************************************************
 		private var game:Game;
+		private var renderer:Renderer;
 		
 		// ****************************************************************
 		// Function: 	Main()
@@ -43,12 +44,14 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			Util.Debug("ENTRY POINT", 1);
 
 			// Create the game object, passing in the swf width and height
 			game = new Game(stage.stageWidth, stage.stageHeight);
+			renderer = new Renderer(stage.stageWidth, stage.stageHeight);
 
 			// Add the game bitmap to the Main.as Sprite to make it visible
-			addChild(game.bitmap);
+			addChild(renderer.bitmap);
 
 			// Create the main game loop
 			addEventListener(Event.ENTER_FRAME, Run);
@@ -65,8 +68,12 @@ package
 		// ****************************************************************
 		private function Run(e:Event):void
 		{
+			Util.Debug("Run() called: e = " + e, 3);
+			
 			game.Update();
-			game.Render();
+			renderer.Render();
+			
+			Util.Debug("Run() returned", 3);
 		}
 		
 	}

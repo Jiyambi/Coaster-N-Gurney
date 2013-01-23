@@ -10,13 +10,12 @@ package
     // ********************************************************************
     // Imports 
     // ********************************************************************
-	import Patterns.Singleton;
 	import flash.events.KeyboardEvent;
 	
     // ********************************************************************
     // Class:	Input
     // ********************************************************************
-	public class Input extends Singleton
+	public class Input
 	{
  
 		// ****************************************************************
@@ -25,16 +24,6 @@ package
 		
 		// Key press arrays
 		private static var keys_down:Array = new Array();
-		
-		// ****************************************************************
-		// Function: 	Input()
-		// Purpose:     Constructor. Use getInstance() instead.
-		// ****************************************************************
-		public function Input() 
-		{
-			// Set up Input as a Singleton
-			super();
-		}
  
 		// ****************************************************************
 		// Function: 	KeyUp()
@@ -44,6 +33,9 @@ package
 		// ****************************************************************
 		public static function KeyUp(e:KeyboardEvent):void
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Input::KeyUp() called: e = " + e, 2);
+			
 			//position of key in the array
 			var key_pos:int = -1;
 			for (var i:int = 0; i < keys_down.length; i++)
@@ -56,6 +48,9 @@ package
 			//remove the keycode from keys_down if found
 			if(key_pos!=-1)
 				keys_down.splice(key_pos, 1);
+				
+			Util.Debug("Input::KeyUp() returned", 2);
+			Util.ChangeDebugLevel(-1);
 		}
  
 		// ****************************************************************
@@ -66,6 +61,9 @@ package
 		// ****************************************************************
 		public static function KeyDown(e:KeyboardEvent):void
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Input::KeyDown() called: e = " + e, 2);
+			
 			//check to see if the key that is being pressed is already in the array of pressed keys
 			var key_down:Boolean = false;
 			for (var i:int = 0; i < keys_down.length; i++)
@@ -75,6 +73,9 @@ package
 			//add the key to the array of pressed keys if it wasn't already in there
 			if (!key_down)
 				keys_down.push(e.keyCode);
+				
+			Util.Debug("Input::KeyDown() returned", 2);
+			Util.ChangeDebugLevel(-1);
 		}
  
 		// ****************************************************************
@@ -85,6 +86,9 @@ package
 		// ****************************************************************
 		public static function CheckKeyDown(keycode:int):Boolean
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Input::CheckKeyDown() called: keycode = " + keycode, 3);
+			
 			var answer:Boolean = false;
 			for (var i:int = 0; i < keys_down.length; i++)
 				if (keys_down[i] == keycode)
@@ -92,6 +96,10 @@ package
 					answer = true;
 					break;
 				}
+			
+			Util.Debug("Input::CheckKeyDown() returned result = " + answer, 3);
+			Util.ChangeDebugLevel( -1);
+			
 			return answer;
 		}
 		
