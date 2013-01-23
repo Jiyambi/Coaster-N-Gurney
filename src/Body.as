@@ -38,7 +38,7 @@ package
 		// Game world velocities
 		protected var velocity_x:Number;		// game units / second
 		protected var velocity_y:Number;		// game units / second
-		public var velocity_angle:Number;	// radians / second, clockwise
+		protected var velocity_angle:Number;	// radians / second, clockwise
 		
 		// Display
 		protected var visible:Boolean = true;
@@ -120,6 +120,76 @@ package
 			}
 			
 			Util.Debug("Body::Update() returned", 3);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	SetPosition()
+		// Purpose:     Sets x, y position and angle for body
+		// Input:		x:Number - x coordinate for object
+		//				y:Number - y coordinate for object
+		//				a:Number - rotation of object
+		// ****************************************************************
+		public function SetPosition(x:Number, y:Number, a:Number):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Body::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 1);
+			
+			position_x = x;
+			position_y = y;
+			angle = a;
+			
+			// Image setup
+			if (image)
+			{
+				image.SetPosition(position_x, position_y, angle);
+			}
+			
+			Util.Debug("Body::SetPosition() returned", 1);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	SetVelocity()
+		// Purpose:     Sets x, y, and angle velocity for body
+		// Input:		x:Number - x velocity for object
+		//				y:Number - y velocity for object
+		//				a:Number - rotation velocity of object
+		// ****************************************************************
+		public function SetVelocity(x:Number, y:Number, a:Number):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Body::SetVelocity() called: x = " + x + ", y = " + y + ", angle = " + a, 1);
+			
+			velocity_x = x;
+			velocity_y = y;
+			velocity_angle = a;
+			
+			Util.Debug("Body::SetVelocity() returned", 1);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	SetDimmensions()
+		// Purpose:     Sets width and height of body
+		// Input:		w:Number - width of object
+		//				h:Number - height of object
+		// ****************************************************************
+		public function SetDimmensions(w:Number, h:Number):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Body::SetDimmensions() called: w = " + w + ", h = " + h, 1);
+			
+			width = w;
+			height = h;
+			
+			// Image setup
+			if (image)
+			{
+				image.SetDimmensions(w, h);
+			}
+			
+			Util.Debug("Body::SetDimmensions() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
 		

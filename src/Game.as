@@ -46,12 +46,12 @@ package
 			Util.Debug("Game::Game() called: stage_width = " + stage_width + ", stage_height = " + stage_height, 1);
 			
 			// Create a player at center of screen
-			player = new Player(stage_width/2 - Constants.PLAYER_WIDTH/2, stage_height/2 - Constants.PLAYER_HEIGHT/2,0);
+			player = new Player(stage_width / 2 - Constants.PLAYER_WIDTH / 2, stage_height / 2 - Constants.PLAYER_HEIGHT / 2, 0);
+			player.SetDimmensions(Constants.PLAYER_WIDTH * 2, Constants.PLAYER_HEIGHT * 2);
 			box = new Box(stage_width/2-200, stage_height/2-50,0);
 			
 			// Send camera to renderer
 			camera = new Camera(0, 0, stage_width, stage_height, 0);
-			//camera.velocity_angle = 0.5;
 			Renderer.SetCamera(camera);
 			
 			Util.Debug("Game::Game() returned", 1);

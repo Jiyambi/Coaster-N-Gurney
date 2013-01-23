@@ -90,11 +90,13 @@ package
 			{
 				// Create a matrix and move it to the body's location
 				var matrix:Matrix = new Matrix();
-				matrix.translate(-1*width/2, -1*height/2);	// center on origin
-				matrix.rotate(angle);						// rotate about origin
-				matrix.translate(width/2, height/2);		// translate back to corner on origin
-				matrix.translate(position_x, position_y);	// translate to correct location in scene
-	 
+				matrix.translate(-1*width/2, -1*height/2);			// center on origin
+				matrix.rotate(angle);								// rotate about origin
+				matrix.translate(width/2, height/2);				// translate back to corner on origin
+				matrix.scale(width / image_sprite.width,			// scale based on height settings
+					height / image_sprite.height);
+				matrix.translate(position_x, position_y);			// translate to correct location in scene
+				
 				// Render the image to this matrix
 				Renderer.DrawToBackBuffer(image_sprite, matrix);
 			}
@@ -105,20 +107,42 @@ package
 		
 		// ****************************************************************
 		// Function: 	SetPosition()
-		// Purpose:     Sets x, y position and angle for image
+		// Purpose:     Sets x, y position and angle for Image
+		// Input:		x:Number - x coordinate for object
+		//				y:Number - y coordinate for object
+		//				a:Number - rotation of object
 		// ****************************************************************
-		public function SetPosition(x:Number, y:Number, angle:Number):void
+		public function SetPosition(x:Number, y:Number, a:Number):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + angle, 3);
+			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
 			
 			position_x = x;
 			position_y = y;
-			this.angle = angle;
+			angle = a;
 			
 			Util.Debug("Image::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
+		
+		// ****************************************************************
+		// Function: 	SetDimmensions()
+		// Purpose:     Sets width and height of Image
+		// Input:		w:Number - width of object
+		//				h:Number - height of object
+		// ****************************************************************
+		public function SetDimmensions(w:Number, h:Number):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Image::SetDimmensions() called: w = " + w + ", h = " + h, 3);
+			
+			width = w;
+			height = h;
+			
+			Util.Debug("Image::SetDimmensions() returned", 3);
+			Util.ChangeDebugLevel(-1);
+		}
+		
 		
 	}
 
