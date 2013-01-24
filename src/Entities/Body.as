@@ -47,7 +47,8 @@ package Entities
 		protected var layer:int;
 		
 		// Collision
-		protected var collision:ColShape; // TODO: CHange to array of collisions, for complex models. Most only use one.
+		// TODO: Temporary public
+		public var collision:ColShape; // TODO: CHange to array of collisions, for complex models. Most only use one.
 	 
 		// ****************************************************************
 		// Function: 	Body()
@@ -108,8 +109,11 @@ package Entities
 				image.SetPosition(position_x-width/2, position_y-height/2, angle);
 				Renderer.AddToRenderQueue(image, layer);
 			}
-			if (collision && Constants.DEBUG_MODE)
+			if (collision)
+			{
+				collision.SetPosition(position_x, position_y, angle);
 				Renderer.AddToRenderQueue(collision, Constants.LAYER_DEBUG);
+			}
 			
 			Util.Debug("Body::Update() returned", 3);
 			Util.ChangeDebugLevel(-1);

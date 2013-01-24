@@ -10,6 +10,8 @@ package Entities
     // ********************************************************************
     // Imports 
     // ********************************************************************
+	import Collision.ColTriangle;
+	import flash.geom.Point;
 	
     // ********************************************************************
     // Class:	Player 
@@ -40,6 +42,9 @@ package Entities
 			// Create image to hold sprite
 			image = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, tex_player);
 			layer = Constants.LAYER_PLAYER;
+			
+			// Set up collision
+			collision = new ColTriangle(x, y, angle, new Point( -50, 0), new Point(50, 0), new Point(0, 50));
 			
 			Util.Debug("Player::Player() returned", 1);
 			Util.ChangeDebugLevel(-1);

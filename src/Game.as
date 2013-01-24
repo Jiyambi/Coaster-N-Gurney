@@ -69,7 +69,10 @@ package
 			player.Accelerate(Input.CheckKeyDown(Constants.CONTROL_ACCELERATE));	
 			player.StrafeLeft(Input.CheckKeyDown(Constants.CONTROL_STRAFE_LEFT));		
 			player.StrafeRight(Input.CheckKeyDown(Constants.CONTROL_STRAFE_RIGHT));
-				
+			
+			// Check collision
+			player.collision.DetectCollision(box.collision);
+			
 			// Update game objects
 			player.Update(0.02);
 			box.Update(0.02);

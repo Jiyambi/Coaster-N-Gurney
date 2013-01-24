@@ -27,6 +27,9 @@ package Collision
 		// Color of the object (used for collision outlines)
 		protected var color:uint = 0x00FF00;
 		
+		// Array of things colliding with this
+		protected var colliding:Array = new Array();
+		
 		// ****************************************************************
 		// Function: 	ColShape()
 		// Purpose:     Constructor.
@@ -61,8 +64,12 @@ package Collision
 			Util.ChangeDebugLevel(1);
 			Util.Debug("ColShape::Render() called", 3);
 			
-			for each (var triangle:Triangle in triangles)
+			if (Constants.DEBUG_MODE) for each (var triangle:Triangle in triangles)
 			{
+				// Update triangle locations
+				triangle.SetPosition(position_x, position_y, angle);
+				
+				// Render the triangle
 				triangle.RenderColor(color);
 			}
 			
@@ -95,15 +102,40 @@ package Collision
 					result = result || triangle1.DetectCollision(triangle2);
 				}
 			}
+		
+			// Check if the list of things we are colliding with contains col2
+			var present:Boolean = false;
+			var index:int = -1;
+			for (var i:int = 0; i < colliding.length; ++i)
+			{
+				if (colliding[i] == col2) 
+				{
+					index = i;
+					present = true;
+				}
+			}
 			
-			// Change color if colliding
-			// TODO: Currently will change back to green if ANYTHING is NOT colliding
-			// Need to figure out WHAT is colliding and change to green if we are no
-			// longer colliding with it.
+			// If we are colliding....
 			if (result)
+			{
+				// We are colliding, so set color to red
 				color = 0xFF0000;
+				
+				// If the list of things we are colliding with does not contain col2...
+				if ( !present ) colliding.push(col2);
+			}
+			// If we aren't colliding...
 			else
-				color = 0x00FF00;
+			{
+				// If there is no collision at all happening...
+				if (colliding.length == 0) color = 0x00FF00;
+				
+				// If this collision was present in the list, remove it
+				if (present)
+				{
+					colliding.splice(index, 1);
+				}
+			}
 			
 			Util.Debug("ColShape::DetectCollision() returned, result = " + result, 3);
 			Util.ChangeDebugLevel(-1);

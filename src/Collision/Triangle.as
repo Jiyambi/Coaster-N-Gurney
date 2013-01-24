@@ -69,12 +69,13 @@ package Collision
 		// ****************************************************************
 		public function RenderColor(color:uint):void 
 		{
+			Util.ChangeDebugLevel(1);
 			Util.Debug("Triangle::Render() called: color = " + color, 3);
 				
 			// Draw sprite with position as origin
 			image_sprite = new Sprite();
 			image_sprite.graphics.lineStyle(0);
-			image_sprite.graphics.beginFill(color,0.2);
+			image_sprite.graphics.beginFill(color,0.5);
 			image_sprite.graphics.moveTo(points[0].x, points[0].y);
 			image_sprite.graphics.lineTo(points[1].x, points[1].y);
 			image_sprite.graphics.lineTo(points[2].x, points[2].y);
@@ -88,6 +89,9 @@ package Collision
 			
 			// Render the image to this matrix
 			Renderer.DrawToBackBuffer(image_sprite, matrix);
+			
+			Util.Debug("Triangle::Render() returned", 3);
+			Util.ChangeDebugLevel(-1);
 		}
     
 		// ****************************************************************
@@ -101,42 +105,56 @@ package Collision
 		// ****************************************************************
 		public function DetectCollision(tri2:Triangle):Boolean 
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Triangle::DetectCollision() called: tri2 = " + tri2, 3);
+			
 			var tri1:Triangle = this;
 			var result:Boolean = false;
-			
-			// TODO: Finish triangle collision detection (line intersection)
-			
-			// Checks if point 1 is on the same side of ab as point 2
-			function SameSide(p1:Point, p2:Point, a:Point, b:Point):Boolean
-			{
-				var ab:Vector3D = new Vector3D((b.subtract(a)).x,(b.subtract(a)).y,0);
-				var ap1:Vector3D = new Vector3D((p1.subtract(a)).x,(p1.subtract(a)).y,0);
-				var ap2:Vector3D = new Vector3D((p2.subtract(a)).x,(p2.subtract(a)).y,0);
-				
-				var cp1:Vector3D = ab.crossProduct(ap1);
-				var cp2:Vector3D = ab.crossProduct(ap2);
-				
-				if (cp1.dotProduct(cp2) >= 0) return true;
-				else return false;
-			}
 			
 			// Checks if the supplied point is in the triangle
 			function PointInTriangle(p:Point, a:Point, b:Point, c:Point):Boolean
 			{
-				if (SameSide(p,a, b,c) && SameSide(p,b, a,c)
-					&& SameSide(p, c, a, b)) return true;
-				else return false;
+				Util.ChangeDebugLevel(1);
+				Util.Debug("Triangle::PointInTriangle() called: p = " + p + ", a = " +a + ", b = " + b + ", c = " + c, 3);
+				
+				var result:Boolean = true;
+				
+				var as_x:Number = p.x-a.x;
+				var as_y:Number = p.y-a.y;
+
+				var s_ab:Boolean = (b.x-a.x)*as_y-(b.y-a.y)*as_x > 0;
+
+				if(result && (c.x-a.x)*as_y-(c.y-a.y)*as_x > 0 == s_ab) result = false;
+
+				if(result && (c.x-b.x)*(p.y-b.y)-(c.y-b.y)*(p.x-b.x) > 0 != s_ab) result = false;
+					
+					
+				Util.Debug("Triangle::PointInTriangle() returned: result = "+result, 3);
+				Util.ChangeDebugLevel( -1);
+				
+				return result;
 			}
 			
 			// Checks if the supplied point (that IS on the line) is on the segment
 			function PointOnSegment(p:Point, a:Point, b:Point):Boolean
 			{
-				return ( (Math.min(a.x,b.x) <= p.x <= Math.max(a.x,b.x)) && (Math.min(a.y,b.y) <= p.y <= Math.max(a.y,b.y)) );
+				Util.ChangeDebugLevel(1);
+				Util.Debug("Triangle::PointOnSegment() called: p = " + p + ", a = " +a + ", b = " + b, 3);
+				
+				result = ( (Math.min(a.x, b.x) <= p.x <= Math.max(a.x, b.x)) && (Math.min(a.y, b.y) <= p.y <= Math.max(a.y, b.y)) );
+				
+				Util.Debug("Triangle::PointOnSegment() returned: result = "+result, 3);
+				Util.ChangeDebugLevel( -1);
+				
+				return result;
 			}
 			
 			// Checks if the supplied line segments intersect
 			function LinesIntersect(a1:Point, a2:Point, b1:Point, b2:Point):Boolean
 			{
+				Util.ChangeDebugLevel(1);
+				Util.Debug("Triangle::LinesIntersect() called: a1 = " + a1 + ", a2 = " +a2 + ", b1 = " + b1 + ", b2 = " + b2, 3);
+				
 				var aA:Number = a2.y - a1.y;
 				var aB:Number = a1.x - a2.x;
 				var aC:Number = aA * a1.x - aB * a1.y;
@@ -146,9 +164,10 @@ package Collision
 				
 				// Check if lines intersect
 				var det:Number = aA * bB - bA * aB;
+				var result:Boolean = false;
 				if (det == 0)
 					// Lines are parallel
-					return false;
+					result = false;
 				else
 				{
 					// Determine intersection point for two infinite lines
@@ -157,40 +176,57 @@ package Collision
 					var p:Point = new Point(x, y);
 					
 					// Determine if point is on both segments
-					return ( PointOnSegment(p,a1,a2) && PointOnSegment(p,b1,b2) );
+					//result = ( PointOnSegment(p,a1,a2) && PointOnSegment(p,b1,b2) );
 				}
+				
+				Util.Debug("Triangle::LinesIntersect() returned: result = "+result, 3);
+				Util.ChangeDebugLevel( -1);
+				
+				return result;
 			}
 			
 			// Loop through the points in each triangle, check if they are inside the other triangle
-			for each (var point1:Point in tri1.points)
+			// TODO: Apply rotation to triangle
+			/*for each (var point1:Point in tri1.points)
 			{
 				// Check if the point is in tri2
-				result = result || PointInTriangle(point1, tri2.points[0], tri2.points[1], tri2.points[2])
+				point1 = new Point(point1.x + tri1.position_x, point1.y + tri1.position_y);
+				result = PointInTriangle(point1, new Point(tri2.points[0].x + tri2.position_x, tri2.points[0].y + tri2.position_y), 
+					new Point(tri2.points[1].x + tri2.position_x, tri2.points[1].y + tri2.position_y), 
+					new Point(tri2.points[2].x + tri2.position_x, tri2.points[2].y + tri2.position_y))
 				if (result) break; // Found a collision, no need to keep checking
 			}
 			if (!result) for each (var point2:Point in tri2.points)
 			{
 				// Check if the point is in tri2
-				result = result || PointInTriangle(point2, tri1.points[0], tri1.points[1], tri1.points[2])
+				point2 = new Point(point2.x + tri2.position_x, point2.y + tri2.position_y);
+				result = PointInTriangle(point2, new Point(tri1.points[0].x + tri1.position_x, tri1.points[0].y + tri1.position_y), 
+					new Point(tri1.points[1].x + tri1.position_x, tri1.points[1].y + tri1.position_y), 
+					new Point(tri1.points[2].x + tri1.position_x, tri1.points[2].y + tri1.position_y))
 				if (result) break; // Found a collision, no need to keep checking
-			}
+			}*/
 			
 			// Now check for line intersections between triangle 1 and triangle 2
+			// TODO: Apply rotation to triangle
 			if (!result) for each (var point11:Point in tri1.points)
 			{
+				point11 = new Point(point11.x + tri1.position_x, point11.y + tri1.position_y);
 				for each (var point12:Point in tri1.points)
 				{
 					// If we are looking at a segment between a point and itself, skip this iteration
+					point12 = new Point(point12.x + tri1.position_x, point12.y + tri1.position_y);
 					if (point11 == point12) continue;
 					for each (var point21:Point in tri2.points)
 					{
+						point21 = new Point(point21.x + tri2.position_x, point21.y + tri2.position_y);
 						for each (var point22:Point in tri2.points)
 						{
 							// If we are looking at a segment between a point and itself, skip this iteration
+							point22 = new Point(point22.x + tri2.position_x, point22.y + tri2.position_y);
 							if (point21 == point22) continue;
 							
 							// Check if the two line segments intersect
-							result = result || LinesIntersect(point11, point12, point21, point22);
+							result = LinesIntersect(point11, point12, point21, point22);
 							if (result) break; // Found a collision, no need to keep checking
 						}
 						if (result) break; // Found a collision, no need to keep checking
@@ -200,6 +236,9 @@ package Collision
 				if (result) break; // Found a collision, no need to keep checking
 			}
 						
+			Util.Debug("Triangle::DetectCollision() returned: result = "+result, 3);
+			Util.ChangeDebugLevel( -1);
+			
 			return result;
 		}
 		

@@ -7,11 +7,11 @@
 
 package Entities 
 {
-	import Collision.ColTriangle;
-	import flash.geom.Point;
     // ********************************************************************
     // Imports 
     // ********************************************************************
+	import Collision.ColTriangle;
+	import flash.geom.Point;
 	
     // ********************************************************************
     // Class:	Box 
