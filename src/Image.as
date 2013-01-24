@@ -11,7 +11,6 @@ package
     // ********************************************************************
     // Imports 
     // ********************************************************************
-	import Entities.Camera;
     import flash.display.BitmapData;
     import flash.display.Sprite;
 	import flash.display.Bitmap;
@@ -67,11 +66,14 @@ package
 			this.angle = angle;
 			
 			// Create image to hold sprite
-			image_sprite = new Sprite();
-			var temp_bitmap:DisplayObject = new texture();
-			temp_bitmap.width = width;
-			temp_bitmap.height = height;
-			image_sprite.addChild(temp_bitmap);
+			if (texture)
+			{
+				image_sprite = new Sprite();
+				var temp_bitmap:DisplayObject = new texture();
+				temp_bitmap.width = width;
+				temp_bitmap.height = height;
+				image_sprite.addChild(temp_bitmap);
+			}
 			
 			Util.Debug("Image::Image() returned", 1);
 			Util.ChangeDebugLevel(-1);

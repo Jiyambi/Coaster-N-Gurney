@@ -7,6 +7,8 @@
 
 package Entities 
 {
+	import Collision.ColTriangle;
+	import flash.geom.Point;
     // ********************************************************************
     // Imports 
     // ********************************************************************
@@ -40,6 +42,9 @@ package Entities
 			// Create image to hold sprite
 			image = new Image(x-50, y-50, 100, 100, angle, tex_box);
 			layer = Constants.LAYER_OBSTACLES;
+			
+			// Set up collision
+			collision = new ColTriangle(x, y, angle, new Point( -50, 0), new Point(50, 0), new Point(0, 50));
 			
 			Util.Debug("Box::Box() returned", 1);
 			Util.ChangeDebugLevel(-1);

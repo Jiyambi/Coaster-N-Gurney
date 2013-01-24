@@ -12,22 +12,21 @@ package Collision
     // ********************************************************************
 	import flash.geom.Point;
 	import flash.geom.Vector3D;
+    import flash.display.BitmapData;
+    import flash.display.Sprite;
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
+	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 	
     // ********************************************************************
     // Class:	Collision 
     // ********************************************************************
-	public class Triangle 
+	public class Triangle extends Image
 	{
 		// ****************************************************************
 		// Protected Data Members 
 		// ****************************************************************
-		
-		// Game world position, rotation center, and orientation
-		protected var position_x:Number;		// game units		
-		protected var position_y:Number;		// game units
-		protected var rotation_x:Number;		// game units		
-		protected var rotation_y:Number;		// game units
-		protected var angle:Number;				// radians, clockwise
 		
 		// Triangle points
 		protected var points:Array = new Array();
@@ -50,10 +49,11 @@ package Collision
 				+ y + ", angle = " + angle + ", point1 = " + point1 
 				+ ", point2 = " + point2 + ", point3 = " + point3, 1);
 			
-			// Copy in supplied values
-			this.position_x = x;
-			this.position_y = y;
-			this.angle = angle;
+			// Set up as Image
+			super(x, y, Math.max(point1.x, point2.x, point3.x) - Math.min(point1.x, point2.x, point3.x),
+				Math.max(point1.y,point2.y,point3.y)-Math.min(point1.y,point2.y,point3.y), angle, null)
+			
+			// Push in parent values
 			points.push(point1);
 			points.push(point2);
 			points.push(point3);
@@ -63,21 +63,31 @@ package Collision
 		}
 		
 		// ****************************************************************
-		// Function:    Render()
+		// Function:    RenderColor()
 		// Purpose:     Draws the ColShape area to the screen
-		// Inputs:		Color the triangle should be drawn in
+		// Inputs:		color:uint Color the triangle should be drawn in
 		// ****************************************************************
-		public function Render(color:uint):void 
+		public function RenderColor(color:uint):void 
 		{
-			// TODO: Triangle collision shape drawn to screen
-			// TODO: Get color from parent ColShape
-			this.graphics.lineStyle(0);
-			this.graphics.beginFill(_color);
-			this.graphics.moveTo(position_x+points[0].x, position_y+points[0].y);
-			this.graphics.lineTo(position_x+points[1].x, position_y+points[1].y);
-			this.graphics.lineTo(position_x+points[2].x, position_y+points[2].y);
-			this.graphics.lineTo(position_x+points[0].x, position_y+points[0].y);
-			this.graphics.endFill();
+			Util.Debug("Triangle::Render() called: color = " + color, 3);
+				
+			// Draw sprite with position as origin
+			image_sprite = new Sprite();
+			image_sprite.graphics.lineStyle(0);
+			image_sprite.graphics.beginFill(color,0.2);
+			image_sprite.graphics.moveTo(points[0].x, points[0].y);
+			image_sprite.graphics.lineTo(points[1].x, points[1].y);
+			image_sprite.graphics.lineTo(points[2].x, points[2].y);
+			image_sprite.graphics.lineTo(points[0].x, points[0].y);
+			image_sprite.graphics.endFill();
+			
+			// transform sprite to correct location
+			var matrix:Matrix = new Matrix();
+			matrix.rotate(angle);								// rotate about origin
+			matrix.translate(position_x, position_y);			// translate to correct location in scene
+			
+			// Render the image to this matrix
+			Renderer.DrawToBackBuffer(image_sprite, matrix);
 		}
     
 		// ****************************************************************
@@ -121,7 +131,7 @@ package Collision
 			// Checks if the supplied point (that IS on the line) is on the segment
 			function PointOnSegment(p:Point, a:Point, b:Point):Boolean
 			{
-				return ( (min(a.x,b.x) <= p.x <= max(a.x,b.x)) && (min(a.y,b.y) <= p.y <= max(a.y,b.y)) );
+				return ( (Math.min(a.x,b.x) <= p.x <= Math.max(a.x,b.x)) && (Math.min(a.y,b.y) <= p.y <= Math.max(a.y,b.y)) );
 			}
 			
 			// Checks if the supplied line segments intersect
@@ -158,10 +168,10 @@ package Collision
 				result = result || PointInTriangle(point1, tri2.points[0], tri2.points[1], tri2.points[2])
 				if (result) break; // Found a collision, no need to keep checking
 			}
-			if (!result) for each (var point1:Point in tri2.points)
+			if (!result) for each (var point2:Point in tri2.points)
 			{
 				// Check if the point is in tri2
-				result = result || PointInTriangle(point1, tri1.points[0], tri1.points[1], tri1.points[2])
+				result = result || PointInTriangle(point2, tri1.points[0], tri1.points[1], tri1.points[2])
 				if (result) break; // Found a collision, no need to keep checking
 			}
 			

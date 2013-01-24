@@ -11,6 +11,7 @@ package Entities
     // ********************************************************************
     // Imports 
     // ********************************************************************
+	import Collision.ColShape;
     import flash.display.BitmapData;
     import flash.display.Sprite;
     import flash.geom.Point;
@@ -44,6 +45,9 @@ package Entities
 		protected var visible:Boolean = true;
 		protected var image:Image; // TODO: Change to array of images, for complex models. Most only use one.
 		protected var layer:int;
+		
+		// Collision
+		protected var collision:ColShape; // TODO: CHange to array of collisions, for complex models. Most only use one.
 	 
 		// ****************************************************************
 		// Function: 	Body()
@@ -76,19 +80,6 @@ package Entities
 		}
 		
 		// ****************************************************************
-		// Function: 	Render()
-		// Purpose:     Draws to the stage
-		// ****************************************************************
-		public function Render():void
-		{
-			Util.ChangeDebugLevel(1);
-			Util.Debug("Body::Render() called", 3);
-			
-			Util.Debug("Body::Render() returned", 3);
-			Util.ChangeDebugLevel(-1);
-		}
-		
-		// ****************************************************************
 		// Function: 	Update()
 		// Purpose:     Updates logic
 		// Input:		frameTime:Number - Ammount of time that passed
@@ -117,6 +108,8 @@ package Entities
 				image.SetPosition(position_x-width/2, position_y-height/2, angle);
 				Renderer.AddToRenderQueue(image, layer);
 			}
+			if (collision && Constants.DEBUG_MODE)
+				Renderer.AddToRenderQueue(collision, Constants.LAYER_DEBUG);
 			
 			Util.Debug("Body::Update() returned", 3);
 			Util.ChangeDebugLevel(-1);

@@ -40,6 +40,7 @@ package
 		public static const LAYER_FOREGROUND:int = 7;
 		public static const LAYER_INTERFACE:int = 8;
 		public static const LAYER_MENU:int = 9;
+		public static const LAYER_DEBUG:int = 10;
 		
 		// ****************************************************************
 		// Player Constants 
