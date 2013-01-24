@@ -4,7 +4,7 @@
 // Author:      Sarah Herzog 
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
-// TODO: haven't checked collision detection yet. Need to get color change working
+
 package Collision
 {
     // ********************************************************************
@@ -86,6 +86,7 @@ package Collision
 		// Output:      Boolean - true if there is a collision, false if 
 		//					not
 		// ****************************************************************
+		// TODO: First compare width/height of shapes to rule out areas where there won't be collision
 		public function DetectCollision(col2:ColShape):Boolean 
 		{
 			Util.ChangeDebugLevel(1);
@@ -103,12 +104,34 @@ package Collision
 				}
 			}
 		
+			// Set colliding status for these ColShapes
+			col1.SetCollision(col2, result);
+			col2.SetCollision(col1, result);
+			
+			Util.Debug("ColShape::DetectCollision() returned, result = " + result, 3);
+			Util.ChangeDebugLevel(-1);
+			
+			return result;
+		}
+    
+		// ****************************************************************
+		// Function:    SetCollision()
+		// Purpose:     Checks if this ColShape is colliding with the   
+		//              supplied ColShape
+		// Input:       col:ColShape - Thing we are colliding with
+		// Input:		result:Boolean - whether we are colliding or not
+		// ****************************************************************
+		public function SetCollision(col:ColShape, result:Boolean):void 
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("ColShape::SetCollision() called: col = " + col + ", result = " + result, 3);
+			
 			// Check if the list of things we are colliding with contains col2
 			var present:Boolean = false;
 			var index:int = -1;
 			for (var i:int = 0; i < colliding.length; ++i)
 			{
-				if (colliding[i] == col2) 
+				if (colliding[i] == col) 
 				{
 					index = i;
 					present = true;
@@ -122,7 +145,7 @@ package Collision
 				color = 0xFF0000;
 				
 				// If the list of things we are colliding with does not contain col2...
-				if ( !present ) colliding.push(col2);
+				if ( !present ) colliding.push(col);
 			}
 			// If we aren't colliding...
 			else
@@ -137,10 +160,8 @@ package Collision
 				}
 			}
 			
-			Util.Debug("ColShape::DetectCollision() returned, result = " + result, 3);
+			Util.Debug("ColShape::SetCollision() returned", 3);
 			Util.ChangeDebugLevel(-1);
-			
-			return result;
 		}
 		
 	}

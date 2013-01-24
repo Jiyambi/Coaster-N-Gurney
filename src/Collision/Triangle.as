@@ -135,48 +135,45 @@ package Collision
 				return result;
 			}
 			
-			// Checks if the supplied point (that IS on the line) is on the segment
-			function PointOnSegment(p:Point, a:Point, b:Point):Boolean
-			{
-				Util.ChangeDebugLevel(1);
-				Util.Debug("Triangle::PointOnSegment() called: p = " + p + ", a = " +a + ", b = " + b, 3);
-				
-				result = ( (Math.min(a.x, b.x) <= p.x <= Math.max(a.x, b.x)) && (Math.min(a.y, b.y) <= p.y <= Math.max(a.y, b.y)) );
-				
-				Util.Debug("Triangle::PointOnSegment() returned: result = "+result, 3);
-				Util.ChangeDebugLevel( -1);
-				
-				return result;
-			}
-			
 			// Checks if the supplied line segments intersect
-			function LinesIntersect(a1:Point, a2:Point, b1:Point, b2:Point):Boolean
+			function LinesIntersect(A1:Point, A2:Point, B1:Point, B2:Point):Boolean
 			{
 				Util.ChangeDebugLevel(1);
-				Util.Debug("Triangle::LinesIntersect() called: a1 = " + a1 + ", a2 = " +a2 + ", b1 = " + b1 + ", b2 = " + b2, 3);
+				Util.Debug("Triangle::LinesIntersect() called: A1 = " + A1 + ", A2 = " +A2 + ", B1 = " + B1 + ", B2 = " + B2, 3);
 				
-				var aA:Number = a2.y - a1.y;
-				var aB:Number = a1.x - a2.x;
-				var aC:Number = aA * a1.x - aB * a1.y;
-				var bA:Number = b2.y - b1.y;
-				var bB:Number = b1.x - b2.x;
-				var bC:Number = bA * b1.x - bB * b1.y;
+				var slopeA:Number;
+				var slopeB:Number;
+				var constA:Number;
+				var constB:Number;
+				var intersect:Point = new Point();
+				var result:Boolean = true;
 				
-				// Check if lines intersect
-				var det:Number = aA * bB - bA * aB;
-				var result:Boolean = false;
-				if (det == 0)
-					// Lines are parallel
+				// Calculate the slope for each line
+				if (A2.x - A1.x == 0) slopeA = Number.MAX_VALUE;
+				else slopeA = (A2.y - A1.y) / (A2.x - A1.x);
+				if (B2.x - B1.x == 0) slopeB = Number.MAX_VALUE;
+				else slopeB = (B2.y - B1.y) / (B2.x - B1.x);
+				
+				// Parallel line case
+				if (slopeA == slopeB)
 					result = false;
+					
+				// Infinite lines DO intersect
 				else
 				{
-					// Determine intersection point for two infinite lines
-					var x:Number = (bB * aC - aB * bC) / det;
-					var y:Number = (aA * bC - bA * aC) / det;
-					var p:Point = new Point(x, y);
+					constA = A1.y - slopeA * A1.x;
+					constB = B1.y - slopeB * B1.x;
 					
-					// Determine if point is on both segments
-					//result = ( PointOnSegment(p,a1,a2) && PointOnSegment(p,b1,b2) );
+					// Determine point of intersection
+					intersect.x = (constB - constA) / (slopeA - slopeB);
+					intersect.y = slopeA * intersect.x + constA;
+					
+					// Case where intersection is not on the line segments
+					if ( intersect.x > Math.max(A1.x, A2.x) 
+						|| intersect.x < Math.min(A1.x, A2.x) 
+						|| intersect.x > Math.max(B1.x, B2.x)
+						|| intersect.x < Math.min(B1.x, B2.x) )
+						result = false;
 				}
 				
 				Util.Debug("Triangle::LinesIntersect() returned: result = "+result, 3);
@@ -187,7 +184,7 @@ package Collision
 			
 			// Loop through the points in each triangle, check if they are inside the other triangle
 			// TODO: Apply rotation to triangle
-			/*for each (var point1:Point in tri1.points)
+			for each (var point1:Point in tri1.points)
 			{
 				// Check if the point is in tri2
 				point1 = new Point(point1.x + tri1.position_x, point1.y + tri1.position_y);
@@ -204,7 +201,7 @@ package Collision
 					new Point(tri1.points[1].x + tri1.position_x, tri1.points[1].y + tri1.position_y), 
 					new Point(tri1.points[2].x + tri1.position_x, tri1.points[2].y + tri1.position_y))
 				if (result) break; // Found a collision, no need to keep checking
-			}*/
+			}
 			
 			// Now check for line intersections between triangle 1 and triangle 2
 			// TODO: Apply rotation to triangle
