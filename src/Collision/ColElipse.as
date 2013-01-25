@@ -1,5 +1,5 @@
 // ************************************************************************ 
-// File Name:   ColRectangle.as 
+// File Name:   ColElipse.as 
 // Purpose:     Rectangle collision object
 // Author:      Sarah Herzog 
 // Copyright: 	2013 Bound-Dare Studios
@@ -15,41 +15,50 @@ package Collision
     // ********************************************************************
     // Class:	Collision 
     // ********************************************************************
-	public class ColRectangle extends ColShape
+	public class ColElipse extends ColShape
 	{
 		// ****************************************************************
 		// Protected Data Members 
 		// ****************************************************************
 		
 		// ****************************************************************
-		// Function: 	ColRectangle()
+		// Function: 	ColElipse()
 		// Purpose:     Constructor.
 		// Input:		x:Number - x coordinate for object (rotation center)
 		//				y:Number - y coordinate for object (rotation center)
 		//				angle:Number - rotation of object
 		//				width:Number - width of the object
 		//				height:Number - height of the object
+		//				res:Number - resolution of the object
 		// ****************************************************************
-		public function ColRectangle(x:Number, y:Number, angle:Number, 
-			width:Number, height:Number) 
+		public function ColElipse(x:Number, y:Number, angle:Number, 
+			width:Number, height:Number, res:Number) 
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("ColRectangle::ColRectangle() called: x = " + x + ", y = " 
+			Util.Debug("ColElipse::ColElipse() called: x = " + x + ", y = " 
 				+ y + ", angle = " + angle + ", width = " + width 
 				+ ", height = " + height, 1);
-				
+			
 			// Set up ColShape
 			super(x, y, angle, width, height);
 			
-			// Set up triangles
-			var upper_left:Point = new Point(- 0.5 * width, - 0.5 * height);
-			var upper_right:Point = new Point(0.5 * width, - 0.5 * height);
-			var lower_left:Point = new Point(- 0.5 * width, 0.5 * height);
-			var lower_right:Point = new Point(0.5 * width, 0.5 * height);
-			triangles.push(new Triangle(x, y, angle, upper_left, upper_right, lower_right));
-			triangles.push(new Triangle(x, y, angle, lower_right, lower_left, upper_left));
+			// Error if res < 3
+			if (res < 3)
+				throw new Error("ColEclipse res must be equal to or greater than 3.");
 			
-			Util.Debug("ColRectangle::ColRectangle() returned", 1);
+			// Set up triangles
+			var inner_point:Point = new Point(0, 0);
+			var t:Number, point1:Point, point2:Point;
+			for (var i:int = 0; i < res; ++i)
+			{
+				t = 2 * Math.PI * (i / res);
+				point1 = new Point(0.5*width*Math.cos(t), 0.5*height*Math.sin(t));
+				t = 2 * Math.PI * ((i+1) / res);
+				point2 = new Point(0.5*width * Math.cos(t), 0.5*height * Math.sin(t));
+				triangles.push(new Triangle(x, y, angle, inner_point, point1, point2));
+			}
+			
+			Util.Debug("ColElipse::ColElipse() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
 		
@@ -63,7 +72,7 @@ package Collision
 		public override function SetPosition(x:Number, y:Number, a:Number):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("ColRectangle::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
+			Util.Debug("ColElipse::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
 			
 			for each (var triangle:Triangle in triangles)
 			{
@@ -75,11 +84,10 @@ package Collision
 			// Recalculate width and height
 			if (delta)
 			{
-				width = triangles[0].GetWidth();
-				height = triangles[0].GetHeight();
+				
 			}
 			
-			Util.Debug("ColRectangle::SetPosition() returned", 3);
+			Util.Debug("ColElipse::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
 		

@@ -166,30 +166,6 @@ package Collision
 			var tri1:Triangle = this;
 			var result:Boolean = false;
 			
-			// Checks if the supplied point is in the triangle
-			function PointInTriangle(p:Point, a:Point, b:Point, c:Point):Boolean
-			{
-				Util.ChangeDebugLevel(1);
-				Util.Debug("Triangle::PointInTriangle() called: p = " + p + ", a = " +a + ", b = " + b + ", c = " + c, 3);
-				
-				var result:Boolean = true;
-				
-				var as_x:Number = p.x-a.x;
-				var as_y:Number = p.y-a.y;
-
-				var s_ab:Boolean = (b.x-a.x)*as_y-(b.y-a.y)*as_x > 0;
-
-				if(result && (c.x-a.x)*as_y-(c.y-a.y)*as_x > 0 == s_ab) result = false;
-
-				if(result && (c.x-b.x)*(p.y-b.y)-(c.y-b.y)*(p.x-b.x) > 0 != s_ab) result = false;
-					
-					
-				Util.Debug("Triangle::PointInTriangle() returned: result = "+result, 3);
-				Util.ChangeDebugLevel( -1);
-				
-				return result;
-			}
-			
 			// Checks if the supplied line segments intersect
 			function LinesIntersect(A1:Point, A2:Point, B1:Point, B2:Point):Boolean
 			{
@@ -237,55 +213,61 @@ package Collision
 				return result;
 			}
 			
-			// Loop through the points in each triangle, check if they are inside the other triangle
-			for each (var point1:Point in tri1.points)
+			// Checks if the supplied point is in the triangle
+			function PointInTriangle(p:Point, a:Point, b:Point, c:Point):Boolean
 			{
-				// Check if the point is in tri2
-				point1 = new Point(point1.x + tri1.position_x, point1.y + tri1.position_y);
-				result = PointInTriangle(point1, new Point(tri2.points[0].x + tri2.position_x, tri2.points[0].y + tri2.position_y), 
-					new Point(tri2.points[1].x + tri2.position_x, tri2.points[1].y + tri2.position_y), 
-					new Point(tri2.points[2].x + tri2.position_x, tri2.points[2].y + tri2.position_y))
-				if (result) break; // Found a collision, no need to keep checking
+				Util.ChangeDebugLevel(1);
+				Util.Debug("Triangle::PointInTriangle() called: p = " + p + ", a = " +a + ", b = " + b + ", c = " + c, 3);
+				
+				var result:Boolean = true;
+				
+				var as_x:Number = p.x-a.x;
+				var as_y:Number = p.y-a.y;
+
+				var s_ab:Boolean = (b.x-a.x)*as_y-(b.y-a.y)*as_x > 0;
+
+				if(result && (c.x-a.x)*as_y-(c.y-a.y)*as_x > 0 == s_ab) result = false;
+
+				if(result && (c.x-b.x)*(p.y-b.y)-(c.y-b.y)*(p.x-b.x) > 0 != s_ab) result = false;
+					
+					
+				Util.Debug("Triangle::PointInTriangle() returned: result = "+result, 3);
+				Util.ChangeDebugLevel( -1);
+				
+				return result;
 			}
-			if (!result) for each (var point2:Point in tri2.points)
+			
+			// In the case where one triangle is inside the other completely, just check ONE point for each triangle
+			// Check if the point is in tri2
+/*			var point1:Point = tri1.points[0]
+			point1 = new Point(point1.x + tri1.position_x, point1.y + tri1.position_y);
+			result = PointInTriangle(point1, new Point(tri2.points[0].x + tri2.position_x, tri2.points[0].y + tri2.position_y), 
+				new Point(tri2.points[1].x + tri2.position_x, tri2.points[1].y + tri2.position_y), 
+				new Point(tri1.points[2].x + tri1.position_x, tri1.points[2].y + tri1.position_y))
+			// Check if the point is in tri2
+			if (!result)
 			{
-				// Check if the point is in tri2
+				var point2:Point = tri1.points[0]
 				point2 = new Point(point2.x + tri2.position_x, point2.y + tri2.position_y);
 				result = PointInTriangle(point2, new Point(tri1.points[0].x + tri1.position_x, tri1.points[0].y + tri1.position_y), 
 					new Point(tri1.points[1].x + tri1.position_x, tri1.points[1].y + tri1.position_y), 
 					new Point(tri1.points[2].x + tri1.position_x, tri1.points[2].y + tri1.position_y))
-				if (result) break; // Found a collision, no need to keep checking
-			}
+			}*/
 			
 			// Now check for line intersections between triangle 1 and triangle 2
-			if (!result) for each (var point11:Point in tri1.points)
-			{
-				point11 = new Point(point11.x + tri1.position_x, point11.y + tri1.position_y);
-				for each (var point12:Point in tri1.points)
-				{
-					// If we are looking at a segment between a point and itself, skip this iteration
-					point12 = new Point(point12.x + tri1.position_x, point12.y + tri1.position_y);
-					if (point11 == point12) continue;
-					for each (var point21:Point in tri2.points)
-					{
-						point21 = new Point(point21.x + tri2.position_x, point21.y + tri2.position_y);
-						for each (var point22:Point in tri2.points)
-						{
-							// If we are looking at a segment between a point and itself, skip this iteration
-							point22 = new Point(point22.x + tri2.position_x, point22.y + tri2.position_y);
-							if (point21 == point22) continue;
-							
-							// Check if the two line segments intersect
-							result = LinesIntersect(point11, point12, point21, point22);
-							if (result) break; // Found a collision, no need to keep checking
-						}
-						if (result) break; // Found a collision, no need to keep checking
-					}
-					if (result) break; // Found a collision, no need to keep checking
-				}
-				if (result) break; // Found a collision, no need to keep checking
-			}
-						
+			var tri1_position = new Point(tri1.position_x, tri1.position_y);
+			var tri2_position = new Point(tri2.position_x, tri2.position_y);
+			
+			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
+			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
+			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
+			if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
+			if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
+			if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
+			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
+			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
+			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
+			
 			Util.Debug("Triangle::DetectCollision() returned: result = "+result, 3);
 			Util.ChangeDebugLevel( -1);
 			
