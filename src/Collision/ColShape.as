@@ -94,7 +94,7 @@ package Collision
 			var result:Boolean = true;
 			
 			// Check and see if these colShapes are nearby
-/*			var top1:Number = col1.position_y - 0.5*col1.height;
+			var top1:Number = col1.position_y - 0.5*col1.height;
 			var top2:Number = col2.position_y - 0.5*col2.height;
 			var bottom1:Number = col1.position_y + 0.5*col1.height;
 			var bottom2:Number = col2.position_y + 0.5*col2.height;
@@ -103,7 +103,7 @@ package Collision
 			var right1:Number = col1.position_x + 0.5*col1.width;
 			var right2:Number = col2.position_x + 0.5 * col2.width;
 			if ( (top1 > bottom2 || bottom1 < top2 || left1 > right2 || right1 < left2 ) )
-				result = false;*/
+				result = false;
 			
 			// Check each trangle combination to see if any triangles are colliding
 			if (result) 
