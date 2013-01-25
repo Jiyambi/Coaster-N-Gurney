@@ -1,6 +1,6 @@
 // ************************************************************************ 
-// File Name:   ColTriangle.as 
-// Purpose:     Triangle collision object
+// File Name:   ColRectangle.as 
+// Purpose:     Rectangle collision object
 // Author:      Sarah Herzog 
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
@@ -15,36 +15,39 @@ package Collision
     // ********************************************************************
     // Class:	Collision 
     // ********************************************************************
-	public class ColTriangle extends ColShape
+	public class ColRectangle extends ColShape
 	{
 		// ****************************************************************
 		// Protected Data Members 
 		// ****************************************************************
 		
 		// ****************************************************************
-		// Function: 	ColTriangle()
+		// Function: 	ColRectangle()
 		// Purpose:     Constructor.
 		// Input:		x:Number - x coordinate for object (rotation center)
 		//				y:Number - y coordinate for object (rotation center)
 		//				angle:Number - rotation of object
-		//				point1:Number - point on the triangle
-		//				point2:Number - point on the triangle
-		//				point3:Number - point on the triangle
+		//				width:Number - width of the object
+		//				height:Number - height of the object
 		// ****************************************************************
-		public function ColTriangle(x:Number, y:Number, angle:Number, 
-			point1:Point, point2:Point, point3:Point) 
+		public function ColRectangle(x:Number, y:Number, angle:Number, 
+			width:Number, height:Number) 
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("ColShape::ColShape() called: x = " + x + ", y = " 
-				+ y + ", angle = " + angle + ", point1 = " + point1 
-				+ ", point2 = " + point2 + ", point3 = " + point3, 1);
+				+ y + ", angle = " + angle + ", width = " + width 
+				+ ", height = " + height, 1);
 				
 			// Set up ColShape
-			super(x, y, angle, (2*Math.max(Math.abs(x-point1.x), Math.abs(x-point2.x), Math.abs(x-point3.x))), 
-				(2*Math.max(Math.abs(y-point1.y),Math.abs(y-point2.y),Math.abs(y-point3.y))));
+			super(x, y, angle, width, height);
 			
-			// Set up triangle
-			triangles.push(new Triangle(x, y, angle, point1, point2, point3));
+			// Set up triangles
+			var upper_left:Point = new Point(- 0.5 * width, - 0.5 * height);
+			var upper_right:Point = new Point(0.5 * width, - 0.5 * height);
+			var lower_left:Point = new Point(- 0.5 * width, 0.5 * height);
+			var lower_right:Point = new Point(0.5 * width, 0.5 * height);
+			triangles.push(new Triangle(x, y, angle, upper_left, upper_right, lower_right));
+			triangles.push(new Triangle(x, y, angle, lower_right, lower_left, upper_left));
 			
 			Util.Debug("ColShape::ColShape() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -69,6 +72,7 @@ package Collision
 			
 			var delta:Number = (a - angle);
 			
+			// Recalculate width and height
 			if (delta)
 			{
 				width = triangles[0].GetWidth();

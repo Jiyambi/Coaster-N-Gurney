@@ -44,6 +44,12 @@ package
 		protected var image_sprite:Sprite;
 		
 		// ****************************************************************
+		// Getter Functions 
+		// ****************************************************************
+		public function GetWidth():Number { return width; }
+		public function GetHeight():Number { return height; }
+		
+		// ****************************************************************
 		// Function: 	Image()
 		// Purpose:     Constructor.
 		// Input:		x:int - x coordinate for object

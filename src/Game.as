@@ -46,6 +46,7 @@ package
 			// Create a player at center of screen
 			player = new Player(0, 0, 0);
 			box = new Box(200, 0, 0);
+			box.velocity_angle = 0.5;
 			
 			// Send camera to renderer
 			camera = new Camera(0, 0, 0);

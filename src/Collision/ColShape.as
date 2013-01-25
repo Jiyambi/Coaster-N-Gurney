@@ -36,15 +36,17 @@ package Collision
 		// Input:		x:Number - x coordinate for object (rotation center)
 		//				y:Number - y coordinate for object (rotation center)
 		//				angle:Number - rotation of object
+		//				width:int - width of object
+		//				height:int - height of object
 		// ****************************************************************
-		public function ColShape(x:Number, y:Number, angle:Number) 
+		public function ColShape(x:Number, y:Number, angle:Number, width:int, height:int) 
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("ColShape::ColShape() called: x = " + x + ", y = " 
-				+ y + ", angle = " + angle, 1);
+				+ y + ", angle = " + angle+ ", width = " + width+ ", height = " + height, 1);
 			
 			// Set up as Image
-			super(x, y, 0, 0, angle, null)
+			super(x, y, width, height, angle, null)
 			
 			// Copy in supplied values
 			this.position_x = x;
@@ -66,9 +68,6 @@ package Collision
 			
 			if (Constants.DEBUG_MODE) for each (var triangle:Triangle in triangles)
 			{
-				// Update triangle locations
-				triangle.SetPosition(position_x, position_y, angle);
-				
 				// Render the triangle
 				triangle.RenderColor(color);
 			}
@@ -86,21 +85,38 @@ package Collision
 		// Output:      Boolean - true if there is a collision, false if 
 		//					not
 		// ****************************************************************
-		// TODO: First compare width/height of shapes to rule out areas where there won't be collision
 		public function DetectCollision(col2:ColShape):Boolean 
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("ColShape::DetectCollision() called: col2 = " + col2, 3);
 				
 			var col1:ColShape = this;
-			var result:Boolean = false;
+			var result:Boolean = true;
+			
+			// Check and see if these colShapes are nearby
+/*			var top1:Number = col1.position_y - 0.5*col1.height;
+			var top2:Number = col2.position_y - 0.5*col2.height;
+			var bottom1:Number = col1.position_y + 0.5*col1.height;
+			var bottom2:Number = col2.position_y + 0.5*col2.height;
+			var left1:Number = col1.position_x - 0.5*col1.width;
+			var left2:Number = col2.position_x - 0.5*col2.width;
+			var right1:Number = col1.position_x + 0.5*col1.width;
+			var right2:Number = col2.position_x + 0.5 * col2.width;
+			if ( (top1 > bottom2 || bottom1 < top2 || left1 > right2 || right1 < left2 ) )
+				result = false;*/
 			
 			// Check each trangle combination to see if any triangles are colliding
-			for each (var triangle1:Triangle in col1.triangles)
+			if (result) 
 			{
-				for each (var triangle2:Triangle in col2.triangles)
+				result = false;
+				for each (var triangle1:Triangle in col1.triangles)
 				{
-					result = result || triangle1.DetectCollision(triangle2);
+					for each (var triangle2:Triangle in col2.triangles)
+					{
+						result = result || triangle1.DetectCollision(triangle2);
+						if (result) break;
+					}
+					if (result) break;
 				}
 			}
 		
@@ -161,6 +177,32 @@ package Collision
 			}
 			
 			Util.Debug("ColShape::SetCollision() returned", 3);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	SetPosition()
+		// Purpose:     Sets x, y position and angle for Triangle
+		// Input:		x:Number - x coordinate for object
+		//				y:Number - y coordinate for object
+		//				a:Number - rotation of object
+		// ****************************************************************
+		public override function SetPosition(x:Number, y:Number, a:Number):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
+			
+			// Update triangles
+			for each (var triangle:Triangle in triangles)
+			{
+				triangle.SetPosition(x, y, a);
+			}
+			
+			// Height and Width will be updated here in sub-classes
+			
+			super.SetPosition(x, y, a);
+			
+			Util.Debug("Image::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
 		

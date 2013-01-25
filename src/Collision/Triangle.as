@@ -50,13 +50,31 @@ package Collision
 				+ ", point2 = " + point2 + ", point3 = " + point3, 1);
 			
 			// Set up as Image
-			super(x, y, Math.max(point1.x, point2.x, point3.x) - Math.min(point1.x, point2.x, point3.x),
-				Math.max(point1.y,point2.y,point3.y)-Math.min(point1.y,point2.y,point3.y), angle, null)
+			super(x, y, (2*Math.max(Math.abs(x-point1.x), Math.abs(x-point2.x), Math.abs(x-point3.x))), 
+				(2*Math.max(Math.abs(y-point1.y),Math.abs(y-point2.y),Math.abs(y-point3.y))), angle, null);
 			
-			// Push in parent values
+			// Push in point values
 			points.push(point1);
 			points.push(point2);
 			points.push(point3);
+			
+			// Move points based on angle
+			if (angle) for (var i:int = 0; i < points.length; ++i)
+			{
+				var new_point:Point = new Point();
+				var cos_delta:Number = Math.cos(angle);
+				var sin_delta:Number = Math.sin(angle);
+				new_point.x = points[i].x * cos_delta - points[i].y * sin_delta;
+				new_point.y = points[i].x * sin_delta + points[i].y * cos_delta;
+				points[i] = new_point;
+			}
+			
+			// Recalculate width and height
+			if (angle)
+			{
+				width = 2 * Math.max(Math.abs(x - points[0].x), Math.abs(x - points[1].x), Math.abs(x - points[2].x));
+				height = 2 * Math.max(Math.abs(y - points[0].y), Math.abs(y - points[1].y), Math.abs(y - points[2].y));
+			}
 			
 			Util.Debug("Triangle::Triangle() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -84,13 +102,50 @@ package Collision
 			
 			// transform sprite to correct location
 			var matrix:Matrix = new Matrix();
-			matrix.rotate(angle);								// rotate about origin
 			matrix.translate(position_x, position_y);			// translate to correct location in scene
 			
 			// Render the image to this matrix
 			Renderer.DrawToBackBuffer(image_sprite, matrix);
 			
 			Util.Debug("Triangle::Render() returned", 3);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	SetPosition()
+		// Purpose:     Sets x, y position and angle for Triangle
+		// Input:		x:Number - x coordinate for object
+		//				y:Number - y coordinate for object
+		//				a:Number - rotation of object
+		// ****************************************************************
+		public override function SetPosition(x:Number, y:Number, a:Number):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
+			
+			var delta:Number = (a - angle);
+			
+			// Recalculate point locations
+			if (delta) for (var i:int = 0; i < points.length; ++i)
+			{
+				var new_point:Point = new Point();
+				var cos_delta:Number = Math.cos(delta);
+				var sin_delta:Number = Math.sin(delta);
+				new_point.x = points[i].x * cos_delta - points[i].y * sin_delta;
+				new_point.y = points[i].x * sin_delta + points[i].y * cos_delta;
+				points[i] = new_point;
+			}
+			
+			// Recalculate width and height
+			if (delta)
+			{
+				width = 2 * Math.max(Math.abs(x - points[0].x), Math.abs(x - points[1].x), Math.abs(x - points[2].x));
+				height = 2 * Math.max(Math.abs(y - points[0].y), Math.abs(y - points[1].y), Math.abs(y - points[2].y));
+			}
+			
+			super.SetPosition(x, y, a);
+			
+			Util.Debug("Image::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
     
@@ -183,7 +238,6 @@ package Collision
 			}
 			
 			// Loop through the points in each triangle, check if they are inside the other triangle
-			// TODO: Apply rotation to triangle
 			for each (var point1:Point in tri1.points)
 			{
 				// Check if the point is in tri2
@@ -204,7 +258,6 @@ package Collision
 			}
 			
 			// Now check for line intersections between triangle 1 and triangle 2
-			// TODO: Apply rotation to triangle
 			if (!result) for each (var point11:Point in tri1.points)
 			{
 				point11 = new Point(point11.x + tri1.position_x, point11.y + tri1.position_y);
@@ -238,6 +291,7 @@ package Collision
 			
 			return result;
 		}
+		
 		
 	}
 

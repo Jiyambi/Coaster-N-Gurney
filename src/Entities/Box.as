@@ -10,7 +10,7 @@ package Entities
     // ********************************************************************
     // Imports 
     // ********************************************************************
-	import Collision.ColTriangle;
+	import Collision.ColRectangle;
 	import flash.geom.Point;
 	
     // ********************************************************************
@@ -44,7 +44,7 @@ package Entities
 			layer = Constants.LAYER_OBSTACLES;
 			
 			// Set up collision
-			collision = new ColTriangle(x, y, angle, new Point( -50, 0), new Point(50, 0), new Point(0, 50));
+			collision = new ColRectangle(x, y, angle, 100, 100);
 			
 			Util.Debug("Box::Box() returned", 1);
 			Util.ChangeDebugLevel(-1);
