@@ -237,27 +237,21 @@ package Collision
 				return result;
 			}
 			
+			var tri1_position:Point = new Point(tri1.position_x, tri1.position_y);
+			var tri2_position:Point = new Point(tri2.position_x, tri2.position_y);
+			
 			// In the case where one triangle is inside the other completely, just check ONE point for each triangle
 			// Check if the point is in tri2
-/*			var point1:Point = tri1.points[0]
-			point1 = new Point(point1.x + tri1.position_x, point1.y + tri1.position_y);
-			result = PointInTriangle(point1, new Point(tri2.points[0].x + tri2.position_x, tri2.points[0].y + tri2.position_y), 
-				new Point(tri2.points[1].x + tri2.position_x, tri2.points[1].y + tri2.position_y), 
-				new Point(tri1.points[2].x + tri1.position_x, tri1.points[2].y + tri1.position_y))
+			var point1:Point = tri1.points[0].add(tri1_position);
+			result = PointInTriangle(point1, tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position))
 			// Check if the point is in tri2
 			if (!result)
 			{
-				var point2:Point = tri1.points[0]
-				point2 = new Point(point2.x + tri2.position_x, point2.y + tri2.position_y);
-				result = PointInTriangle(point2, new Point(tri1.points[0].x + tri1.position_x, tri1.points[0].y + tri1.position_y), 
-					new Point(tri1.points[1].x + tri1.position_x, tri1.points[1].y + tri1.position_y), 
-					new Point(tri1.points[2].x + tri1.position_x, tri1.points[2].y + tri1.position_y))
-			}*/
+				var point2:Point = tri2.points[0].add(tri2_position);
+				result = PointInTriangle(point2, tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri1.points[2].add(tri1_position))
+			}
 			
 			// Now check for line intersections between triangle 1 and triangle 2
-			var tri1_position = new Point(tri1.position_x, tri1.position_y);
-			var tri2_position = new Point(tri2.position_x, tri2.position_y);
-			
 			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
 			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
 			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
