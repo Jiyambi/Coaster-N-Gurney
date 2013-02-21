@@ -76,18 +76,13 @@ package Collision
 				}
 			}
 			
-			// Recalculate width and height
-			if (angle)
-			{
-				width = 2 * Math.max(Math.abs(x - points[0].x), Math.abs(x - points[1].x), Math.abs(x - points[2].x));
-				height = 2 * Math.max(Math.abs(y - points[0].y), Math.abs(y - points[1].y), Math.abs(y - points[2].y));
-			}
-			
 			// Recalculate top, bottom, left, right
 			top = Math.min(points[0].y, points[1].y, points[2].y);
 			bottom = Math.max(points[0].y, points[1].y, points[2].y);
 			left = Math.min(points[0].x, points[1].x, points[2].x);
 			right = Math.max(points[0].x, points[1].x, points[2].x);
+			height = bottom - top;
+			width = right - left;
 			
 			Util.Debug("Triangle::Triangle() returned", 1);
 			Util.ChangeDebugLevel(-1);
