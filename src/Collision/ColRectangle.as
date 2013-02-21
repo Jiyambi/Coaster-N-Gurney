@@ -49,6 +49,8 @@ package Collision
 			triangles.push(new Triangle(x, y, angle, upper_left, upper_right, lower_right));
 			triangles.push(new Triangle(x, y, angle, lower_right, lower_left, upper_left));
 			
+			CalculateRectangleBoungs();
+			
 			Util.Debug("ColRectangle::ColRectangle() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}

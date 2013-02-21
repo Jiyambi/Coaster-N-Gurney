@@ -58,6 +58,8 @@ package Collision
 				triangles.push(new Triangle(x, y, angle, inner_point, point1, point2));
 			}
 			
+			CalculateRectangleBoungs();
+			
 			Util.Debug("ColElipse::ColElipse() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}

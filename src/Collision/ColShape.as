@@ -61,17 +61,29 @@ package Collision
 			// Set up as Image
 			super(x, y, width, height, angle, null)
 			
-			// Calculate rectangle bounds
+			Util.Debug("ColShape::ColShape() returned", 1);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function:    CalculateRectangleBoungs()
+		// Purpose:     Re-calculates the rectangle bounds
+		// ****************************************************************
+		protected function CalculateRectangleBoungs():void 
+		{
+			top = 0;
+			bottom = 0;
+			left = 0;
+			right = 0;
 			for each (var triangle:Triangle in triangles)
 			{
 				top = Math.min(top,triangle.top);
 				bottom = Math.max(bottom,triangle.bottom);
 				left = Math.min(left,triangle.left);
-				right = Math.max(right,triangle.left);
+				right = Math.max(right,triangle.right);
 			}
-			
-			Util.Debug("ColShape::ColShape() returned", 1);
-			Util.ChangeDebugLevel(-1);
+			height = bottom - top;
+			width = right - left;
 		}
 		
 		// ****************************************************************
@@ -92,23 +104,23 @@ package Collision
 				}
 				
 				// Render rectangle bound
-				image_sprite = new Sprite();
-				image_sprite.graphics.lineStyle(0);
-				image_sprite.graphics.beginFill(0xfbd685,0.2);
-				image_sprite.graphics.moveTo(left, top);
-				image_sprite.graphics.lineTo(right, top);
-				image_sprite.graphics.lineTo(right, bottom);
-				image_sprite.graphics.lineTo(left, bottom);
-				image_sprite.graphics.endFill();
-				
+				//image_sprite = new Sprite();
+				//image_sprite.graphics.lineStyle(0);
+				//image_sprite.graphics.beginFill(0xfbd685,0.2);
+				//image_sprite.graphics.moveTo(left, top);
+				//image_sprite.graphics.lineTo(right, top);
+				//image_sprite.graphics.lineTo(right, bottom);
+				//image_sprite.graphics.lineTo(left, bottom);
+				//image_sprite.graphics.endFill();
+				//
 				// transform sprite to correct location
-				var matrix:Matrix = new Matrix();
-				matrix.translate(position_x, position_y);			// translate to correct location in scene
-				
-				Util.Debug("ColShape::Render() rendering outer rectangle bound at position_x = "+position_x+" and position_y = "+position_y, 3);
-				
+				//var matrix:Matrix = new Matrix();
+				//matrix.translate(position_x, position_y);			// translate to correct location in scene
+				//
+				//Util.Debug("ColShape::Render() rendering outer rectangle bound at position_x = "+position_x+" and position_y = "+position_y, 3);
+				//
 				// Render the image to this matrix
-				Renderer.DrawToBackBuffer(image_sprite, matrix);
+				//Renderer.DrawToBackBuffer(image_sprite, matrix);
 				
 			}
 			
@@ -228,27 +240,17 @@ package Collision
 			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
 			
 			// Set overal shape position
+			var delta:Number = (a - angle);
 			super.SetPosition(x, y, a);
 			
 			// Update triangles
-			top = 0;
-			bottom = 0;
-			left = 0;
-			right = 0;
 			for each (var triangle:Triangle in triangles)
 			{
 				triangle.SetPosition(x, y, a);
-				
-				// Calculate rectangle bounds
-				top = Math.min(top,triangle.top);
-				bottom = Math.max(bottom,triangle.bottom);
-				left = Math.min(left,triangle.left);
-				right = Math.max(right,triangle.right);
 			}
 			
-			// Recalculate hieght and width
-			height = bottom - top;
-			width = right - left;
+			// Recalculate rectangle bounds if needed
+			if (delta) CalculateRectangleBoungs();
 			
 			Util.Debug("Image::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);

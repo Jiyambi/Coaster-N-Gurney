@@ -46,6 +46,8 @@ package Collision
 			// Set up triangle
 			triangles.push(new Triangle(x, y, angle, point1, point2, point3));
 			
+			CalculateRectangleBoungs();
+			
 			Util.Debug("ColShape::ColShape() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
