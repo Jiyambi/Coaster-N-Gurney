@@ -50,34 +50,6 @@ package Collision
 			Util.ChangeDebugLevel(-1);
 		}
 		
-		// ****************************************************************
-		// Function: 	SetPosition()
-		// Purpose:     Sets x, y position and angle for Triangle
-		// Input:		x:Number - x coordinate for object
-		//				y:Number - y coordinate for object
-		//				a:Number - rotation of object
-		// ****************************************************************
-		public override function SetPosition(x:Number, y:Number, a:Number):void
-		{
-			Util.ChangeDebugLevel(1);
-			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
-			
-			for each (var triangle:Triangle in triangles)
-			{
-				triangle.SetPosition(x, y, a);
-			}
-			
-			var delta:Number = (a - angle);
-			
-			if (delta)
-			{
-				width = triangles[0].GetWidth();
-				height = triangles[0].GetHeight();
-			}
-			
-			Util.Debug("Image::SetPosition() returned", 3);
-			Util.ChangeDebugLevel(-1);
-		}
 		
 	}
 

@@ -48,6 +48,8 @@ package
 		public static const PLAYER_WIDTH:int = 139;
 		public static const PLAYER_HEIGHT:int = 125;
 		public static const PLAYER_TOP_MOVE_SPEED:int = 300;
+		public static const PLAYER_TOP_ANGLE_SPEED:Number = 0.2;
+		public static const PLAYER_TURN_ANGLE:Number = 0.6;
 		
 		// ****************************************************************
 		// Controls 

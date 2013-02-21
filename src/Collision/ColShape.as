@@ -11,6 +11,13 @@ package Collision
     // Imports 
     // ********************************************************************
 	import flash.geom.Point;
+	import flash.geom.Vector3D;
+    import flash.display.BitmapData;
+    import flash.display.Sprite;
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
+	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 	
     // ********************************************************************
     // Class:	Collision 
@@ -30,6 +37,12 @@ package Collision
 		// Array of things colliding with this
 		protected var colliding:Array = new Array();
 		
+		// Rectangle bounds of this colshape
+		protected var top:Number = 0;
+		protected var bottom:Number = 0;
+		protected var left:Number = 0;
+		protected var right:Number = 0;
+		
 		// ****************************************************************
 		// Function: 	ColShape()
 		// Purpose:     Constructor.
@@ -48,10 +61,14 @@ package Collision
 			// Set up as Image
 			super(x, y, width, height, angle, null)
 			
-			// Copy in supplied values
-			this.position_x = x;
-			this.position_y = y;
-			this.angle = angle;
+			// Calculate rectangle bounds
+			for each (var triangle:Triangle in triangles)
+			{
+				top = Math.min(top,triangle.top);
+				bottom = Math.max(bottom,triangle.bottom);
+				left = Math.min(left,triangle.left);
+				right = Math.max(right,triangle.left);
+			}
 			
 			Util.Debug("ColShape::ColShape() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -66,10 +83,33 @@ package Collision
 			Util.ChangeDebugLevel(1);
 			Util.Debug("ColShape::Render() called", 3);
 			
-			if (Constants.DEBUG_MODE) for each (var triangle:Triangle in triangles)
+			if (Constants.DEBUG_MODE) 
 			{
-				// Render the triangle
-				triangle.RenderColor(color);
+				for each (var triangle:Triangle in triangles)
+				{
+					// Render the triangle
+					triangle.RenderColor(color);
+				}
+				
+				// Render rectangle bound
+				image_sprite = new Sprite();
+				image_sprite.graphics.lineStyle(0);
+				image_sprite.graphics.beginFill(0xfbd685,0.2);
+				image_sprite.graphics.moveTo(left, top);
+				image_sprite.graphics.lineTo(right, top);
+				image_sprite.graphics.lineTo(right, bottom);
+				image_sprite.graphics.lineTo(left, bottom);
+				image_sprite.graphics.endFill();
+				
+				// transform sprite to correct location
+				var matrix:Matrix = new Matrix();
+				matrix.translate(position_x, position_y);			// translate to correct location in scene
+				
+				Util.Debug("ColShape::Render() rendering outer rectangle bound at position_x = "+position_x+" and position_y = "+position_y, 3);
+				
+				// Render the image to this matrix
+				Renderer.DrawToBackBuffer(image_sprite, matrix);
+				
 			}
 			
 			Util.Debug("ColShape::Render() returned", 3);
@@ -93,17 +133,12 @@ package Collision
 			var col1:ColShape = this;
 			var result:Boolean = true;
 			
-			// Check and see if these colShapes are nearby
-			var top1:Number = col1.position_y - 0.5*col1.height;
-			var top2:Number = col2.position_y - 0.5*col2.height;
-			var bottom1:Number = col1.position_y + 0.5*col1.height;
-			var bottom2:Number = col2.position_y + 0.5*col2.height;
-			var left1:Number = col1.position_x - 0.5*col1.width;
-			var left2:Number = col2.position_x - 0.5*col2.width;
-			var right1:Number = col1.position_x + 0.5*col1.width;
-			var right2:Number = col2.position_x + 0.5 * col2.width;
-			if ( (top1 > bottom2 || bottom1 < top2 || left1 > right2 || right1 < left2 ) )
-				result = false;
+			// Check and see if these colShapes are within their outer rectangle bound
+			if ( col1.top + col1.position_y > col2.bottom + col2.position_y
+				|| col1.bottom + col1.position_y < col2.top + col2.position_y
+				|| col1.left + col1.position_x > col2.right + col2.position_x
+				|| col1.right+col1.position_x < col2.left + col2.position_x )
+					result = false;
 			
 			// Check each trangle combination to see if any triangles are colliding
 			if (result) 
@@ -113,7 +148,7 @@ package Collision
 				{
 					for each (var triangle2:Triangle in col2.triangles)
 					{
-						result = result || triangle1.DetectCollision(triangle2);
+						result = triangle1.DetectCollision(triangle2);
 						if (result) break;
 					}
 					if (result) break;
@@ -192,15 +227,28 @@ package Collision
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
 			
+			// Set overal shape position
+			super.SetPosition(x, y, a);
+			
 			// Update triangles
+			top = 0;
+			bottom = 0;
+			left = 0;
+			right = 0;
 			for each (var triangle:Triangle in triangles)
 			{
 				triangle.SetPosition(x, y, a);
+				
+				// Calculate rectangle bounds
+				top = Math.min(top,triangle.top);
+				bottom = Math.max(bottom,triangle.bottom);
+				left = Math.min(left,triangle.left);
+				right = Math.max(right,triangle.right);
 			}
 			
-			// Height and Width will be updated here in sub-classes
-			
-			super.SetPosition(x, y, a);
+			// Recalculate hieght and width
+			height = bottom - top;
+			width = right - left;
 			
 			Util.Debug("Image::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);

@@ -30,6 +30,10 @@ package Collision
 		
 		// Triangle points
 		protected var points:Array = new Array();
+		public var top:Number;
+		public var bottom:Number;
+		public var left:Number;
+		public var right:Number;
 		
 		// ****************************************************************
 		// Function: 	Triangle()
@@ -59,14 +63,17 @@ package Collision
 			points.push(point3);
 			
 			// Move points based on angle
-			if (angle) for (var i:int = 0; i < points.length; ++i)
+			if (angle)  
 			{
-				var new_point:Point = new Point();
 				var cos_delta:Number = Math.cos(angle);
 				var sin_delta:Number = Math.sin(angle);
-				new_point.x = points[i].x * cos_delta - points[i].y * sin_delta;
-				new_point.y = points[i].x * sin_delta + points[i].y * cos_delta;
-				points[i] = new_point;
+				for (var i:int = 0; i < points.length; ++i)
+				{
+					var new_point:Point = new Point();
+					new_point.x = points[i].x * cos_delta - points[i].y * sin_delta;
+					new_point.y = points[i].x * sin_delta + points[i].y * cos_delta;
+					points[i] = new_point;
+				}
 			}
 			
 			// Recalculate width and height
@@ -75,6 +82,12 @@ package Collision
 				width = 2 * Math.max(Math.abs(x - points[0].x), Math.abs(x - points[1].x), Math.abs(x - points[2].x));
 				height = 2 * Math.max(Math.abs(y - points[0].y), Math.abs(y - points[1].y), Math.abs(y - points[2].y));
 			}
+			
+			// Recalculate top, bottom, left, right
+			top = Math.min(points[0].y, points[1].y, points[2].y);
+			bottom = Math.max(points[0].y, points[1].y, points[2].y);
+			left = Math.min(points[0].x, points[1].x, points[2].x);
+			right = Math.max(points[0].x, points[1].x, points[2].x);
 			
 			Util.Debug("Triangle::Triangle() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -100,6 +113,15 @@ package Collision
 			image_sprite.graphics.lineTo(points[0].x, points[0].y);
 			image_sprite.graphics.endFill();
 			
+			// Draw background square
+			image_sprite.graphics.lineStyle(0);
+			image_sprite.graphics.beginFill(0xFFFFFF,0.2);
+			image_sprite.graphics.moveTo(left, top);
+			image_sprite.graphics.lineTo(right, top);
+			image_sprite.graphics.lineTo(right, bottom);
+			image_sprite.graphics.lineTo(left, bottom);
+			image_sprite.graphics.endFill();
+			
 			// transform sprite to correct location
 			var matrix:Matrix = new Matrix();
 			matrix.translate(position_x, position_y);			// translate to correct location in scene
@@ -121,31 +143,37 @@ package Collision
 		public override function SetPosition(x:Number, y:Number, a:Number):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
+			Util.Debug("Triangle::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
 			
 			var delta:Number = (a - angle);
 			
 			// Recalculate point locations
-			if (delta) for (var i:int = 0; i < points.length; ++i)
+			if (delta) 
 			{
-				var new_point:Point = new Point();
-				var cos_delta:Number = Math.cos(delta);
-				var sin_delta:Number = Math.sin(delta);
-				new_point.x = points[i].x * cos_delta - points[i].y * sin_delta;
-				new_point.y = points[i].x * sin_delta + points[i].y * cos_delta;
-				points[i] = new_point;
-			}
-			
-			// Recalculate width and height
-			if (delta)
-			{
-				width = 2 * Math.max(Math.abs(x - points[0].x), Math.abs(x - points[1].x), Math.abs(x - points[2].x));
-				height = 2 * Math.max(Math.abs(y - points[0].y), Math.abs(y - points[1].y), Math.abs(y - points[2].y));
+				for (var i:int = 0; i < points.length; ++i)
+				{
+					var new_point:Point = new Point();
+					var cos_delta:Number = Math.cos(delta);
+					var sin_delta:Number = Math.sin(delta);
+					new_point.x = points[i].x * cos_delta - points[i].y * sin_delta;
+					new_point.y = points[i].x * sin_delta + points[i].y * cos_delta;
+					points[i] = new_point;
+				}
+				
+				// Recalculate top, bottom, left, right
+				top = Math.min(points[0].y, points[1].y, points[2].y);
+				bottom = Math.max(points[0].y, points[1].y, points[2].y);
+				left = Math.min(points[0].x, points[1].x, points[2].x);
+				right = Math.max(points[0].x, points[1].x, points[2].x);
+				
+				// Recalculate hieght and width
+				height = bottom - top;
+				width = right - left;
 			}
 			
 			super.SetPosition(x, y, a);
 			
-			Util.Debug("Image::SetPosition() returned", 3);
+			Util.Debug("Triangle::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
     
@@ -164,7 +192,7 @@ package Collision
 			Util.Debug("Triangle::DetectCollision() called: tri2 = " + tri2, 3);
 			
 			var tri1:Triangle = this;
-			var result:Boolean = false;
+			var result:Boolean = true;
 			
 			// Checks if the supplied line segments intersect
 			function LinesIntersect(A1:Point, A2:Point, B1:Point, B2:Point):Boolean
@@ -240,27 +268,41 @@ package Collision
 			var tri1_position:Point = new Point(tri1.position_x, tri1.position_y);
 			var tri2_position:Point = new Point(tri2.position_x, tri2.position_y);
 			
-			// In the case where one triangle is inside the other completely, just check ONE point for each triangle
-			// Check if the point is in tri2
-			var point1:Point = tri1.points[0].add(tri1_position);
-			result = PointInTriangle(point1, tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position))
-			// Check if the point is in tri2
-			if (!result)
-			{
-				var point2:Point = tri2.points[0].add(tri2_position);
-				result = PointInTriangle(point2, tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri1.points[2].add(tri1_position))
-			}
+			// Check and see if these colShapes are within their outer rectangle bound
+			if ( tri1.top + tri1.position_y > tri2.bottom + tri2.position_y
+				|| tri1.bottom + tri1.position_y < tri2.top + tri2.position_y
+				|| tri1.left + tri1.position_x > tri2.right + tri2.position_x
+				|| tri1.right + tri1.position_x < tri2.left + tri2.position_x )
+					result = false;
 			
-			// Now check for line intersections between triangle 1 and triangle 2
-			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
-			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
-			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
-			if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
-			if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
-			if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
-			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
-			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
-			if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
+			if (result)
+			{
+				// Change to a default of false
+				result = false;
+				
+				// In the case where one triangle is inside the other completely, just check ONE point for each triangle
+				// Check if the point is in tri2
+				var point1:Point = tri1.points[0].add(tri1_position);
+				result = PointInTriangle(point1, tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position))
+				// Check if the point is in tri2
+				if (!result)
+				{
+					var point2:Point = tri2.points[0].add(tri2_position);
+					result = PointInTriangle(point2, tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri1.points[2].add(tri1_position))
+				}
+			
+				// Now check for line intersections between triangle 1 and triangle 2
+				if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
+				if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
+				if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
+				if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
+				if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
+				if (!result) result = LinesIntersect(tri1.points[2].add(tri1_position), tri1.points[1].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
+				if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[1].add(tri2_position));
+				if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[1].add(tri2_position), tri2.points[2].add(tri2_position));
+				if (!result) result = LinesIntersect(tri1.points[0].add(tri1_position), tri1.points[2].add(tri1_position), tri2.points[0].add(tri2_position), tri2.points[2].add(tri2_position));
+				
+			}
 			
 			Util.Debug("Triangle::DetectCollision() returned: result = "+result, 3);
 			Util.ChangeDebugLevel( -1);
