@@ -43,6 +43,11 @@ package
 		public static const LAYER_DEBUG:int = 10;
 		
 		// ****************************************************************
+		// AI Constants 
+		// ****************************************************************
+		public static const AI_PATTERN_SIN:int = 0;
+		
+		// ****************************************************************
 		// Player Constants 
 		// ****************************************************************
 		public static const PLAYER_WIDTH:int = 139;
@@ -52,7 +57,7 @@ package
 		public static const PLAYER_TURN_ANGLE:Number = 0.6;
 		
 		// ****************************************************************
-		// Player Constants 
+		// Bee Constants 
 		// ****************************************************************
 		public static const BEE_WIDTH:int = 61;
 		public static const BEE_HEIGHT:int = 64;

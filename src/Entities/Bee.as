@@ -53,12 +53,19 @@ package Entities
 		
 		
 		// ****************************************************************
-		// Function: 	Think()
-		// Purpose:     TODO: Bee uses pattern movement.
+		// TODO: Function: 	Think()
+		// Purpose:     Bee uses pattern movement.
+		// Input:		frameTime:Number - Ammount of time that passed
+		//					between the last frame and this one, in
+		//					seconds
 		// ****************************************************************
-		public override function Think():void
+		public override function Think(frameTime:Number):void
 		{
-		
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Bee::Think() called: frameTime = "+frameTime", 3);
+			
+			Util.Debug("Bee::Think() returned", 3);
+			Util.ChangeDebugLevel(-1);
 		}
 		
 	}

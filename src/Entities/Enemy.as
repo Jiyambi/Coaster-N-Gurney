@@ -47,11 +47,14 @@ package Entities
 		// Function: 	Think()
 		// Purpose:     Processess the Enemy's AI. Overwritten for each
 		//				enemy type.
+		// Input:		frameTime:Number - Ammount of time that passed
+		//					between the last frame and this one, in
+		//					seconds
 		// ****************************************************************
-		public function Think():void
+		public function Think(frameTime:Number):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Enemy::Think() called", 3);
+			Util.Debug("Enemy::Think() called: frameTime = "+frameTime", 3);
 			
 			Util.Debug("Enemy::Think() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -69,10 +72,10 @@ package Entities
 		public override function Update(frameTime:Number):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Enemy::Update() called", 3);
+			Util.Debug("Enemy::Update() called: frameTime = "+frameTime, 3);
 			
 			// Provess the enemy AI
-			Think();
+			Think(frameTime);
 			
 			// Call entity update function
 			super.Update(frameTime);

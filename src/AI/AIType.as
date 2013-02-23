@@ -1,8 +1,6 @@
 // ************************************************************************ 
 // File Name:   AIType.as 
-// Purpose:     Base AI class. Interface for AI objects.
-	//Base game object class. Includes physics, collision, and
-//				drawing for basic game object.
+// Purpose:     Interface for all AI types.
 // Author:      Sarah Herzog 
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
@@ -12,30 +10,26 @@ package AI
     // ********************************************************************
     // Imports 
     // ********************************************************************
-	
+	import Entities.Enemy;
 	
     // ********************************************************************
-    // Class:	AIType 
+    // Interface:	AIType 
     // ********************************************************************
-	public class AIType 
+	public interface AIType 
 	{
-		// ****************************************************************
-		// Protected Data Members 
-		// ****************************************************************
 		
 		// ****************************************************************
-		// Function: 	AIType()
-		// Purpose:     Constructor.
-		// Input:		
+		// Function: 	Process()
+		// Purpose:     Process AI for given enemy.
+		// Input:		enemy:Enemy - The enemy to run the AI on
+		// 				frameTime:Number - Ammount of time that passed
+		//					between the last frame and this one, in
+		//					seconds
 		// ****************************************************************
-		public function AIType() 
+		public function Process(enemy:Enemy, frameTime:Number) 
 		{
-			Util.ChangeDebugLevel(1);
-			Util.Debug("AIType::AIType() called", 1);
-			
-			Util.Debug("AIType::AIType() returned", 1);
-			Util.ChangeDebugLevel(-1);
 		}
+		
 		
 	}
 
