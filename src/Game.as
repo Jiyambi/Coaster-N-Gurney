@@ -11,6 +11,7 @@ package
     // Imports 
     // ********************************************************************
 	// Entities
+	import Entities.Bee;
 	import Entities.Box;
     import Entities.Player;
     import Entities.Camera;
@@ -31,6 +32,7 @@ package
 		// Game objects
     	private var player:Player;
     	private var box:Box;
+		private var bee:Bee;
     	private var camera:Camera;
 		
 		// ****************************************************************
@@ -45,8 +47,9 @@ package
 			
 			// Create a player at center of screen
 			player = new Player(0, 0, 0);
-			box = new Box(200, 0, 0);
-			box.velocity_angle = 0.5;
+			//box = new Box(200, 0, 0);
+			//box.velocity_angle = 0.5;
+			bee = new Bee(200, 0, 0);
 			
 			// Send camera to renderer
 			camera = new Camera(0, 0, 0);
@@ -72,11 +75,13 @@ package
 			player.StrafeRight(Input.CheckKeyDown(Constants.CONTROL_STRAFE_RIGHT));
 			
 			// Check collision
-			player.collision.DetectCollision(box.collision);
+			//player.collision.DetectCollision(box.collision);
+			player.collision.DetectCollision(bee.collision);
 			
 			// Update game objects
 			player.Update(0.02);
-			box.Update(0.02);
+			//box.Update(0.02);
+			bee.Update(0.02);
 			camera.Update(0.02);
 			
 			Util.Debug("Game::Update() returned", 3);

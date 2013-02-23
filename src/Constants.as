@@ -52,6 +52,12 @@ package
 		public static const PLAYER_TURN_ANGLE:Number = 0.6;
 		
 		// ****************************************************************
+		// Player Constants 
+		// ****************************************************************
+		public static const BEE_WIDTH:int = 61;
+		public static const BEE_HEIGHT:int = 64;
+		
+		// ****************************************************************
 		// Controls 
 		// ****************************************************************
 		public static const CONTROL_DECELERATE:int = KEYCODE_A;

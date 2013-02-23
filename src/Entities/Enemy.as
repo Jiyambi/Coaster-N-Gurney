@@ -13,7 +13,7 @@ package Entities
 	import flash.geom.Point;
 	
     // ********************************************************************
-    // Class:	Player 
+    // Class:	Enemy 
     // ********************************************************************
 	public class Enemy extends Body
 	{
@@ -31,14 +31,14 @@ package Entities
 		public function Enemy(x:Number, y:Number, width:Number, height:Number, angle:Number=0)
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Enemy::Enemy() called: x = " + x + ", y = " + y + ", angle = " + angle, 1);
+			Util.Debug("Enemy::Enemy() called: x = " + x + ", y = " + y + ", width = " + width + ", height = " + height + ", angle = " + angle, 1);
 			
 			// Set up Enemy as a Body
 			super(x, y, width, height, angle);
 			
 			// Image and Collision set up in base class
 			
-			Util.Debug("Player::Player() returned", 1);
+			Util.Debug("Enemy::Enemy() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
 		
@@ -50,6 +50,11 @@ package Entities
 		// ****************************************************************
 		public function Think():void
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Enemy::Think() called", 3);
+			
+			Util.Debug("Enemy::Think() returned", 3);
+			Util.ChangeDebugLevel(-1);
 		
 		}
 		
