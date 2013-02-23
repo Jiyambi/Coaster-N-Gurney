@@ -74,9 +74,10 @@ package
 			player.StrafeLeft(Input.CheckKeyDown(Constants.CONTROL_STRAFE_LEFT));		
 			player.StrafeRight(Input.CheckKeyDown(Constants.CONTROL_STRAFE_RIGHT));
 			
-			// Check collision
-			//player.collision.DetectCollision(box.collision);
+			// Check collisions against player
 			player.CollisionCheck(bee);
+			
+			// Check collisions against player's bullets
 			
 			// Update game objects
 			player.Update(0.02);

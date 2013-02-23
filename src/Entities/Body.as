@@ -41,7 +41,7 @@ package Entities
 		// TODO: Temporary public
 		protected var velocity_x:Number;		// game units / second
 		protected var velocity_y:Number;		// game units / second
-		public var velocity_angle:Number;	// radians / second, clockwise
+		protected var velocity_angle:Number;	// radians / second, clockwise
 		
 		// Display
 		protected var visible:Boolean = true;
@@ -49,8 +49,7 @@ package Entities
 		protected var layer:int;
 		
 		// Collision
-		// TODO: Temporary public
-		public var collision:ColShape; // TODO: Change to array of collisions, for complex models. Most only use one.
+		protected var collision:ColShape; // TODO: Change to array of collisions, for complex models. Most only use one.
 	 
 		// ****************************************************************
 		// Function: 	Body()
@@ -196,19 +195,36 @@ package Entities
 		// Purpose:     Checks for collision with supplied Body, then
 		//				calls collision handler if appropriate
 		// Input:		other:Body - Body to check for collision
+		// Output:      Boolean - true if there is a collision, false if 
+		//					not
 		// ****************************************************************
 		public function CollisionCheck(other:Body):Boolean 
 		{
-			var collide:Boolean = false;
+			var result:Boolean = false;
 			
 			// Check for collision
-			collision.DetectCollision(other.collision);
+			result = collision.DetectCollision(other.collision);
 			
 			// If collision occurred, call handler
+			if(result) CollisionHandler(other);
+			if(result) other.CollisionHandler(this);
 			
 			// Return collision status
-			return collide;
+			return result;
 		}
+		
+		
+		// ****************************************************************
+		// Function: 	CollisionHandler()
+		// Purpose:     Perform actions on both bodies for the collision
+		// Input:		other:Body - Body that collided with this one.
+		// ****************************************************************
+		protected function CollisionHandler(other:Body):void 
+		{
+			// To be implemented by sub classes
+		}
+		
+		
 	}
 
 }
