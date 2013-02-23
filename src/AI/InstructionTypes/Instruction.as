@@ -20,9 +20,9 @@ package AI.InstructionTypes
 	public class Instruction 
 	{
 		// ****************************************************************
-		// Private Data Members 
+		// Protected Data Members 
 		// ****************************************************************
-		private var done:Boolean = false;
+		protected var done:Boolean = false;
 		
 		
 		// ****************************************************************
@@ -52,10 +52,12 @@ package AI.InstructionTypes
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Instruction::Process() called: enemy = "+enemy+", frameTime = "+frameTime, 3);
 			
-			// TODO: Process this instruction for this frame
+			// Process this instruction for this frame
 			
-			// TODO: Check if we've reached the endpoint of this instruction
+			// Check if we've reached the endpoint of this instruction
 			// If so, set state to done
+			
+			// (Implemented in sub classes)
 			
 			Util.Debug("Instruction::Process() returned", 3);
 			Util.ChangeDebugLevel(-1);
