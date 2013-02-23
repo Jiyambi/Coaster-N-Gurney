@@ -21,8 +21,12 @@ package Entities
 		// Protected Data Members 
 		// ****************************************************************
 		// Display
-		protected var explode:Image; 
+		protected var image_dead:Image; 
+		protected var image_alive:Image;
 		
+		// Logic
+		protected var alive:Boolean = true;
+		protected var active:Boolean = true;
 		
 		// ****************************************************************
 		// Function: 	Enemy()
@@ -86,6 +90,38 @@ package Entities
 			super.Update(frameTime);
 			
 			Util.Debug("Body::Update() returned", 3);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	Kill()
+		// Purpose:     Kills enemy, setting it's image and alive state
+		// ****************************************************************
+		public function Kill():void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Enemy::Kill() called", 1);
+			
+			image = image_dead;
+			alive = false;
+			
+			Util.Debug("Body::Kill() returned", 1);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	Revive()
+		// Purpose:     Kills enemy, setting it's image and alive state
+		// ****************************************************************
+		public function Revive():void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Enemy::Revive() called", 1);
+			
+			image = image_alive;
+			alive = true;
+			
+			Util.Debug("Body::Revive() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
 		

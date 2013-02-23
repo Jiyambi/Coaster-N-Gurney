@@ -44,7 +44,9 @@ package Entities
 			super(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle);
 			
 			// Create image to hold sprite
-			image = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, tex_bee);
+			image_alive = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, tex_bee);
+			image_dead = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, tex_bee_explode);
+			image = image_alive;
 			layer = Constants.LAYER_ENEMIES;
 			
 			// Set up collision
@@ -85,6 +87,7 @@ package Entities
 			// TODO: kill player
 			
 			// TODO: kill self
+			Kill();
 		}
 		
 	}
