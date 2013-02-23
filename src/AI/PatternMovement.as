@@ -17,7 +17,7 @@ package AI
     // ********************************************************************
     // Class:	PatternMovement 
     // ********************************************************************
-	public class PatternMovement implements AIType 
+	public class PatternMovement extends AIType 
 	{
 		// ****************************************************************
 		// Private Data Members 
@@ -47,7 +47,7 @@ package AI
 		//					between the last frame and this one, in
 		//					seconds
 		// ****************************************************************
-		public function Process(enemy:Enemy, frameTime:Number) 
+		public override function Process(enemy:Enemy, frameTime:Number):void
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("PatternMovement::Process() called: enemy = "+enemy+", frameTime = "+frameTime, 3);
@@ -73,6 +73,24 @@ package AI
 			Util.Debug("PatternMovement::Process() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
+		
+		// ****************************************************************
+		// Function: 	AddInstruction()
+		// Purpose:     Adds an instruction to the set.
+		// Input:		ins:Instruction - new instruction to be added
+		// ****************************************************************
+		public function AddInstruction(ins:Instruction):void 
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("PatternMovement::AddInstruction() called: ins = "+ins, 1);
+			
+			instructions.push(ins);
+			
+			Util.Debug("PatternMovement::AddInstruction() returned", 1);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		
 		
 	}
 

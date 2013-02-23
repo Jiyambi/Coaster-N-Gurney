@@ -67,7 +67,7 @@ package AI.InstructionTypes
 		//					between the last frame and this one, in
 		//					seconds
 		// ****************************************************************
-		public override function Process(enemy:Enemy, frameTime:Number) 
+		public override function Process(enemy:Enemy, frameTime:Number) :void
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("ToPoint::Process() called: enemy = "+enemy+", frameTime = "+frameTime, 3);
@@ -77,18 +77,24 @@ package AI.InstructionTypes
 			var deltaY:Number = frameTime * velY;
 			
 			// Keep us from going too far in either axis
-			if (Math.abs(relX - curX) < abs(deltaX)) 
+			if (Math.abs(relX - curX) < Math.abs(deltaX)) 
 				curX = relX;
 			else
 				curX += deltaX;
-			if (Math.abs(relY - curY) < abs(deltaY)) 
+			if (Math.abs(relY - curY) < Math.abs(deltaY)) 
 				curY = relY;
 			else
 				curY += deltaY;
+				
+			// Set the enemy's velocity
+			enemy.SetVelocity(velX, velY, 0);
 			
 			// Check if we've reached our goal
 			if (curX == relX && curY == relY)
 			{
+				// Change enemy velocity to 0
+				enemy.SetVelocity(0, 0, 0);
+				
 				// Set state to done
 				done = true;
 			}

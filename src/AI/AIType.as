@@ -15,7 +15,7 @@ package AI
     // ********************************************************************
     // Interface:	AIType 
     // ********************************************************************
-	public interface AIType 
+	public class AIType 
 	{
 		
 		// ****************************************************************
@@ -26,7 +26,7 @@ package AI
 		//					between the last frame and this one, in
 		//					seconds
 		// ****************************************************************
-		public function Process(enemy:Enemy, frameTime:Number) 
+		public function Process(enemy:Enemy, frameTime:Number):void
 		{
 		}
 		

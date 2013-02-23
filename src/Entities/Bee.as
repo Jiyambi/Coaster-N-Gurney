@@ -10,6 +10,9 @@ package Entities
     // ********************************************************************
     // Imports 
     // ********************************************************************
+	import AI.InstructionTypes.Instruction;
+	import AI.InstructionTypes.ToPoint;
+	import AI.PatternMovement;
 	import flash.geom.Point;
 	import Collision.ColElipse;
 	
@@ -52,24 +55,15 @@ package Entities
 			// Set up collision
 			collision = new ColElipse(x, y, angle, Constants.BEE_WIDTH*1.10, Constants.BEE_HEIGHT*1.10, 6);
 			
-			Util.Debug("Bee::Bee() returned", 1);
-			Util.ChangeDebugLevel(-1);
-		}
-		
-		
-		// ****************************************************************
-		// TODO: Function: 	Think()
-		// Purpose:     Bee uses pattern movement.
-		// Input:		frameTime:Number - Ammount of time that passed
-		//					between the last frame and this one, in
-		//					seconds
-		// ****************************************************************
-		public override function Think(frameTime:Number):void
-		{
-			Util.ChangeDebugLevel(1);
-			Util.Debug("Bee::Think() called: frameTime = "+frameTime, 3);
+			// Set up AI
+			var pattern:PatternMovement = new PatternMovement();
+			var ins:Instruction = new ToPoint( -300, -300, 300);
+			pattern.AddInstruction(ins);
+			ins = new ToPoint( -300, 300, 300);
+			pattern.AddInstruction(ins);
+			ai = pattern;
 			
-			Util.Debug("Bee::Think() returned", 3);
+			Util.Debug("Bee::Bee() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
 		

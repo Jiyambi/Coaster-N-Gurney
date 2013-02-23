@@ -10,6 +10,8 @@ package Entities
     // ********************************************************************
     // Imports 
     // ********************************************************************
+	import AI.AIType;
+	import AI.InstructionTypes.Instruction;
 	import flash.geom.Point;
 	
     // ********************************************************************
@@ -27,6 +29,7 @@ package Entities
 		// Logic
 		protected var alive:Boolean = true;
 		protected var active:Boolean = true;
+		protected var ai:AIType;
 		
 		// ****************************************************************
 		// Function: 	Enemy()
@@ -54,8 +57,7 @@ package Entities
 		
 		// ****************************************************************
 		// Function: 	Think()
-		// Purpose:     Processess the Enemy's AI. Overwritten for each
-		//				enemy type.
+		// Purpose:     Processess the Enemy's AI.
 		// Input:		frameTime:Number - Ammount of time that passed
 		//					between the last frame and this one, in
 		//					seconds
@@ -64,6 +66,8 @@ package Entities
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Enemy::Think() called: frameTime = "+frameTime, 3);
+			
+			if(ai) ai.Process(this, frameTime);
 			
 			Util.Debug("Enemy::Think() returned", 3);
 			Util.ChangeDebugLevel(-1);

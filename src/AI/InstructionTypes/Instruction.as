@@ -47,7 +47,7 @@ package AI.InstructionTypes
 		//					between the last frame and this one, in
 		//					seconds
 		// ****************************************************************
-		public function Process(enemy:Enemy, frameTime:Number) 
+		public function Process(enemy:Enemy, frameTime:Number) :void
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Instruction::Process() called: enemy = "+enemy+", frameTime = "+frameTime, 3);
