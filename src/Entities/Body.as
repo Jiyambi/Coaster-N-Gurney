@@ -49,7 +49,7 @@ package Entities
 		
 		// Collision
 		// TODO: Temporary public
-		public var collision:ColShape; // TODO: CHange to array of collisions, for complex models. Most only use one.
+		public var collision:ColShape; // TODO: Change to array of collisions, for complex models. Most only use one.
 	 
 		// ****************************************************************
 		// Function: 	Body()
