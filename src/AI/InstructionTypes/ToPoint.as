@@ -78,23 +78,18 @@ package AI.InstructionTypes
 			
 			// Keep us from going too far in either axis
 			if (Math.abs(relX - curX) < Math.abs(deltaX)) 
-				curX = relX;
-			else
-				curX += deltaX;
+				deltaX = relX - curX;
 			if (Math.abs(relY - curY) < Math.abs(deltaY)) 
-				curY = relY;
-			else
-				curY += deltaY;
+				deltaY = relY - curY;
 				
-			// Set the enemy's velocity
-			enemy.SetVelocity(velX, velY, 0);
+			// Increment the enemy's position
+			enemy.IncrementPosition(deltaX, deltaY, 0);
+			curX += deltaX;
+			curY += deltaY;
 			
 			// Check if we've reached our goal
 			if (curX == relX && curY == relY)
 			{
-				// Change enemy velocity to 0
-				enemy.SetVelocity(0, 0, 0);
-				
 				// Set state to done
 				done = true;
 			}

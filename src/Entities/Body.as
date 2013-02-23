@@ -145,6 +145,25 @@ package Entities
 			Util.ChangeDebugLevel(-1);
 		}
 		
+		
+		// ****************************************************************
+		// Function: 	IncrementPosition()
+		// Purpose:     Increments x, y position and angle for body
+		// Input:		x:Number - x coordinate for object
+		//				y:Number - y coordinate for object
+		//				a:Number - rotation of object
+		// ****************************************************************
+		public function IncrementPosition(x:Number, y:Number, a:Number):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Body::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 1);
+			
+			SetPosition(position_x + x, position_y + y, angle + a);
+			
+			Util.Debug("Body::SetPosition() returned", 1);
+			Util.ChangeDebugLevel(-1);
+		}
+		
 		// ****************************************************************
 		// Function: 	SetVelocity()
 		// Purpose:     Sets x, y, and angle velocity for body

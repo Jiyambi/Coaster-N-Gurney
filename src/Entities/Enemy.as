@@ -67,7 +67,7 @@ package Entities
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Enemy::Think() called: frameTime = "+frameTime, 3);
 			
-			if(ai) ai.Process(this, frameTime);
+			if(ai && alive) ai.Process(this, frameTime);
 			
 			Util.Debug("Enemy::Think() returned", 3);
 			Util.ChangeDebugLevel(-1);
