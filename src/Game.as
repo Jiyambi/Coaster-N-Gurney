@@ -76,7 +76,7 @@ package
 			
 			// Check collision
 			//player.collision.DetectCollision(box.collision);
-			player.collision.DetectCollision(bee.collision);
+			player.CollisionCheck(bee);
 			
 			// Update game objects
 			player.Update(0.02);

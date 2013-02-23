@@ -14,6 +14,7 @@ package Entities
 	import Collision.ColShape;
     import flash.display.BitmapData;
     import flash.display.Sprite;
+	import flash.events.DRMAuthenticationCompleteEvent;
     import flash.geom.Point;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -190,6 +191,24 @@ package Entities
 			Util.ChangeDebugLevel(-1);
 		}
 		
+		// ****************************************************************
+		// Function: 	CollisionCheck()
+		// Purpose:     Checks for collision with supplied Body, then
+		//				calls collision handler if appropriate
+		// Input:		other:Body - Body to check for collision
+		// ****************************************************************
+		public function CollisionCheck(other:Body):Boolean 
+		{
+			var collide:Boolean = false;
+			
+			// Check for collision
+			collision.DetectCollision(other.collision);
+			
+			// If collision occurred, call handler
+			
+			// Return collision status
+			return collide;
+		}
 	}
 
 }

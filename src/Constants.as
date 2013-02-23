@@ -59,8 +59,8 @@ package
 		// ****************************************************************
 		// Bee Constants 
 		// ****************************************************************
-		public static const BEE_WIDTH:int = 61;
-		public static const BEE_HEIGHT:int = 64;
+		public static const BEE_WIDTH:int = 64;
+		public static const BEE_HEIGHT:int = 61;
 		
 		// ****************************************************************
 		// Controls 

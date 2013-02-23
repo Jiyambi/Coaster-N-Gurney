@@ -54,7 +54,7 @@ package Entities
 		public function Think(frameTime:Number):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Enemy::Think() called: frameTime = "+frameTime", 3);
+			Util.Debug("Enemy::Think() called: frameTime = "+frameTime, 3);
 			
 			Util.Debug("Enemy::Think() returned", 3);
 			Util.ChangeDebugLevel(-1);

@@ -38,14 +38,14 @@ package Entities
 			Util.Debug("Bee::Bee() called: x = " + x + ", y = " + y + ", angle = " + angle, 1);
 			
 			// Set up Bee as an Enemy
-			super(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle-90);
+			super(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle);
 			
 			// Create image to hold sprite
-			image = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle-90, tex_bee);
+			image = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, tex_bee);
 			layer = Constants.LAYER_ENEMIES;
 			
 			// Set up collision
-			collision = new ColElipse(x, y, angle-90, Constants.BEE_WIDTH*1.10, Constants.BEE_HEIGHT*1.10, 6);
+			collision = new ColElipse(x, y, angle, Constants.BEE_WIDTH*1.10, Constants.BEE_HEIGHT*1.10, 6);
 			
 			Util.Debug("Bee::Bee() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -62,7 +62,7 @@ package Entities
 		public override function Think(frameTime:Number):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Bee::Think() called: frameTime = "+frameTime", 3);
+			Util.Debug("Bee::Think() called: frameTime = "+frameTime, 3);
 			
 			Util.Debug("Bee::Think() returned", 3);
 			Util.ChangeDebugLevel(-1);
