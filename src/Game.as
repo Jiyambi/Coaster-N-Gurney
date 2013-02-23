@@ -47,9 +47,7 @@ package
 			
 			// Create a player at center of screen
 			player = new Player(0, 0, 0);
-			//box = new Box(200, 0, 0);
-			//box.velocity_angle = 0.5;
-			bee = new Bee(200, 0, 0);
+			bee = new Bee(500, 150, 0);
 			
 			// Send camera to renderer
 			camera = new Camera(0, 0, 0);
@@ -63,6 +61,7 @@ package
 		// Function: 	Update()
 		// Purpose:     Interpret player input, update game objects
 		// ****************************************************************
+		// TODO: Move game updates into a level class
 		public function Update():void
 		{
 			Util.ChangeDebugLevel(1);
@@ -75,13 +74,18 @@ package
 			player.StrafeRight(Input.CheckKeyDown(Constants.CONTROL_STRAFE_RIGHT));
 			
 			// Check collisions against player
+			// TODO: Update for array of enemies
 			player.CollisionCheck(bee);
 			
-			// Check collisions against player's bullets
+			// TODO: Check collisions against player's bullets
+			
+			// TODO: Keep player within the screen
+			
+			// TODO: Manage which enemies are active based on where we are in the level
 			
 			// Update game objects
+			// TODO: Update with actual frame time
 			player.Update(0.02);
-			//box.Update(0.02);
 			bee.Update(0.02);
 			camera.Update(0.02);
 			

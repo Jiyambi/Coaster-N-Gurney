@@ -78,10 +78,11 @@ package Entities
 		protected override function CollisionHandler(other:Body):void 
 		{
 			// TODO: If other is player
-			// TODO: kill player
-			
-			// TODO: kill self
-			Kill();
+				// TODO: kill player
+				
+				
+				// Enemy is killed in collision
+				Kill();
 		}
 		
 	}
