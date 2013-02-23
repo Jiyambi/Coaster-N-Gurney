@@ -44,7 +44,7 @@ package Entities
 			layer = Constants.LAYER_PLAYER;
 			
 			// Set up collision
-			collision = new ColElipse(x, y, angle, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT*0.75, 6);
+			collision = new ColElipse(x, y, angle, Constants.PLAYER_WIDTH*0.80, Constants.PLAYER_HEIGHT*0.60, 10);
 			
 			Util.Debug("Player::Player() returned", 1);
 			Util.ChangeDebugLevel(-1);
