@@ -68,6 +68,22 @@ package Entities
 			Util.ChangeDebugLevel(-1);
 		}
 		
+		
+		// ****************************************************************
+		// Function: 	CollisionHandler()
+		// Purpose:     Perform actions on both bodies for the collision
+		//				Bee has kamikaze behaviour for colliison
+		//					(kills player and self)
+		// Input:		other:Body - Body that collided with this one.
+		// ****************************************************************
+		protected override function CollisionHandler(other:Body):void 
+		{
+			// TODO: If other is player
+			// TODO: kill player
+			
+			// TODO: kill self
+		}
+		
 	}
 
 }

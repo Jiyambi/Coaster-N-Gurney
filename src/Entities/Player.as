@@ -155,6 +155,14 @@ package Entities
 		}
 		
 		
+		// ****************************************************************
+		// Function: 	CollisionHandler()
+		// Purpose:     Perform actions on both bodies for the collision
+		// Input:		other:Body - Body that collided with this one.
+		// ****************************************************************
+		protected override function CollisionHandler(other:Body):void 
+		{
+		}
 		
 	}
 
