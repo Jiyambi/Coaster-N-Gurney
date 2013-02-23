@@ -24,6 +24,9 @@ package Entities
 		[Embed(source = '../../resources/images/bee.png')]
 		private var tex_bee:Class;
 		
+		[Embed(source = '../../resources/images/bee_explode.png')]
+		private var tex_bee_explode:Class;
+		
 		
 		// ****************************************************************
 		// Function: 	Bee()

@@ -38,7 +38,6 @@ package Entities
 		protected var angle:Number;				// radians, clockwise, 0 = right
 		
 		// Game world velocities
-		// TODO: Temporary public
 		protected var velocity_x:Number;		// game units / second
 		protected var velocity_y:Number;		// game units / second
 		protected var velocity_angle:Number;	// radians / second, clockwise
