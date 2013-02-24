@@ -15,6 +15,7 @@ package Entities
 	import AI.PatternMovement;
 	import flash.geom.Point;
 	import Collision.ColElipse;
+	import flash.utils.getQualifiedClassName;
 	
     // ********************************************************************
     // Class:	Bee 
@@ -77,12 +78,15 @@ package Entities
 		// ****************************************************************
 		protected override function CollisionHandler(other:Body):void 
 		{
-			// TODO: If other is player
-				// TODO: kill player
-				
+			// If other is player
+			if (getQualifiedClassName(other) == "Entities::Player")
+			{
+				// Kill player
+				other.Kill();
 				
 				// Enemy is killed in collision
 				Kill();
+			}
 		}
 		
 	}

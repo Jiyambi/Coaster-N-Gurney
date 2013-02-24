@@ -24,6 +24,16 @@ package Entities
 		[Embed(source = '../../resources/images/player.png')]
 		private var tex_player:Class;
 		
+		[Embed(source = '../../resources/images/bee_explode.png')]
+		private var tex_player_explode:Class;
+		
+		// Display
+		protected var image_dead:Image; 
+		protected var image_alive:Image;
+		
+		// Logic
+		protected var alive:Boolean = true;
+		
 		// ****************************************************************
 		// Function: 	Player()
 		// Purpose:     Constructor.
@@ -40,7 +50,9 @@ package Entities
 			super(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle);
 			
 			// Create image to hold sprite
-			image = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, tex_player);
+			image_alive = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, tex_player);
+			image_dead = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, tex_player_explode);
+			image = image_alive;
 			layer = Constants.LAYER_PLAYER;
 			
 			// Set up collision
@@ -66,9 +78,10 @@ package Entities
 				// Accelerate by top move speed
 				velocity_y -= Constants.PLAYER_TOP_MOVE_SPEED;
 			
-			// If the player is NOT holding down the strafe key
+			// If the player is NOT holding down the strafe key 
+			//	OR the player is dead
 			// AND the vehicle is at the top move speed
-			if (!status && velocity_y == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+			if ((!status || !alive) && velocity_y == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
 				velocity_y += Constants.PLAYER_TOP_MOVE_SPEED;
 				
@@ -93,8 +106,9 @@ package Entities
 				velocity_y += Constants.PLAYER_TOP_MOVE_SPEED;
 			
 			// If the player is NOT holding down the strafe key
+			//	OR the player is dead
 			// AND the vehicle is at the top move speed
-			if (!status && velocity_y == Constants.PLAYER_TOP_MOVE_SPEED) 
+			if ((!status || !alive) && velocity_y == Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
 				velocity_y -= Constants.PLAYER_TOP_MOVE_SPEED;
 				
@@ -119,8 +133,9 @@ package Entities
 				velocity_x += Constants.PLAYER_TOP_MOVE_SPEED;
 			
 			// If the player is NOT holding down the accelerate key
+			//	OR the player is dead
 			// AND the vehicle is at the top move speed
-			if (!status && velocity_x == Constants.PLAYER_TOP_MOVE_SPEED) 
+			if ((!status || !alive) && velocity_x == Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
 				velocity_x -= Constants.PLAYER_TOP_MOVE_SPEED;
 				
@@ -145,8 +160,9 @@ package Entities
 				velocity_x -= Constants.PLAYER_TOP_MOVE_SPEED;
 			
 			// If the player is NOT holding down the decelerate key
+			//	OR the player is dead
 			// AND the vehicle is at the top move speed
-			if (!status && velocity_x == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+			if ((!status || !alive) && velocity_x == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
 				velocity_x += Constants.PLAYER_TOP_MOVE_SPEED;
 				
@@ -162,6 +178,22 @@ package Entities
 		// ****************************************************************
 		protected override function CollisionHandler(other:Body):void 
 		{
+		}
+		
+		// ****************************************************************
+		// Function: 	Kill()
+		// Purpose:     Kills enemy, setting it's image and alive state
+		// ****************************************************************
+		public override function Kill():void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Player::Kill() called", 1);
+			
+			image = image_dead;
+			alive = false;
+			
+			Util.Debug("Player::Kill() returned", 1);
+			Util.ChangeDebugLevel(-1);
 		}
 		
 	}

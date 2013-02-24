@@ -101,7 +101,7 @@ package Entities
 		// Function: 	Kill()
 		// Purpose:     Kills enemy, setting it's image and alive state
 		// ****************************************************************
-		public function Kill():void
+		public override function Kill():void
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Enemy::Kill() called", 1);
@@ -109,7 +109,7 @@ package Entities
 			image = image_dead;
 			alive = false;
 			
-			Util.Debug("Body::Kill() returned", 1);
+			Util.Debug("Enemy::Kill() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
 		
@@ -125,7 +125,7 @@ package Entities
 			image = image_alive;
 			alive = true;
 			
-			Util.Debug("Body::Revive() returned", 1);
+			Util.Debug("Enemy::Revive() returned", 1);
 			Util.ChangeDebugLevel(-1);
 		}
 		

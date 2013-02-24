@@ -218,6 +218,9 @@ package Entities
 		// ****************************************************************
 		public function CollisionCheck(other:Body):Boolean 
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Body::CollisionCheck() called: other = " + other, 3);
+			
 			var result:Boolean = false;
 			
 			// Check for collision
@@ -226,6 +229,9 @@ package Entities
 			// If collision occurred, call handler
 			if(result) CollisionHandler(other);
 			if(result) other.CollisionHandler(this);
+			
+			Util.Debug("Body::CollisionCheck() returned: result = "+result, 3);
+			Util.ChangeDebugLevel( -1);
 			
 			// Return collision status
 			return result;
@@ -239,7 +245,28 @@ package Entities
 		// ****************************************************************
 		protected function CollisionHandler(other:Body):void 
 		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Body::CollisionHandler() called: other = " + other, 3);
+			
 			// To be implemented by sub classes
+			
+			Util.Debug("Body::CollisionHandler() returned", 3);
+			Util.ChangeDebugLevel( -1);
+		}
+		
+		// ****************************************************************
+		// Function: 	Kill()
+		// Purpose:     Virtual function
+		// ****************************************************************
+		public function Kill():void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Body::Kill() called", 1);
+			
+			// To be implemented by sub classes
+			
+			Util.Debug("Body::Kill() returned", 1);
+			Util.ChangeDebugLevel(-1);
 		}
 		
 		

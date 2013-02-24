@@ -45,6 +45,7 @@ package
 		private var stage_width:int;		// pixels
 		private var stage_height:int;		// pixels
 		
+		
 		// ****************************************************************
 		// Function: 	Renderer()
 		// Purpose:     Constructor.
