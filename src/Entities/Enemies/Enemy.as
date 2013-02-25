@@ -13,6 +13,7 @@ package Entities.Enemies
 	import AI.AIType;
 	import AI.InstructionTypes.Instruction;
 	import flash.geom.Point;
+	import Entities.Body
 	
     // ********************************************************************
     // Class:	Enemy 

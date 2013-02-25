@@ -11,7 +11,7 @@ package AI
     // Imports 
     // ********************************************************************
 	import AI.InstructionTypes.Instruction;
-	import Entities.Enemy;
+	import Entities.Enemies.Enemy;
 	
 	
     // ********************************************************************

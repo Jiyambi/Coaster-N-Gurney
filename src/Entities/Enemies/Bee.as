@@ -16,6 +16,7 @@ package Entities.Enemies
 	import flash.geom.Point;
 	import Collision.ColElipse;
 	import flash.utils.getQualifiedClassName;
+	import Entities.Body;
 	
     // ********************************************************************
     // Class:	Bee 
@@ -25,10 +26,10 @@ package Entities.Enemies
 		// ****************************************************************
 		// Private Data Members 
 		// ****************************************************************
-		[Embed(source = '../../resources/images/bee.png')]
+		[Embed(source = '../../../resources/images/bee.png')]
 		private var tex_bee:Class;
 		
-		[Embed(source = '../../resources/images/bee_explode.png')]
+		[Embed(source = '../../../resources/images/bee_explode.png')]
 		private var tex_bee_explode:Class;
 		
 		
