@@ -11,6 +11,8 @@ package Entities
     // Imports 
     // ********************************************************************
 	import Collision.ColElipse;
+	import Entities.Guns.Gun;
+	import Entities.Guns.MachineGun;
 	import flash.geom.Point;
 	
     // ********************************************************************
@@ -34,6 +36,9 @@ package Entities
 		// Logic
 		protected var m_alive:Boolean = true;
 		
+		// Gun
+		protected var m_gun:Gun;
+		
 		// ****************************************************************
 		// Function: 	Player()
 		// Purpose:     Constructor.
@@ -56,7 +61,10 @@ package Entities
 			m_layer = Constants.LAYER_PLAYER;
 			
 			// Set up collision
-			m_collision = new ColElipse(x, y, angle, Constants.PLAYER_WIDTH*0.80, Constants.PLAYER_HEIGHT*0.60, 10);
+			m_collision = new ColElipse(x, y, angle, Constants.PLAYER_WIDTH * 0.80, Constants.PLAYER_HEIGHT * 0.60, 10);
+			
+			// Set up gun
+			m_gun = new MachineGun(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle);
 			
 			Util.Debug("Player::Player() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -191,8 +199,35 @@ package Entities
 			
 			m_image = m_imageDead;
 			m_alive = false;
+			m_gun = null;
 			
 			Util.Debug("Player::Kill() returned", 1);
+			Util.ChangeDebugLevel(-1);
+		}
+		
+		// ****************************************************************
+		// Function: 	Update()
+		// Purpose:     Updates logic
+		// Input:		frameTime:Number - Ammount of time that passed
+		//					between the last frame and this one, in
+		//					seconds
+		// ****************************************************************
+		public override function Update(frameTime:Number):void
+		{
+			Util.ChangeDebugLevel(1);
+			Util.Debug("Player::Update() called", 3);
+			
+			// Call Body::Update()
+			super.Update(frameTime);
+			
+			// Set position, then update Gun
+			if (m_gun)
+			{
+				m_gun.SetPosition(m_positionX, m_positionY, m_angle);
+				m_gun.Update(frameTime);
+			}
+			
+			Util.Debug("Player::Update() returned", 3);
 			Util.ChangeDebugLevel(-1);
 		}
 		

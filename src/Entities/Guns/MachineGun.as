@@ -45,8 +45,8 @@ package Entities.Guns
 			super(x, y, width, height, angle);
 			
 			// Set up image
-			m_image = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, m_texureAlive);
-			m_layer = Constants.LAYER_ENEMIES;
+			m_image = new Image(x, y, width, height, angle, m_texureAlive);
+			m_layer = Constants.LAYER_PLAYER;
 			
 			Util.Debug("MachineGun::MachineGun() returned", 1);
 			Util.ChangeDebugLevel(-1);

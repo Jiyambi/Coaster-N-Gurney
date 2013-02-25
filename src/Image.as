@@ -37,7 +37,7 @@ package
 		// Position and orientation
 		protected var m_positionX:Number;		// game units		
 		protected var m_positionY:Number;		// game units
-		protected var m_angle:Number;				// radians, clockwise, 0 = right
+		protected var m_angle:Number;			// radians, clockwise, 0 = right
 		
 		// Display
 		protected var m_image:BitmapData;
@@ -98,11 +98,13 @@ package
 			{
 				// Create a matrix and move it to the body's location
 				var matrix:Matrix = new Matrix();
-				matrix.translate(-1*m_width/2, -1*m_height/2);			// center on origin
+				matrix.translate( -1 * m_imageSprite.width / 2, 	// center on origin
+					-1*m_imageSprite.height/2);		
 				matrix.rotate(m_angle);								// rotate about origin
-				matrix.translate(m_width/2, m_height/2);				// translate back to corner on origin
 				matrix.scale(m_width / m_imageSprite.width,			// scale based on height settings
 					m_height / m_imageSprite.height);
+				matrix.translate(m_width / 2, 						// translate back to corner on origin
+					m_height/2);			
 				matrix.translate(m_positionX, m_positionY);			// translate to correct location in scene
 				
 				// Render the image to this matrix
