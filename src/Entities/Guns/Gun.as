@@ -89,15 +89,15 @@ package Entities.Guns
 			// angle 0 means pointing to the right
 			
 			// Determine relative cartesian coordinate of target
-			var relX:Number = targetX - position_x;
-			var relY:Number = targetY - position_y;
+			var relX:Number = targetX - m_positionX;
+			var relY:Number = targetY - m_positionY;
 			
 			// Determine angle from relative coordinates
 			// Angle 0 means pointing to the right
 			var newAngle:Number = Math.sqrt(relX * relX + relY * relY);
 			
 			// Update body and image angle
-			SetPosition(position_x, position_y, newAngle);
+			SetPosition(m_positionX, m_positionY, newAngle);
 				
 			Util.Debug("Gun::LookAt() returned", 3);
 			Util.ChangeDebugLevel(-1);

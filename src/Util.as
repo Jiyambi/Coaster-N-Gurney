@@ -21,7 +21,7 @@ package
 		// ****************************************************************
 		// Private Data Members 
 		// ****************************************************************
-		private static var debug_level:int = 0;
+		private static var m_debugLevel:int = 0;
 		
 		// ****************************************************************
 		// Function: 	Util()
@@ -45,7 +45,7 @@ package
 		{
 			// Set up tabs based on debug level
 			var tabs:String = "";
-			for (var i:int = 0; i < debug_level; ++i)
+			for (var i:int = 0; i < m_debugLevel; ++i)
 			{
 				tabs += "\t";
 			}
@@ -62,7 +62,7 @@ package
 		// ****************************************************************
 		public static function ChangeDebugLevel(level:int):void
 		{
-			debug_level = Math.max(debug_level + level,0);
+			m_debugLevel = Math.max(m_debugLevel + level,0);
 		}
 		
 		

@@ -23,7 +23,7 @@ package
 		// ****************************************************************
 		
 		// Key press arrays
-		private static var keys_down:Array = new Array();
+		private static var m_keysDown:Array = new Array();
  
 		// ****************************************************************
 		// Function: 	KeyUp()
@@ -38,8 +38,8 @@ package
 			
 			//position of key in the array
 			var key_pos:int = -1;
-			for (var i:int = 0; i < keys_down.length; i++)
-				if (e.keyCode == keys_down[i])
+			for (var i:int = 0; i < m_keysDown.length; i++)
+				if (e.keyCode == m_keysDown[i])
 				{
 					//the key is found/was pressed before, so store the position
 					key_pos = i;
@@ -47,7 +47,7 @@ package
 				}
 			//remove the keycode from keys_down if found
 			if(key_pos!=-1)
-				keys_down.splice(key_pos, 1);
+				m_keysDown.splice(key_pos, 1);
 				
 			Util.Debug("Input::KeyUp() returned", 2);
 			Util.ChangeDebugLevel(-1);
@@ -66,13 +66,13 @@ package
 			
 			//check to see if the key that is being pressed is already in the array of pressed keys
 			var key_down:Boolean = false;
-			for (var i:int = 0; i < keys_down.length; i++)
-				if (keys_down[i] == e.keyCode)
+			for (var i:int = 0; i < m_keysDown.length; i++)
+				if (m_keysDown[i] == e.keyCode)
 					key_down = true;
  
 			//add the key to the array of pressed keys if it wasn't already in there
 			if (!key_down)
-				keys_down.push(e.keyCode);
+				m_keysDown.push(e.keyCode);
 				
 			Util.Debug("Input::KeyDown() returned", 2);
 			Util.ChangeDebugLevel(-1);
@@ -90,8 +90,8 @@ package
 			Util.Debug("Input::CheckKeyDown() called: keycode = " + keycode, 3);
 			
 			var answer:Boolean = false;
-			for (var i:int = 0; i < keys_down.length; i++)
-				if (keys_down[i] == keycode)
+			for (var i:int = 0; i < m_keysDown.length; i++)
+				if (m_keysDown[i] == keycode)
 				{
 					answer = true;
 					break;

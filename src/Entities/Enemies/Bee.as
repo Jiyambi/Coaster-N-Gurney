@@ -27,10 +27,10 @@ package Entities.Enemies
 		// Private Data Members 
 		// ****************************************************************
 		[Embed(source = '../../../resources/images/bee.png')]
-		private var tex_bee:Class;
+		private var m_texureAlive:Class;
 		
 		[Embed(source = '../../../resources/images/bee_explode.png')]
-		private var tex_bee_explode:Class;
+		private var m_textureDead:Class;
 		
 		
 		// ****************************************************************
@@ -49,13 +49,13 @@ package Entities.Enemies
 			super(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle);
 			
 			// Create image to hold sprite
-			image_alive = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, tex_bee);
-			image_dead = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, tex_bee_explode);
-			image = image_alive;
-			layer = Constants.LAYER_ENEMIES;
+			m_imageAlive = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, m_texureAlive);
+			m_imageDead = new Image(x, y, Constants.BEE_WIDTH, Constants.BEE_HEIGHT, angle, m_textureDead);
+			m_image = m_imageAlive;
+			m_layer = Constants.LAYER_ENEMIES;
 			
 			// Set up collision
-			collision = new ColElipse(x, y, angle, Constants.BEE_WIDTH*1.10, Constants.BEE_HEIGHT*1.10, 6);
+			m_collision = new ColElipse(x, y, angle, Constants.BEE_WIDTH*1.10, Constants.BEE_HEIGHT*1.10, 6);
 			
 			// Set up AI
 			var pattern:PatternMovement = new PatternMovement();
@@ -63,7 +63,7 @@ package Entities.Enemies
 			pattern.AddInstruction(ins);
 			ins = new ToPoint( -300, 300, 300);
 			pattern.AddInstruction(ins);
-			ai = pattern;
+			m_ai = pattern;
 			
 			Util.Debug("Bee::Bee() returned", 1);
 			Util.ChangeDebugLevel(-1);

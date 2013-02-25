@@ -29,19 +29,19 @@ package Collision
 		// ****************************************************************
 		
 		// Set of triangles making up this ColShape
-		protected var triangles:Array = new Array();
+		protected var m_triangles:Array = new Array();
 		
 		// Color of the object (used for collision outlines)
-		protected var color:uint = 0x00FF00;
+		protected var m_color:uint = 0x00FF00;
 		
 		// Array of things colliding with this
-		protected var colliding:Array = new Array();
+		protected var m_colliding:Array = new Array();
 		
 		// Rectangle bounds of this colshape
-		protected var top:Number = 0;
-		protected var bottom:Number = 0;
-		protected var left:Number = 0;
-		protected var right:Number = 0;
+		protected var m_top:Number = 0;
+		protected var m_bottom:Number = 0;
+		protected var m_left:Number = 0;
+		protected var m_right:Number = 0;
 		
 		// ****************************************************************
 		// Function: 	ColShape()
@@ -66,24 +66,24 @@ package Collision
 		}
 		
 		// ****************************************************************
-		// Function:    CalculateRectangleBoungs()
+		// Function:    CalculateRectangleBounds()
 		// Purpose:     Re-calculates the rectangle bounds
 		// ****************************************************************
-		protected function CalculateRectangleBoungs():void 
+		protected function CalculateRectangleBounds():void 
 		{
-			top = 0;
-			bottom = 0;
-			left = 0;
-			right = 0;
-			for each (var triangle:Triangle in triangles)
+			m_top = 0;
+			m_bottom = 0;
+			m_left = 0;
+			m_right = 0;
+			for each (var triangle:Triangle in m_triangles)
 			{
-				top = Math.min(top,triangle.top);
-				bottom = Math.max(bottom,triangle.bottom);
-				left = Math.min(left,triangle.left);
-				right = Math.max(right,triangle.right);
+				m_top = Math.min(m_top,triangle.m_top);
+				m_bottom = Math.max(m_bottom,triangle.m_bottom);
+				m_left = Math.min(m_left,triangle.m_left);
+				m_right = Math.max(m_right,triangle.m_right);
 			}
-			height = bottom - top;
-			width = right - left;
+			m_height = m_bottom - m_top;
+			m_width = m_right - m_left;
 		}
 		
 		// ****************************************************************
@@ -97,10 +97,10 @@ package Collision
 			
 			if (Constants.DEBUG_MODE) 
 			{
-				for each (var triangle:Triangle in triangles)
+				for each (var triangle:Triangle in m_triangles)
 				{
 					// Render the triangle
-					triangle.RenderColor(color);
+					triangle.RenderColor(m_color);
 				}
 				
 				// Render rectangle bound
@@ -146,19 +146,19 @@ package Collision
 			var result:Boolean = true;
 			
 			// Check and see if these colShapes are within their outer rectangle bound
-			if ( col1.top + col1.position_y > col2.bottom + col2.position_y
-				|| col1.bottom + col1.position_y < col2.top + col2.position_y
-				|| col1.left + col1.position_x > col2.right + col2.position_x
-				|| col1.right+col1.position_x < col2.left + col2.position_x )
+			if ( col1.m_top + col1.m_positionY > col2.m_bottom + col2.m_positionY
+				|| col1.m_bottom + col1.m_positionY < col2.m_top + col2.m_positionY
+				|| col1.m_left + col1.m_positionX > col2.m_right + col2.m_positionX
+				|| col1.m_right+col1.m_positionX < col2.m_left + col2.m_positionX )
 					result = false;
 			
 			// Check each trangle combination to see if any triangles are colliding
 			if (result) 
 			{
 				result = false;
-				for each (var triangle1:Triangle in col1.triangles)
+				for each (var triangle1:Triangle in col1.m_triangles)
 				{
-					for each (var triangle2:Triangle in col2.triangles)
+					for each (var triangle2:Triangle in col2.m_triangles)
 					{
 						result = triangle1.DetectCollision(triangle2);
 						if (result) break;
@@ -192,9 +192,9 @@ package Collision
 			// Check if the list of things we are colliding with contains col2
 			var present:Boolean = false;
 			var index:int = -1;
-			for (var i:int = 0; i < colliding.length; ++i)
+			for (var i:int = 0; i < m_colliding.length; ++i)
 			{
-				if (colliding[i] == col) 
+				if (m_colliding[i] == col) 
 				{
 					index = i;
 					present = true;
@@ -205,21 +205,21 @@ package Collision
 			if (result)
 			{
 				// We are colliding, so set color to red
-				color = 0xFF0000;
+				m_color = 0xFF0000;
 				
 				// If the list of things we are colliding with does not contain col2...
-				if ( !present ) colliding.push(col);
+				if ( !present ) m_colliding.push(col);
 			}
 			// If we aren't colliding...
 			else
 			{
 				// If there is no collision at all happening...
-				if (colliding.length == 0) color = 0x00FF00;
+				if (m_colliding.length == 0) m_color = 0x00FF00;
 				
 				// If this collision was present in the list, remove it
 				if (present)
 				{
-					colliding.splice(index, 1);
+					m_colliding.splice(index, 1);
 				}
 			}
 			
@@ -240,17 +240,17 @@ package Collision
 			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
 			
 			// Set overal shape position
-			var delta:Number = (a - angle);
+			var delta:Number = (a - m_angle);
 			super.SetPosition(x, y, a);
 			
 			// Update triangles
-			for each (var triangle:Triangle in triangles)
+			for each (var triangle:Triangle in m_triangles)
 			{
 				triangle.SetPosition(x, y, a);
 			}
 			
 			// Recalculate rectangle bounds if needed
-			if (delta) CalculateRectangleBoungs();
+			if (delta) CalculateRectangleBounds();
 			
 			Util.Debug("Image::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);

@@ -22,17 +22,17 @@ package Entities
 		// Private Data Members 
 		// ****************************************************************
 		[Embed(source = '../../resources/images/player.png')]
-		private var tex_player:Class;
+		private var m_textureAlive:Class;
 		
 		[Embed(source = '../../resources/images/bee_explode.png')]
-		private var tex_player_explode:Class;
+		private var m_textureDead:Class;
 		
 		// Display
-		protected var image_dead:Image; 
-		protected var image_alive:Image;
+		protected var m_imageDead:Image; 
+		protected var m_imageAlive:Image;
 		
 		// Logic
-		protected var alive:Boolean = true;
+		protected var m_alive:Boolean = true;
 		
 		// ****************************************************************
 		// Function: 	Player()
@@ -50,13 +50,13 @@ package Entities
 			super(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle);
 			
 			// Create image to hold sprite
-			image_alive = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, tex_player);
-			image_dead = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, tex_player_explode);
-			image = image_alive;
-			layer = Constants.LAYER_PLAYER;
+			m_imageAlive = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, m_textureAlive);
+			m_imageDead = new Image(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, angle, m_textureDead);
+			m_image = m_imageAlive;
+			m_layer = Constants.LAYER_PLAYER;
 			
 			// Set up collision
-			collision = new ColElipse(x, y, angle, Constants.PLAYER_WIDTH*0.80, Constants.PLAYER_HEIGHT*0.60, 10);
+			m_collision = new ColElipse(x, y, angle, Constants.PLAYER_WIDTH*0.80, Constants.PLAYER_HEIGHT*0.60, 10);
 			
 			Util.Debug("Player::Player() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -74,16 +74,16 @@ package Entities
 			
 			// If the player is holding down the strafe key
 			// AND the vehicle is not yet at the top move speed
-			if (status && velocity_y > -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+			if (status && m_velocityY > -1*Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Accelerate by top move speed
-				velocity_y -= Constants.PLAYER_TOP_MOVE_SPEED;
+				m_velocityY -= Constants.PLAYER_TOP_MOVE_SPEED;
 			
 			// If the player is NOT holding down the strafe key 
 			//	OR the player is dead
 			// AND the vehicle is at the top move speed
-			if ((!status || !alive) && velocity_y == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+			if ((!status || !m_alive) && m_velocityY == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
-				velocity_y += Constants.PLAYER_TOP_MOVE_SPEED;
+				m_velocityY += Constants.PLAYER_TOP_MOVE_SPEED;
 				
 			Util.Debug("Player::StrafeLeft() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -101,16 +101,16 @@ package Entities
 			
 			// If the player is holding down the strafe key
 			// AND the vehicle is not yet at the top move speed
-			if (status && velocity_y < Constants.PLAYER_TOP_MOVE_SPEED) 
+			if (status && m_velocityY < Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Accelerate by top move speed
-				velocity_y += Constants.PLAYER_TOP_MOVE_SPEED;
+				m_velocityY += Constants.PLAYER_TOP_MOVE_SPEED;
 			
 			// If the player is NOT holding down the strafe key
 			//	OR the player is dead
 			// AND the vehicle is at the top move speed
-			if ((!status || !alive) && velocity_y == Constants.PLAYER_TOP_MOVE_SPEED) 
+			if ((!status || !m_alive) && m_velocityY == Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
-				velocity_y -= Constants.PLAYER_TOP_MOVE_SPEED;
+				m_velocityY -= Constants.PLAYER_TOP_MOVE_SPEED;
 				
 			Util.Debug("Player::StrafeRight() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -128,16 +128,16 @@ package Entities
 			
 			// If the player is holding down the accelerate key
 			// AND the vehicle is not yet at the top move speed
-			if (status && velocity_x < Constants.PLAYER_TOP_MOVE_SPEED) 
+			if (status && m_velocityX < Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Accelerate by top move speed
-				velocity_x += Constants.PLAYER_TOP_MOVE_SPEED;
+				m_velocityX += Constants.PLAYER_TOP_MOVE_SPEED;
 			
 			// If the player is NOT holding down the accelerate key
 			//	OR the player is dead
 			// AND the vehicle is at the top move speed
-			if ((!status || !alive) && velocity_x == Constants.PLAYER_TOP_MOVE_SPEED) 
+			if ((!status || !m_alive) && m_velocityX == Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
-				velocity_x -= Constants.PLAYER_TOP_MOVE_SPEED;
+				m_velocityX -= Constants.PLAYER_TOP_MOVE_SPEED;
 				
 			Util.Debug("Player::Accelerate() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -155,16 +155,16 @@ package Entities
 			
 			// If the player is holding down the decelerate key
 			// AND the vehicle is not yet at the top move speed
-			if (status && velocity_x > -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+			if (status && m_velocityX > -1*Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Accelerate by top move speed
-				velocity_x -= Constants.PLAYER_TOP_MOVE_SPEED;
+				m_velocityX -= Constants.PLAYER_TOP_MOVE_SPEED;
 			
 			// If the player is NOT holding down the decelerate key
 			//	OR the player is dead
 			// AND the vehicle is at the top move speed
-			if ((!status || !alive) && velocity_x == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
+			if ((!status || !m_alive) && m_velocityX == -1*Constants.PLAYER_TOP_MOVE_SPEED) 
 				// Decelerate by top move speed
-				velocity_x += Constants.PLAYER_TOP_MOVE_SPEED;
+				m_velocityX += Constants.PLAYER_TOP_MOVE_SPEED;
 				
 			Util.Debug("Player::Decelerate() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -189,8 +189,8 @@ package Entities
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Player::Kill() called", 1);
 			
-			image = image_dead;
-			alive = false;
+			m_image = m_imageDead;
+			m_alive = false;
 			
 			Util.Debug("Player::Kill() returned", 1);
 			Util.ChangeDebugLevel(-1);

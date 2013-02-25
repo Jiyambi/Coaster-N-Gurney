@@ -22,7 +22,7 @@ package AI.InstructionTypes
 		// ****************************************************************
 		// Protected Data Members 
 		// ****************************************************************
-		protected var done:Boolean = false;
+		protected var m_done:Boolean = false;
 		
 		
 		// ****************************************************************
@@ -71,7 +71,7 @@ package AI.InstructionTypes
 		// ****************************************************************
 		public function IsDone():Boolean 
 		{
-			return done;
+			return m_done;
 		}
 		
 		
@@ -81,7 +81,7 @@ package AI.InstructionTypes
 		// ****************************************************************
 		public function Reset():void 
 		{
-			done = false;
+			m_done = false;
 		}
 	}
 

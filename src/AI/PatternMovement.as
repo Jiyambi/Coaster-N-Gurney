@@ -22,8 +22,8 @@ package AI
 		// ****************************************************************
 		// Private Data Members 
 		// ****************************************************************
-		private var instructions:Array = new Array();
-		private var current_instruction:int = 0;
+		private var m_instructions:Array = new Array();
+		private var m_currentInstruction:int = 0;
 		
 		
 		// ****************************************************************
@@ -53,18 +53,18 @@ package AI
 			Util.Debug("PatternMovement::Process() called: enemy = "+enemy+", frameTime = "+frameTime, 3);
 			
 			// Process current instruction
-			if (instructions[current_instruction]) instructions[current_instruction].Process(enemy, frameTime);
+			if (m_instructions[m_currentInstruction]) m_instructions[m_currentInstruction].Process(enemy, frameTime);
 			
 			// If current instruction is done, move to the next instrcution
-			if (instructions[current_instruction].IsDone()) ++current_instruction;
+			if (m_instructions[m_currentInstruction].IsDone()) ++m_currentInstruction;
 			
 			// If all instructions have been run, loop back to the beginning
-			if (current_instruction >= instructions.length) 
+			if (m_currentInstruction >= m_instructions.length) 
 			{
-				current_instruction = 0;
+				m_currentInstruction = 0;
 				
 				// Reset all instructions
-				for each (var instruction:Instruction in instructions)
+				for each (var instruction:Instruction in m_instructions)
 				{
 					instruction.Reset();
 				}
@@ -77,14 +77,14 @@ package AI
 		// ****************************************************************
 		// Function: 	AddInstruction()
 		// Purpose:     Adds an instruction to the set.
-		// Input:		ins:Instruction - new instruction to be added
+		// Input:		instruction:Instruction - new instruction to be added
 		// ****************************************************************
-		public function AddInstruction(ins:Instruction):void 
+		public function AddInstruction(instruction:Instruction):void 
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("PatternMovement::AddInstruction() called: ins = "+ins, 1);
+			Util.Debug("PatternMovement::AddInstruction() called: ins = "+instruction, 1);
 			
-			instructions.push(ins);
+			m_instructions.push(instruction);
 			
 			Util.Debug("PatternMovement::AddInstruction() returned", 1);
 			Util.ChangeDebugLevel(-1);

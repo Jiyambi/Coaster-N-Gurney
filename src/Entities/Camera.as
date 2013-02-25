@@ -41,10 +41,10 @@ package Entities
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Camera::GetWidth() called", 3);
-			Util.Debug("Camera::GetWidth() returned, result = "+width, 3);
+			Util.Debug("Camera::GetWidth() returned, result = "+m_width, 3);
 			Util.ChangeDebugLevel( -1);
 			
-			return width;
+			return m_width;
 		}
 		
 		// ****************************************************************
@@ -56,10 +56,10 @@ package Entities
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Camera::GetHeight() called", 3);
-			Util.Debug("Camera::GetHeight() returned, result = "+height, 3);
+			Util.Debug("Camera::GetHeight() returned, result = "+m_height, 3);
 			Util.ChangeDebugLevel( -1);
 			
-			return height;
+			return m_height;
 		}
 		
 		// ****************************************************************
@@ -71,10 +71,10 @@ package Entities
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Camera::GetX() called", 3);
-			Util.Debug("Camera::GetX() returned, result = "+position_x, 3);
+			Util.Debug("Camera::GetX() returned, result = "+m_positionX, 3);
 			Util.ChangeDebugLevel( -1);
 			
-			return position_x;
+			return m_positionX;
 		}
 		
 		// ****************************************************************
@@ -86,10 +86,10 @@ package Entities
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Camera::GetY() called", 3);
-			Util.Debug("Camera::GetY() returned, result = "+position_y, 3);
+			Util.Debug("Camera::GetY() returned, result = "+m_positionY, 3);
 			Util.ChangeDebugLevel( -1);
 			
-			return position_y;
+			return m_positionY;
 		}
 		
 		// ****************************************************************
@@ -101,10 +101,10 @@ package Entities
 		{
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Camera::GetAngle() called", 3);
-			Util.Debug("Camera::GetAngle() returned, result = "+angle, 3);
+			Util.Debug("Camera::GetAngle() returned, result = "+m_angle, 3);
 			Util.ChangeDebugLevel( -1);
 			
-			return angle;
+			return m_angle;
 		}
 		
 	}

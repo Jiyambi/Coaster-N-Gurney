@@ -46,10 +46,11 @@ package Collision
 			var upper_right:Point = new Point(0.5 * width, - 0.5 * height);
 			var lower_left:Point = new Point(- 0.5 * width, 0.5 * height);
 			var lower_right:Point = new Point(0.5 * width, 0.5 * height);
-			triangles.push(new Triangle(x, y, angle, upper_left, upper_right, lower_right));
-			triangles.push(new Triangle(x, y, angle, lower_right, lower_left, upper_left));
+			m_triangles.push(new Triangle(x, y, angle, upper_left, upper_right, lower_right));
+			m_triangles.push(new Triangle(x, y, angle, lower_right, lower_left, upper_left));
 			
-			CalculateRectangleBoungs();
+			// Calculate bounding box
+			CalculateRectangleBounds();
 			
 			Util.Debug("ColRectangle::ColRectangle() returned", 1);
 			Util.ChangeDebugLevel(-1);

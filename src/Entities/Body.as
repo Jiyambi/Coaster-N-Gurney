@@ -29,26 +29,26 @@ package Entities
 		// ****************************************************************
 		
 		// Game unit dimmensions
-		protected var width:int;				// game units
-		protected var height:int;				// game units
+		protected var m_width:int;				// game units
+		protected var m_height:int;				// game units
 		
 		// Game world position and orientation
-		protected var position_x:Number;		// game units		
-		protected var position_y:Number;		// game units
-		protected var angle:Number;				// radians, clockwise, 0 = right
+		protected var m_positionX:Number;		// game units		
+		protected var m_positionY:Number;		// game units
+		protected var m_angle:Number;			// radians, clockwise, 0 = right
 		
 		// Game world velocities
-		protected var velocity_x:Number;		// game units / second
-		protected var velocity_y:Number;		// game units / second
-		protected var velocity_angle:Number;	// radians / second, clockwise
+		protected var m_velocityX:Number;		// game units / second
+		protected var m_velocityY:Number;		// game units / second
+		protected var m_angularVelocity:Number;	// radians / second, clockwise
 		
 		// Display
-		protected var visible:Boolean = true;
-		protected var image:Image; // TODO: Change to array of images, for complex models. Most only use one.
-		protected var layer:int;
+		protected var m_visible:Boolean = true;
+		protected var m_image:Image; // TODO: Change to array of images, for complex models. Most only use one.
+		protected var m_layer:int;
 		
 		// Collision
-		protected var collision:ColShape; // TODO: Change to array of collisions, for complex models. Most only use one.
+		protected var m_collision:ColShape; // TODO: Change to array of collisions, for complex models. Most only use one.
 	 
 		// ****************************************************************
 		// Function: 	Body()
@@ -65,16 +65,16 @@ package Entities
 			Util.Debug("Body::Body() called: x = " + x + ", y = " + y + ", width = " + width + ", height = " + height + ", angle = " + angle, 1);
 			
 			// Copy in supplied values
-			this.width = width;
-			this.height = height;
-			this.position_x = x;
-			this.position_y = y;
-			this.angle = angle;
+			this.m_width = width;
+			this.m_height = height;
+			this.m_positionX = x;
+			this.m_positionY = y;
+			this.m_angle = angle;
 			
 			// Velocities set to 0 at start
-			velocity_x = 0;
-			velocity_y = 0;
-			velocity_angle = 0;
+			m_velocityX = 0;
+			m_velocityY = 0;
+			m_angularVelocity = 0;
 			
 			Util.Debug("Body::Body() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -93,26 +93,26 @@ package Entities
 			Util.Debug("Body::Update() called", 3);
 			
 			// Update position and orientation based on velocities
-			position_x += velocity_x * frameTime;
-			position_y += velocity_y * frameTime;
-			angle += velocity_angle * frameTime;
+			m_positionX += m_velocityX * frameTime;
+			m_positionY += m_velocityY * frameTime;
+			m_angle += m_angularVelocity * frameTime;
 			
 			// Bounds check orientation
-			if (angle > 2 * Math.PI)
-				angle -= 2 * Math.PI;
-			if (angle < 0)
-				angle += 2 * Math.PI;
+			if (m_angle > 2 * Math.PI)
+				m_angle -= 2 * Math.PI;
+			if (m_angle < 0)
+				m_angle += 2 * Math.PI;
 			
 			// Image setup
-			if (image)
+			if (m_image)
 			{
-				image.SetPosition(position_x-width/2, position_y-height/2, angle);
-				Renderer.AddToRenderQueue(image, layer);
+				m_image.SetPosition(m_positionX-m_width/2, m_positionY-m_height/2, m_angle);
+				Renderer.AddToRenderQueue(m_image, m_layer);
 			}
-			if (collision)
+			if (m_collision)
 			{
-				collision.SetPosition(position_x, position_y, angle);
-				Renderer.AddToRenderQueue(collision, Constants.LAYER_DEBUG);
+				m_collision.SetPosition(m_positionX, m_positionY, m_angle);
+				Renderer.AddToRenderQueue(m_collision, Constants.LAYER_DEBUG);
 			}
 			
 			Util.Debug("Body::Update() returned", 3);
@@ -131,14 +131,14 @@ package Entities
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Body::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 1);
 			
-			position_x = x;
-			position_y = y;
-			angle = a;
+			m_positionX = x;
+			m_positionY = y;
+			m_angle = a;
 			
 			// Image setup
-			if (image)
+			if (m_image)
 			{
-				image.SetPosition(position_x-width/2, position_y-height/2, angle);
+				m_image.SetPosition(m_positionX-m_width/2, m_positionY-m_height/2, m_angle);
 			}
 			
 			Util.Debug("Body::SetPosition() returned", 1);
@@ -158,7 +158,7 @@ package Entities
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Body::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 1);
 			
-			SetPosition(position_x + x, position_y + y, angle + a);
+			SetPosition(m_positionX + x, m_positionY + y, m_angle + a);
 			
 			Util.Debug("Body::SetPosition() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -176,9 +176,9 @@ package Entities
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Body::SetVelocity() called: x = " + x + ", y = " + y + ", angle = " + a, 1);
 			
-			velocity_x = x;
-			velocity_y = y;
-			velocity_angle = a;
+			m_velocityX = x;
+			m_velocityY = y;
+			m_angularVelocity = a;
 			
 			Util.Debug("Body::SetVelocity() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -195,13 +195,13 @@ package Entities
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Body::SetDimmensions() called: w = " + w + ", h = " + h, 1);
 			
-			width = w;
-			height = h;
+			m_width = w;
+			m_height = h;
 			
 			// Image setup
-			if (image)
+			if (m_image)
 			{
-				image.SetDimmensions(w, h);
+				m_image.SetDimmensions(w, h);
 			}
 			
 			Util.Debug("Body::SetDimmensions() returned", 1);
@@ -224,7 +224,7 @@ package Entities
 			var result:Boolean = false;
 			
 			// Check for collision
-			result = collision.DetectCollision(other.collision);
+			result = m_collision.DetectCollision(other.m_collision);
 			
 			// If collision occurred, call handler
 			if(result) CollisionHandler(other);

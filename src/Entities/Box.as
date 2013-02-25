@@ -22,7 +22,7 @@ package Entities
 		// Private Data Members 
 		// ****************************************************************
 		[Embed(source = '../../resources/images/box.png')]
-		private var tex_box:Class;
+		private var m_textureAlive:Class;
 		
 		// ****************************************************************
 		// Function: 	Player()
@@ -40,11 +40,11 @@ package Entities
 			super(x, y, 100, 100, angle);
 			
 			// Create image to hold sprite
-			image = new Image(x-50, y-50, 100, 100, angle, tex_box);
-			layer = Constants.LAYER_OBSTACLES;
+			m_image = new Image(x-50, y-50, 100, 100, angle, m_textureAlive);
+			m_layer = Constants.LAYER_OBSTACLES;
 			
 			// Set up collision
-			collision = new ColRectangle(x, y, angle, 100, 100);
+			m_collision = new ColRectangle(x, y, angle, 100, 100);
 			
 			Util.Debug("Box::Box() returned", 1);
 			Util.ChangeDebugLevel(-1);

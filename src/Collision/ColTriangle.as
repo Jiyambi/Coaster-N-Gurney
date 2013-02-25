@@ -44,9 +44,10 @@ package Collision
 				(2*Math.max(Math.abs(y-point1.y),Math.abs(y-point2.y),Math.abs(y-point3.y))));
 			
 			// Set up triangle
-			triangles.push(new Triangle(x, y, angle, point1, point2, point3));
+			m_triangles.push(new Triangle(x, y, angle, point1, point2, point3));
 			
-			CalculateRectangleBoungs();
+			// Calculate bounding box
+			CalculateRectangleBounds();
 			
 			Util.Debug("ColShape::ColShape() returned", 1);
 			Util.ChangeDebugLevel(-1);

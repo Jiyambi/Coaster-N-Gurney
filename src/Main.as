@@ -1,7 +1,8 @@
 // ************************************************************************ 
 // File Name:   Main.as 
 // Purpose:     Wrapper for the program. 
-// Author:      Sarah Herzog  
+// Author:      Sarah Herzog 
+// Project:     Coaster 'N Gurney  
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
 	
@@ -23,8 +24,8 @@ package
 		// ****************************************************************
 		// Private Data Members 
 		// ****************************************************************
-		private var game:Game;
-		private var renderer:Renderer;
+		private var m_game:Game;
+		private var m_renderer:Renderer;
 		
 		// ****************************************************************
 		// Function: 	Main()
@@ -47,11 +48,11 @@ package
 			Util.Debug("ENTRY POINT", 1);
 
 			// Create the game object, passing in the swf width and height
-			renderer = new Renderer(stage.stageWidth, stage.stageHeight);
-			game = new Game();
+			m_renderer = new Renderer(stage.stageWidth, stage.stageHeight);
+			m_game = new Game();
 
 			// Add the game bitmap to the Main.as Sprite to make it visible
-			addChild(renderer.bitmap);
+			addChild(m_renderer.m_bitmap);
 
 			// Create the main game loop
 			addEventListener(Event.ENTER_FRAME, Run);
@@ -70,8 +71,8 @@ package
 		{
 			Util.Debug("Run() called: e = " + e, 3);
 			
-			game.Update();
-			renderer.Render();
+			m_game.Update();
+			m_renderer.Render();
 			
 			Util.Debug("Run() returned", 3);
 		}

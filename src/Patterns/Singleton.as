@@ -14,8 +14,8 @@ package Patterns
 		// Private Data Members 
 		// ****************************************************************
 		// Singleton management
-        private static var instance:Singleton;
-        private static var isOkayToCreate:Boolean=false;
+        private static var m_instance:Singleton;
+        private static var m_isOkayToCreate:Boolean=false;
  
 		// ****************************************************************
 		// Function: 	Singleton()
@@ -23,7 +23,7 @@ package Patterns
 		// ****************************************************************
         public function Singleton() {
             //If we can't create an instance, throw an error so no instance is created
-            if(!isOkayToCreate) throw new Error(this + " is a Singleton. Access using getInstance()");
+            if(!m_isOkayToCreate) throw new Error(this + " is a Singleton. Access using getInstance()");
         }
 
 		// ****************************************************************
@@ -35,15 +35,15 @@ package Patterns
         public static function GetInstance():Singleton
         {
             //If there's no instance, create it
-            if (!instance)
+            if (!m_instance)
             {
                 //Allow the creation of the instance, and after it is created, stop any more from being created
-                isOkayToCreate = true;
-                instance = new Singleton();
-                isOkayToCreate = false;
+                m_isOkayToCreate = true;
+                m_instance = new Singleton();
+                m_isOkayToCreate = false;
                 trace("Singleton instance created!");
             }
-            return instance;
+            return m_instance;
         }
     }
 	

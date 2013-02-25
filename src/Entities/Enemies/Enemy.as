@@ -24,13 +24,13 @@ package Entities.Enemies
 		// Protected Data Members 
 		// ****************************************************************
 		// Display
-		protected var image_dead:Image; 
-		protected var image_alive:Image;
+		protected var m_imageDead:Image; 
+		protected var m_imageAlive:Image;
 		
 		// Logic
-		protected var alive:Boolean = true;
-		protected var active:Boolean = true;
-		protected var ai:AIType;
+		protected var m_alive:Boolean = true;
+		protected var m_active:Boolean = true;
+		protected var m_ai:AIType;
 		
 		// ****************************************************************
 		// Function: 	Enemy()
@@ -68,7 +68,7 @@ package Entities.Enemies
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Enemy::Think() called: frameTime = "+frameTime, 3);
 			
-			if(ai && alive) ai.Process(this, frameTime);
+			if(m_ai && m_alive) m_ai.Process(this, frameTime);
 			
 			Util.Debug("Enemy::Think() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -107,8 +107,8 @@ package Entities.Enemies
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Enemy::Kill() called", 1);
 			
-			image = image_dead;
-			alive = false;
+			m_image = m_imageDead;
+			m_alive = false;
 			
 			Util.Debug("Enemy::Kill() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -123,8 +123,8 @@ package Entities.Enemies
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Enemy::Revive() called", 1);
 			
-			image = image_alive;
-			alive = true;
+			m_image = m_imageAlive;
+			m_alive = true;
 			
 			Util.Debug("Enemy::Revive() returned", 1);
 			Util.ChangeDebugLevel(-1);

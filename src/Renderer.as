@@ -27,23 +27,23 @@ package
 		// Public Data Members 
 		// ****************************************************************
 		// Renderer
-		public var bitmap:Bitmap;
+		public var m_bitmap:Bitmap;
 		
 		// ****************************************************************
 		// Private Data Members 
 		// ****************************************************************
-		private static var camera:Camera;	// Camera as located in the 
+		private static var m_camera:Camera;	// Camera as located in the 
 											// game world
 		
 		// Render queue
-		private static var queue:Array = new Array();
+		private static var m_queue:Array = new Array();
 		
 		// Buffers
-		private static var renderer:BitmapData;
+		private static var m_renderer:BitmapData;
 		
 		// Stage size
-		private var stage_width:int;		// pixels
-		private var stage_height:int;		// pixels
+		private var m_stageWidth:int;		// pixels
+		private var m_stageHeight:int;		// pixels
 		
 		
 		// ****************************************************************
@@ -58,12 +58,12 @@ package
 			Util.Debug("Renderer::Renderer() called: stage_width = " + stage_width + ", stage_height = " + stage_height, 1);
 			
 			// Set up main bitmap (renderer) to be drawn to
-			renderer = new BitmapData(stage_width, stage_height, false, 0x000000);
-			bitmap = new Bitmap(renderer);
+			m_renderer = new BitmapData(stage_width, stage_height, false, 0x000000);
+			m_bitmap = new Bitmap(m_renderer);
 			
 			// Record stage width and height
-			this.stage_width = stage_width;
-			this.stage_height = stage_height;
+			this.m_stageWidth = stage_width;
+			this.m_stageHeight = stage_height;
 			
 			Util.Debug("Renderer::Renderer() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -78,13 +78,13 @@ package
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Renderer::Render() called", 3);
 			
-			renderer.lock();
+			m_renderer.lock();
 			
 			// Clear screen
-			renderer.fillRect(new Rectangle(0, 0, renderer.width, renderer.height), 0x000000);
+			m_renderer.fillRect(new Rectangle(0, 0, m_renderer.width, m_renderer.height), 0x000000);
 			
 			// Draw everything in the queue
-			for each (var layer:Array in queue)
+			for each (var layer:Array in m_queue)
 			{
 				// Render the images on this layer, in FIFO order
 				for each (var image:Image in layer)
@@ -96,7 +96,7 @@ package
 				layer.splice(0);
 			}
 			
-			renderer.unlock();
+			m_renderer.unlock();
 			
 			Util.Debug("Renderer::Render() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -111,9 +111,9 @@ package
 		public static function SetCamera(new_camera:Camera):void
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("Renderer::SetCamera() called, camera = " + camera, 1);
+			Util.Debug("Renderer::SetCamera() called, camera = " + m_camera, 1);
 			
-			camera = new_camera;
+			m_camera = new_camera;
 			
 			Util.Debug("Renderer::SetCamera() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -131,8 +131,8 @@ package
 			Util.Debug("Renderer::AddToRenderQueue() called, image = " +image+ ", layer = "+layer, 3);
 				
 			// Add to render queue at correct location
-			if (!queue[layer]) queue[layer] = new Array();
-			queue[layer].push(image);
+			if (!m_queue[layer]) m_queue[layer] = new Array();
+			m_queue[layer].push(image);
 			
 			Util.Debug("Renderer::AddToRenderQueue() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -151,14 +151,14 @@ package
 				
 			// Transform image based on camera
 			// we start with the world origin in the upper left
-			matrix.translate(-camera.GetX(), -camera.GetY()); 			// translate to correct point in scene
-			matrix.rotate( -camera.GetAngle());							// rotate about 0,0
-			matrix.translate(renderer.width/2, renderer.height/2); 		// translate so world origin would be in center
-			matrix.scale(renderer.width / camera.GetWidth(), 			// scale based on camera view
-				renderer.height / camera.GetHeight());
+			matrix.translate(-m_camera.GetX(), -m_camera.GetY()); 			// translate to correct point in scene
+			matrix.rotate( -m_camera.GetAngle());							// rotate about 0,0
+			matrix.translate(m_renderer.width/2, m_renderer.height/2); 		// translate so world origin would be in center
+			matrix.scale(m_renderer.width / m_camera.GetWidth(), 			// scale based on camera view
+				m_renderer.height / m_camera.GetHeight());
 			
 			// Draw the image to renderer
-			renderer.draw(image_sprite, matrix);
+			m_renderer.draw(image_sprite, matrix);
 			
 			Util.Debug("Renderer::DrawToBackBuffer() returned", 3);
 			Util.ChangeDebugLevel(-1);

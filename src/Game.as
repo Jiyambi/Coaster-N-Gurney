@@ -2,6 +2,7 @@
 // File Name:   Game.as 
 // Purpose:     Contains game data, update and render functions
 // Author:      Sarah Herzog 
+// Project:     Coaster 'N Gurney  
 // Copyright: 	2013 Bound-Dare Studios
 // ************************************************************************ 
 
@@ -10,14 +11,9 @@ package
     // ********************************************************************
     // Imports 
     // ********************************************************************
-	// Entities
-	import Entities.Enemies.Bee;
-	import Entities.Box;
-    import Entities.Player;
-    import Entities.Camera;
-	// Geometry
+	import Entities.Enemies.*;
+	import Entities.*;
     import flash.geom.Rectangle;
-	// Timers
     import flash.utils.getTimer;
 	
     // ********************************************************************
@@ -30,10 +26,10 @@ package
 		// Private Data Members 
 		// ****************************************************************
 		// Game objects
-    	private var player:Player;
-    	private var box:Box;
-		private var bee:Bee;
-    	private var camera:Camera;
+    	private var m_player:Player;
+    	private var m_box:Box;
+		private var m_bee:Bee;
+    	private var m_camera:Camera;
 		
 		// ****************************************************************
 		// Function: 	Game()
@@ -46,12 +42,12 @@ package
 			Util.Debug("Game::Game() called", 1);
 			
 			// Create a player at center of screen
-			player = new Player(0, 0, 0);
-			bee = new Bee(500, 150, 0);
+			m_player = new Player(0, 0, 0);
+			m_bee = new Bee(500, 150, 0);
 			
 			// Send camera to renderer
-			camera = new Camera(0, 0, 0);
-			Renderer.SetCamera(camera);
+			m_camera = new Camera(0, 0, 0);
+			Renderer.SetCamera(m_camera);
 			
 			Util.Debug("Game::Game() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -68,14 +64,14 @@ package
 			Util.Debug("Game::Update() called", 3);
 			
 			// Interpret player input
-			player.Decelerate(Input.CheckKeyDown(Constants.CONTROL_DECELERATE));
-			player.Accelerate(Input.CheckKeyDown(Constants.CONTROL_ACCELERATE));	
-			player.StrafeLeft(Input.CheckKeyDown(Constants.CONTROL_STRAFE_LEFT));		
-			player.StrafeRight(Input.CheckKeyDown(Constants.CONTROL_STRAFE_RIGHT));
+			m_player.Decelerate(Input.CheckKeyDown(Constants.CONTROL_DECELERATE));
+			m_player.Accelerate(Input.CheckKeyDown(Constants.CONTROL_ACCELERATE));	
+			m_player.StrafeLeft(Input.CheckKeyDown(Constants.CONTROL_STRAFE_LEFT));		
+			m_player.StrafeRight(Input.CheckKeyDown(Constants.CONTROL_STRAFE_RIGHT));
 			
 			// Check collisions against player
 			// TODO: Update for array of enemies
-			player.CollisionCheck(bee);
+			m_player.CollisionCheck(m_bee);
 			
 			// TODO: Check collisions against player's bullets
 			
@@ -85,9 +81,9 @@ package
 			
 			// Update game objects
 			// TODO: Update with actual frame time
-			player.Update(0.02);
-			bee.Update(0.02);
-			camera.Update(0.02);
+			m_player.Update(0.02);
+			m_bee.Update(0.02);
+			m_camera.Update(0.02);
 			
 			Util.Debug("Game::Update() returned", 3);
 			Util.ChangeDebugLevel(-1);

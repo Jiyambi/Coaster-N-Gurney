@@ -21,38 +21,38 @@ package AI.InstructionTypes
 		// ****************************************************************
 		// Private Data Members 
 		// ****************************************************************
-		private var relX:Number;
-		private var relY:Number;
-		private var velX:Number;
-		private var velY:Number;
-		private var curX:Number;
-		private var curY:Number;
+		private var m_targetX:Number;
+		private var m_targetY:Number;
+		private var m_velocityX:Number;
+		private var m_velocityY:Number;
+		private var m_positionX:Number;
+		private var m_positionY:Number;
 		
 		
 		// ****************************************************************
 		// Function: 	ToPoint()
 		// Purpose:     Constructor.
-		// Input:		relx:Number - Target x value
-		//				rely:Number - Target y value
+		// Input:		targetX:Number - Target x value
+		//				targetY:Number - Target y value
 		//				speed:Number - Speed we'll travel at
 		// ****************************************************************
-		public function ToPoint(relx:Number, rely:Number, speed:Number) 
+		public function ToPoint(targetX:Number, targetY:Number, speed:Number) 
 		{
 			Util.ChangeDebugLevel(1);
-			Util.Debug("ToPoint::ToPoint() called: relx = "+relx+", rely = "+rely+", speed = "+speed, 1);
+			Util.Debug("ToPoint::ToPoint() called: targetX = "+targetX+", targetY = "+targetY+", speed = "+speed, 1);
 			
 			// Record target
-			relX = relx;
-			relY = rely;
+			m_targetX = targetX;
+			m_targetY = targetY;
 			
 			// Determine velocity vector
-			var magnitude:Number = Math.sqrt(relx * relx + rely * rely);
-			velX = speed * relx / magnitude;
-			velY = speed * rely / magnitude;
+			var magnitude:Number = Math.sqrt(targetX * targetX + targetY * targetY);
+			m_velocityX = speed * targetX / magnitude;
+			m_velocityY = speed * targetY / magnitude;
 			
 			// Initialise current position
-			curX = 0;
-			curY = 0;
+			m_positionX = 0;
+			m_positionY = 0;
 			
 			Util.Debug("ToPoint::ToPoint() returned", 1);
 			Util.ChangeDebugLevel(-1);
@@ -73,25 +73,25 @@ package AI.InstructionTypes
 			Util.Debug("ToPoint::Process() called: enemy = "+enemy+", frameTime = "+frameTime, 3);
 			
 			// Determine next movement step
-			var deltaX:Number = frameTime * velX;
-			var deltaY:Number = frameTime * velY;
+			var deltaX:Number = frameTime * m_velocityX;
+			var deltaY:Number = frameTime * m_velocityY;
 			
 			// Keep us from going too far in either axis
-			if (Math.abs(relX - curX) < Math.abs(deltaX)) 
-				deltaX = relX - curX;
-			if (Math.abs(relY - curY) < Math.abs(deltaY)) 
-				deltaY = relY - curY;
+			if (Math.abs(m_targetX - m_positionX) < Math.abs(deltaX)) 
+				deltaX = m_targetX - m_positionX;
+			if (Math.abs(m_targetY - m_positionY) < Math.abs(deltaY)) 
+				deltaY = m_targetY - m_positionY;
 				
 			// Increment the enemy's position
 			enemy.IncrementPosition(deltaX, deltaY, 0);
-			curX += deltaX;
-			curY += deltaY;
+			m_positionX += deltaX;
+			m_positionY += deltaY;
 			
 			// Check if we've reached our goal
-			if (curX == relX && curY == relY)
+			if (m_positionX == m_targetX && m_positionY == m_targetY)
 			{
 				// Set state to done
-				done = true;
+				m_done = true;
 			}
 			
 			Util.Debug("ToPoint::Process() returned", 3);
@@ -105,9 +105,9 @@ package AI.InstructionTypes
 		// ****************************************************************
 		public override function Reset():void 
 		{
-			done = false;
-			curX = 0;
-			curY = 0;
+			m_done = false;
+			m_positionX = 0;
+			m_positionY = 0;
 		}
 		
 		

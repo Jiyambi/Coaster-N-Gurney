@@ -31,23 +31,23 @@ package
 		// ****************************************************************
 		
 		// Dimmensions
-		protected var width:int;				// game units
-		protected var height:int;				// game units
+		protected var m_width:int;				// game units
+		protected var m_height:int;				// game units
 		
 		// Position and orientation
-		protected var position_x:Number;		// game units		
-		protected var position_y:Number;		// game units
-		protected var angle:Number;				// radians, clockwise, 0 = right
+		protected var m_positionX:Number;		// game units		
+		protected var m_positionY:Number;		// game units
+		protected var m_angle:Number;				// radians, clockwise, 0 = right
 		
 		// Display
-		protected var image:BitmapData;
-		protected var image_sprite:Sprite;
+		protected var m_image:BitmapData;
+		protected var m_imageSprite:Sprite;
 		
 		// ****************************************************************
 		// Getter Functions 
 		// ****************************************************************
-		public function GetWidth():Number { return width; }
-		public function GetHeight():Number { return height; }
+		public function GetWidth():Number { return m_width; }
+		public function GetHeight():Number { return m_height; }
 		
 		// ****************************************************************
 		// Function: 	Image()
@@ -65,20 +65,20 @@ package
 			Util.Debug("Image::Image() called: x = " + x + ", y = " + y + ", width = " + width + ", height = " + height + ", angle = " + angle, 1);
 			
 			// Copy in supplied values
-			this.width = width;
-			this.height = height;
-			this.position_x = x;
-			this.position_y = y;
-			this.angle = angle;
+			this.m_width = width;
+			this.m_height = height;
+			this.m_positionX = x;
+			this.m_positionY = y;
+			this.m_angle = angle;
 			
 			// Create image to hold sprite
 			if (texture)
 			{
-				image_sprite = new Sprite();
+				m_imageSprite = new Sprite();
 				var temp_bitmap:DisplayObject = new texture();
 				temp_bitmap.width = width;
 				temp_bitmap.height = height;
-				image_sprite.addChild(temp_bitmap);
+				m_imageSprite.addChild(temp_bitmap);
 			}
 			
 			Util.Debug("Image::Image() returned", 1);
@@ -94,19 +94,19 @@ package
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Image::Render() called", 3);
 			
-			if (image_sprite)
+			if (m_imageSprite)
 			{
 				// Create a matrix and move it to the body's location
 				var matrix:Matrix = new Matrix();
-				matrix.translate(-1*width/2, -1*height/2);			// center on origin
-				matrix.rotate(angle);								// rotate about origin
-				matrix.translate(width/2, height/2);				// translate back to corner on origin
-				matrix.scale(width / image_sprite.width,			// scale based on height settings
-					height / image_sprite.height);
-				matrix.translate(position_x, position_y);			// translate to correct location in scene
+				matrix.translate(-1*m_width/2, -1*m_height/2);			// center on origin
+				matrix.rotate(m_angle);								// rotate about origin
+				matrix.translate(m_width/2, m_height/2);				// translate back to corner on origin
+				matrix.scale(m_width / m_imageSprite.width,			// scale based on height settings
+					m_height / m_imageSprite.height);
+				matrix.translate(m_positionX, m_positionY);			// translate to correct location in scene
 				
 				// Render the image to this matrix
-				Renderer.DrawToBackBuffer(image_sprite, matrix);
+				Renderer.DrawToBackBuffer(m_imageSprite, matrix);
 			}
 			
 			Util.Debug("Image::Render() returned", 3);
@@ -125,9 +125,9 @@ package
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Image::SetPosition() called: x = " + x + ", y = " + y + ", angle = " + a, 3);
 			
-			position_x = x;
-			position_y = y;
-			angle = a;
+			m_positionX = x;
+			m_positionY = y;
+			m_angle = a;
 			
 			Util.Debug("Image::SetPosition() returned", 3);
 			Util.ChangeDebugLevel(-1);
@@ -144,8 +144,8 @@ package
 			Util.ChangeDebugLevel(1);
 			Util.Debug("Image::SetDimmensions() called: w = " + w + ", h = " + h, 3);
 			
-			width = w;
-			height = h;
+			m_width = w;
+			m_height = h;
 			
 			Util.Debug("Image::SetDimmensions() returned", 3);
 			Util.ChangeDebugLevel(-1);
